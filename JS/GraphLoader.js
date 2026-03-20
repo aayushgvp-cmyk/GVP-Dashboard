@@ -48,6 +48,7 @@ let shownChart=  new Chart(
         animation: true,
 	scales:{y: {max: 2**Math.ceil(Math.log2(max))}},
         plugins: {
+		title:{display:true,text:"Monthly Income"},
           legend: {
             display: false
           },
