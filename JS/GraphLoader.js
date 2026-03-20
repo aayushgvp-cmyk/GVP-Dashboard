@@ -86,4 +86,3 @@ let shownChart=  new Chart(
 
 console.log("chart end")
 }
-excelInput.addEventListener("change", handleChartAsync, false);

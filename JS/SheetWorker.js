@@ -8,18 +8,34 @@ let rawData
 let verticalsObject={};
 
 async function handleFileAsync(e) {
-const url="docs.google.com/spreadsheets/d/1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw/export?format=xlsx"
+
+
+
+
+const url="https://opensheet.elk.sh/1LkcqbW144O2qQ6OZ11qLpcW1RsLH2G1Q7h2AipZXHFc/Expense"
   const response = await fetch(url);    
   if (!response.ok) throw new Error('Network response was not ok');
 
-  const workbook = XLSX.read(await response.arrayBuffer(), { type: 'array' });
-  const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-  rawData = XLSX.utils.sheet_to_json(worksheet, {header:1});
+ // const workbook = XLSX.read(await response.arrayBuffer(), { type: 'array' });
 
+ const arrayOfObjects = await response.json();
+
+const headers = Object.keys(arrayOfObjects[0]);
+
+ const rawData = arrayOfObjects.map(obj =>
+            headers.map(key => obj[key]))
+
+rawData.forEach(r=>r[3]=parseInt(r[3]))
+
+
+//const workbook = XLSX.read(await e.target.files[0].arrayBuffer());
+  //const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+  //rawData = XLSX.utils.sheet_to_json(worksheet, {header:1});
+// rawData has to be an array of arrays
 rawData?log("Loaded"):log("Error")
-
-const verticalCol=4
-const seminarCol=5
+console.log(rawData)
+const verticalCol=1
+const seminarCol=2
 const amountCol=3
 
 
@@ -39,9 +55,9 @@ const amountCol=3
 	rawData.forEach((row,rowNumber)=>
 	
 	{if(`${row[verticalCol]}` in verticalsObject){}
-	else if(rowNumber){verticalsObject[row[verticalCol]]={value:0}}
+	else if(rowNumber+1){verticalsObject[row[verticalCol]]={value:0}}
 	
-	if(rowNumber){
+	if(rowNumber+1){
 	verticalsObject[row[verticalCol]]['value']+=row[amountCol]
 	}
 	})
@@ -54,7 +70,7 @@ console.log(verticalsObject)
 //Start of second nesting
 	rawData.forEach((row,rowNumber)=>
 	
-	{if(rowNumber){
+	{if(rowNumber+1){
 	if(`${row[5]}` in verticalsObject[row[verticalCol]]){}
 	else {verticalsObject[row[verticalCol]][row[seminarCol]]={value:0}}
 	
@@ -69,7 +85,7 @@ console.log(verticalsObject)
 
 
 	
-
+handleChartAsync()
 return new Promise((resolve)=>{setTimeout(()=>{console.log("Sheet function finished");resolve()},2000)})
 }
 excelInput.addEventListener("change", handleFileAsync, false);
