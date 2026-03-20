@@ -18,7 +18,8 @@ const topLabelsPlugin = {
 };
 
 
-async function handleChartAsync(e) {
+async function handleChartAsync() {
+await new Promise(r=>setTimeout(r,5000))
 console.log("chart start")
 /*
   const data = [
@@ -31,7 +32,7 @@ console.log("chart start")
     { year: 2016, count: 28 },
   ];
 */
-await new Promise(Response=>setTimeout(Response,500))
+//await handleFileAsync(document.getElementById('excelInput').value)
 const data=verticalsObject
 
 
