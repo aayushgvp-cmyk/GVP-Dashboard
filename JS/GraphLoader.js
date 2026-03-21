@@ -4,7 +4,7 @@ chartName.data.datasets[datasetIndex].data=Object.values(newData).map(row => row
 chartName.data.labels=Object.keys(newData).map(r => r)
 max=0
 Object.values(newData).forEach(r=>r.value>max?max=r.value:max+=0)
-chartName.options.scales.y={max: 2**Math.ceil(Math.log2(max))}
+chartName.options.scales.y={max: 1.2*max}
 chartName.update()
 }
 
@@ -37,6 +37,27 @@ const topLabelsPlugin = {
     }
 };
 
+const topLabelsPluginK = {
+    id: 'topLabels',
+    afterDatasetsDraw(chart) {
+        const { ctx, data } = chart;
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillStyle = '#000'; // Change color as needed
+
+        chart.getDatasetMeta(0).data.forEach((bar, index) => {
+            const value = data.datasets[0].data[index];
+            // bar.x and bar.y are the coordinates of the bar's top-center
+            ctx.fillText(Math.floor(value/1000)+"K", bar.x, bar.y - 5); 
+        });
+        ctx.restore();
+    }
+};
+
+
+
 let dataIncome
 async function handleChartAsync() {
 
@@ -55,9 +76,9 @@ let chartIncome=  new Chart(
       type: 'bar',
       options: {
         animation: true,
-	scales:{y: {max: 2**Math.ceil(Math.log2(max))}},
+	scales:{y: {max: 1.2*(max)}},
         plugins: {
-		title:{display:true,text:"Monthly Income"},
+		title:{display:true,text:"Vertical-wise Cumulative Income"},
           legend: {
             display: false
           },
@@ -93,6 +114,54 @@ console.log(label)
 
     }
   );
+
+
+
+let chartIncomeMonthwise=  new Chart(
+    document.getElementById('chartIncomeMonthwiseHTML'),
+    {
+      type: 'bar',
+      options: {
+        animation: true,
+	scales:{y: {max: 1.2*max}},
+        plugins: {
+		title:{display:true,text:"Month-wise Income"},
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: false
+          }
+        },
+	responsive: true,
+                onClick: (e) => {
+                    const activePoints = chartIncomeMonthwise.getElementsAtEventForMode(e, 'nearest', {intersect: true}, false);
+                    if (activePoints.length > 0) {
+                        const index = activePoints[0].index;
+                        const label = chartIncomeMonthwise.data.labels[index];
+                        const value = chartIncomeMonthwise.data.datasets[0].data[index];
+			zoomIntoChart(label,chartIncomeMonthwise)
+                       
+                    }
+                }
+
+      },
+	plugins:[topLabelsPluginK],
+      data: {
+        labels:Object.keys(verticalsObjectIncomeMonthwise).map(r => r),
+        datasets: [
+          {
+            label: 'Acquisitions by year',
+            data: Object.values(verticalsObjectIncomeMonthwise).map(row => row.value),
+		backgroundColor:'#FF0000'
+          }
+        ]
+      },
+
+    }
+  );
+console.log(verticalsObjectIncomeMonthwise)
+replaceChartData(chartIncomeMonthwise,0,verticalsObjectIncomeMonthwise)
 
 											//Place correct data.Currently using income data
 let chartExpense=  new Chart(

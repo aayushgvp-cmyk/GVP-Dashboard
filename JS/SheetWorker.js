@@ -1,41 +1,29 @@
 let verticalsObjectIncome={};
-
+let verticalsObjectIncomeMonthwise={};
+let rawDataCumIncome
 async function handleFileAsync() {
-const url="https://opensheet.elk.sh/1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw/Income"
-  const response = await fetch(url);    
-  if (!response.ok) throw new Error('Network response was not ok');
- const arrayOfObjects = await response.json();
-const headers = Object.keys(arrayOfObjects[0]);
- let rawData = arrayOfObjects.map(obj => headers.map(key => obj[key]));
-rawData=rawData.filter(r=>(r[3]));
-rawData.forEach(r=>{if(1){r[3]=r[3].replaceAll(",","")}});
-rawData.forEach(r=>r[3]=parseInt(r[3]));
-const verticalCol=1;
-const seminarCol=2;
-const amountCol=3;
-//Start of first nesting
 
-	rawData.forEach((row,rowNumber)=>
-	{if(`${row[verticalCol]}` in verticalsObjectIncome){}
-	else if(rowNumber+1){verticalsObjectIncome[row[verticalCol]]={value:0}}
-	if(rowNumber+1){
-	verticalsObjectIncome[row[verticalCol]]['value']+=row[amountCol];
-	}
-	})
-//End of first nesting
-//Start of second nesting
-	rawData.forEach((row,rowNumber)=>
-	{
-	if(`${row[seminarCol]}` in verticalsObjectIncome[row[verticalCol]]){}
-	else {verticalsObjectIncome[row[verticalCol]][row[seminarCol]]={value:0};}
+
+const urlCumIncome="https://opensheet.elk.sh/1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw/Income"
+  const responseCumIncome = await fetch(urlCumIncome);    
+  if (!responseCumIncome.ok) throw new Error('Network response was not ok');
+ const arrayOfObjectsCumIncome = await responseCumIncome.json();
+ rawDataCumIncome = arrayOfObjectsCumIncome.map(obj => Object.keys(arrayOfObjectsCumIncome[0]).map(key => obj[key]));
+
+
+rawDataCumIncome=rawDataCumIncome.filter(r=>(r[3]));
+rawDataCumIncome.forEach(r=>{if(1){r[3]=r[3].replaceAll(",","")}});
+rawDataCumIncome.forEach(r=>r[3]=parseInt(r[3]));
 
 
 
-	verticalsObjectIncome[row[verticalCol]][row[seminarCol]].value+=row[amountCol]
+//Data for chartIncome
+DataToVerticals(rawDataCumIncome,verticalsObjectIncome)
+DataToSeminars(rawDataCumIncome,verticalsObjectIncome)
 
-	})
-console.log(verticalsObjectIncome)
-//End of second nesting	
+//Data for chartIncomeMonthwise
+DataToMonths(rawDataCumIncome,verticalsObjectIncomeMonthwise)
+console.log(verticalsObjectIncomeMonthwise)
 handleChartAsync()
 
 }
