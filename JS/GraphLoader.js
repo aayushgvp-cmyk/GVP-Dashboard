@@ -26,43 +26,16 @@ console.log(verticalsObjectIncome)
 
 let chartIncome={}
 
-const pieLabelsPlugin = {id: 'pieLabels',afterDatasetsDraw(chart){const {ctx,data}=chart;ctx.save();ctx.textAlign = 'center';ctx.textBaseline = 'middle';ctx.font = 'bold 12px sans-serif';ctx.fillStyle = '#fff';chart.getDatasetMeta(0).data.forEach((datapoint, index) => {const { x, y, startAngle, endAngle, outerRadius, innerRadius } = datapoint;
-// 1. Find the angle in the middle of the slice
-const midAngle = startAngle + (endAngle - startAngle) / 2;
-// 2. Find the distance from the center (halfway between inner and outer edge)
-const midRadius = innerRadius + (outerRadius - innerRadius) / 2;
-// 3. Convert polar coordinates (angle/radius) to Cartesian (x/y) and fill the text
-ctx.fillText(`${data.labels[index]} : ${data.datasets[0].data[index]}`, x + Math.cos(midAngle) * midRadius, y + Math.sin(midAngle) * midRadius);});ctx.restore();}};
-
-const topLabelsPlugin = {id: 'topLabels',afterDatasetsDraw(chart) {const { ctx, data } = chart;ctx.save();ctx.textAlign = 'center';ctx.textBaseline = 'bottom';ctx.font = 'bold 12px sans-serif';ctx.fillStyle = '#000';chart.getDatasetMeta(0).data.forEach((bar, index) => {ctx.fillText(data.datasets[0].data[index], bar.x, bar.y - 5); });ctx.restore();}};
-
-const topLabelsPluginK = {
-    id: 'topLabels',
-    afterDatasetsDraw(chart) {
-        const { ctx, data } = chart;
-        ctx.save();
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.font = 'bold 12px sans-serif';
-        ctx.fillStyle = '#000'; // Change color as needed
-
-        chart.getDatasetMeta(0).data.forEach((bar, index) => {
-            const value = data.datasets[0].data[index];
-            // bar.x and bar.y are the coordinates of the bar's top-center
-            ctx.fillText(Math.floor(value/1000)+"K", bar.x, bar.y - 5); 
-        });
-        ctx.restore();
-    }
-};
 
 
 
-let dataIncome
+let dataIncome, dataExpense
 async function handleChartAsync() {
 
 console.log("chart start")
 
 dataIncome=verticalsObjectIncome
+dataExpense=verticalsObjectExpense
 
 
 
@@ -159,7 +132,6 @@ let chartIncomeMonthwise=  new Chart(
 
     }
   );
-console.log(verticalsObjectIncomeMonthwise)
 replaceChartData(chartIncomeMonthwise,0,verticalsObjectIncomeMonthwise)
 
 											//Place correct data.Currently using income data
@@ -168,6 +140,7 @@ let chartExpense=  new Chart(
     {
       type: 'pie',
       options: {
+	radius: '70%',
         animation: true,
 	plugins: {
 	  title:{display:true,text:"Vertical-wise Cumulative Expense"},
@@ -177,6 +150,7 @@ let chartExpense=  new Chart(
           tooltip: {
             enabled: false
           }
+	  
         },
 	/*responsive: true,
                 onClick: (e) => {
@@ -194,17 +168,16 @@ let chartExpense=  new Chart(
       },
 	plugins:[pieLabelsPlugin],
       data: {
-        labels:Object.keys(dataIncome).map(r => r),
+        labels:Object.keys(dataExpense).map(r => r),
         datasets: [
           {
             label: 'Acquisitions by year',
-            data: Object.values(dataIncome).map(row => row.value),
+            data: Object.values(dataExpense).map(row => row.value),
           }
         ]
       },
 
     }
   );
-
 console.log("chart end")
 }

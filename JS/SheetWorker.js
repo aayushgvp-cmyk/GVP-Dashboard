@@ -1,5 +1,4 @@
-let verticalsObjectIncome={};
-let verticalsObjectIncomeMonthwise={};
+let verticalsObjectIncome={}, verticalsObjectIncomeMonthwise={}, verticalsObjectExpense={}
 let rawDataCumIncome
 let rawDataCumExpense
 async function handleFileAsync() {
@@ -24,8 +23,6 @@ DataToSeminars(rawDataCumIncome,verticalsObjectIncome)
 
 //Data for chartIncomeMonthwise
 DataToMonths(rawDataCumIncome,verticalsObjectIncomeMonthwise)
-console.log(verticalsObjectIncomeMonthwise)
-handleChartAsync()
 
 // Expenses
 const urlCumExpense="https://opensheet.elk.sh/1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw/Expense"
@@ -39,9 +36,8 @@ rawDataCumExpense=rawDataCumExpense.filter(r=>(r[3]));
 rawDataCumExpense.forEach(r=>{r[3]=r[3].replaceAll(",","")});
 rawDataCumExpense.forEach(r=>r[3]=parseInt(r[3]));
 
-
-
-
+DataToCategories(rawDataCumExpense,verticalsObjectExpense)
+handleChartAsync()
 }
 
 handleFileAsync()
