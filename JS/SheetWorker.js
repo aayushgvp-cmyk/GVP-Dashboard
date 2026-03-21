@@ -1,4 +1,5 @@
 let verticalsObjectIncome={};
+
 async function handleFileAsync() {
 const url="https://opensheet.elk.sh/1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw/Income"
   const response = await fetch(url);    
@@ -41,19 +42,7 @@ handleChartAsync()
 
 handleFileAsync()
 
-let nestLevel=0
-function zoomIntoChart(vertical,chartName){
 
-nestLevel+=1
-nestLevel===3?Show('chartIncomeDiv',0):{}
-console.log(dataIncome)
-nestLevel===1?dataIncome=verticalsObjectIncome[vertical]:{}
-delete dataIncome.value
-console.log(dataIncome)
-chartName.data.datasets[0].data=Object.values(dataIncome).map(row => row.value)
-chartName.data.labels=Object.keys(dataIncome).map(r => r)
-chartName.update()
-}
 
 function setCToColour(chartName,colour){
 chartName.data.datasets[0].backgroundColor=colour

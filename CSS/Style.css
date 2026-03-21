@@ -1,8 +1,5 @@
 h1{color:#000000}
-.axis { font-size:15;margin-left:20px;margin-bottom:30px }
-
-.axisX {position:absolute;top:320;margin-left:100px;margin-right:auto}
-
-.bar {position:absolute; top:60px;width:40px;color:#FFFFFF;text-align:center}
 
 .hidden {display:none}
+
+.chartClass {position:relative; width:40%;left:20%}

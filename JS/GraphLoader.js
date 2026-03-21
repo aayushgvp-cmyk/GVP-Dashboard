@@ -1,3 +1,23 @@
+let max=0
+function replaceChartData(chartName,datasetIndex,newData){
+chartName.data.datasets[datasetIndex].data=Object.values(newData).map(row => row.value)
+chartName.data.labels=Object.keys(newData).map(r => r)
+max=0
+Object.values(newData).forEach(r=>r.value>max?max=r.value:max+=0)
+chartName.options.scales.y={max: 2**Math.ceil(Math.log2(max))}
+chartName.update()
+}
+
+let nestLevel=0
+function zoomIntoChart(vertical,chartName){
+console.log(vertical)
+nestLevel+=1
+nestLevel===3?Show('chartIncomeDiv',0):{}
+nestLevel===1?(dataIncome=verticalsObjectIncome[vertical]):{}
+delete dataIncome.value
+replaceChartData(chartName,0,dataIncome)
+}
+
 const topLabelsPlugin = {
     id: 'topLabels',
     afterDatasetsDraw(chart) {
@@ -25,7 +45,7 @@ console.log("chart start")
 dataIncome=verticalsObjectIncome
 
 
-let max=0
+
 Object.values(dataIncome).forEach(r=>r.value>max?max=r.value:max+=0)
 
 
