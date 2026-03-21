@@ -1,4 +1,4 @@
-Show('chartIncomeBack',0)
+const colourRainArray=["#FF5E5E","#FF9E00","#FFFF3F","#48FF7B","#00E5FF","#7B61FF","#CC8CFF"]
 let max=0
 function replaceChartData(chartName,datasetIndex,newData){
 chartName.data.datasets[datasetIndex].data=Object.values(newData).map(row => row.value)
@@ -77,7 +77,7 @@ Object.values(dataIncome).forEach(r=>r.value>max?max=r.value:max+=0)
           {
             label: 'Acquisitions by year',
             data: Object.values(dataIncome).map(row => row.value),
-		backgroundColor:'#FF0000'
+		backgroundColor:colourRainArray
           }
         ]
       },
@@ -124,7 +124,8 @@ let chartIncomeMonthwise=  new Chart(
           {
             label: 'Income per month',
             data: Object.values(verticalsObjectIncomeMonthwise).map(row => row.value),
-		backgroundColor:'#FF0000'
+		backgroundColor:'#FF0000',
+		backgroundColor:colourRainArray
           }
         ]
       },
@@ -139,7 +140,7 @@ let chartExpense=  new Chart(
     {
       type: 'pie',
       options: {
-	radius: '70%',
+	radius: '60%',
         animation: true,
 	plugins: {
 	  title:{display:true,text:"Vertical-wise Cumulative Expense"},
@@ -172,6 +173,7 @@ let chartExpense=  new Chart(
           {
             label: 'Acquisitions by year',
             data: Object.values(dataExpense).map(row => row.value),
+		backgroundColor:colourRainArray
           }
         ]
       },

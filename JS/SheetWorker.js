@@ -1,6 +1,6 @@
 let verticalsObjectIncome={}, verticalsObjectIncomeMonthwise={}, verticalsObjectExpense={}
-let rawDataCumIncome
-let rawDataCumExpense
+let rawDataCumIncome, rawDataCumExpense
+let totalIncome, TotalExpense
 async function handleFileAsync() {
 
 
@@ -38,6 +38,10 @@ rawDataCumExpense.forEach(r=>r[3]=parseInt(r[3]));
 
 DataToCategories(rawDataCumExpense,verticalsObjectExpense)
 handleChartAsync()
+totalExpense=0
+Object.values(verticalsObjectExpense).forEach(r=>totalExpense+=r.value)
+
+
 }
 
 handleFileAsync()

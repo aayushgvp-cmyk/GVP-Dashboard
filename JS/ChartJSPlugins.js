@@ -47,7 +47,7 @@ const pieLabelsPlugin = {id: 'pieLabels',afterDatasetsDraw(chart) {
         ctx.textAlign = isRight ? 'left' : 'right';
         ctx.fillStyle = '#333';
         const textX = isRight ? labelX + 15 : labelX - 15;
-        const labelText = `${data.labels[index]}: ${data.datasets[0].data[index]}`;
+        const labelText = `${data.labels[index]}: ${Math.floor(data.datasets[0].data[index]/1000)}K (${Math.floor(data.datasets[0].data[index]*10000/totalExpense)/100}%)`;
         ctx.fillText(labelText, textX, finalY);
       });
     });
@@ -59,7 +59,7 @@ const pieLabelsPlugin = {id: 'pieLabels',afterDatasetsDraw(chart) {
 
 
 
-const topLabelsPlugin = {id: 'topLabels',afterDatasetsDraw(chart) {const { ctx, data } = chart;ctx.save();ctx.textAlign = 'center';ctx.textBaseline = 'bottom';ctx.font = 'bold 12px sans-serif';ctx.fillStyle = '#000';chart.getDatasetMeta(0).data.forEach((bar, index) => {ctx.fillText(data.datasets[0].data[index], bar.x, bar.y - 5); });ctx.restore();}};
+const topLabelsPlugin = {id: 'topLabels',afterDatasetsDraw(chart) {const { ctx, data } = chart;ctx.save();ctx.textAlign = 'center';ctx.textBaseline = 'bottom';ctx.font = 'bold 12px sans-serif';ctx.fillStyle = '#000';chart.getDatasetMeta(0).data.forEach((bar, index) => {ctx.fillText(Math.floor(data.datasets[0].data[index]/1000)+"K", bar.x, bar.y - 5); });ctx.restore();}};
 
 
 
