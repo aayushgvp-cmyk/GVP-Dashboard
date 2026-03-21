@@ -34,7 +34,7 @@ async function handleChartAsync() {
 console.log("chart start")
 
 dataIncome=verticalsObjectIncome
-dataExpense=verticalsObjectExpense
+dataExpense=CategoryObjectExpense
 
 
 
@@ -143,7 +143,7 @@ let chartExpense=  new Chart(
 	radius: '60%',
         animation: true,
 	plugins: {
-	  title:{display:true,text:"Vertical-wise Cumulative Expense"},
+	  title:{display:true,text:"Category-wise Cumulative Expense"},
           legend: {
             display: false
           },
