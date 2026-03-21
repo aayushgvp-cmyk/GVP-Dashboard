@@ -1,3 +1,4 @@
+Show('chartIncomeBack',0)
 let max=0
 function replaceChartData(chartName,datasetIndex,newData){
 chartName.data.datasets[datasetIndex].data=Object.values(newData).map(row => row.value)
@@ -9,33 +10,31 @@ chartName.update()
 }
 
 let nestLevel=0
-function zoomIntoChart(vertical,chartName){
-console.log(vertical)
-nestLevel+=1
-nestLevel===3?Show('chartIncomeDiv',0):{}
-nestLevel===1?(dataIncome=verticalsObjectIncome[vertical]):{}
+function ZoomIntoChart(vertical,chartName){
+nestLevel=1
+nestLevel===0?Show('chartIncomeBack',0):Show('chartIncomeBack',1)
+nestLevel===1?(dataIncome=structuredClone(verticalsObjectIncome[vertical])):{}
 delete dataIncome.value
 replaceChartData(chartName,0,dataIncome)
 }
+function ZoomOutOfChartIncome(chartName){
+nestLevel-=1;
+nestLevel===0?(dataIncome=verticalsObjectIncome):{}
+replaceChartData(chartName,0,dataIncome)
+console.log(verticalsObjectIncome)
+}
 
-const topLabelsPlugin = {
-    id: 'topLabels',
-    afterDatasetsDraw(chart) {
-        const { ctx, data } = chart;
-        ctx.save();
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.font = 'bold 12px sans-serif';
-        ctx.fillStyle = '#000'; // Change color as needed
+let chartIncome={}
 
-        chart.getDatasetMeta(0).data.forEach((bar, index) => {
-            const value = data.datasets[0].data[index];
-            // bar.x and bar.y are the coordinates of the bar's top-center
-            ctx.fillText(value, bar.x, bar.y - 5); 
-        });
-        ctx.restore();
-    }
-};
+const pieLabelsPlugin = {id: 'pieLabels',afterDatasetsDraw(chart){const {ctx,data}=chart;ctx.save();ctx.textAlign = 'center';ctx.textBaseline = 'middle';ctx.font = 'bold 12px sans-serif';ctx.fillStyle = '#fff';chart.getDatasetMeta(0).data.forEach((datapoint, index) => {const { x, y, startAngle, endAngle, outerRadius, innerRadius } = datapoint;
+// 1. Find the angle in the middle of the slice
+const midAngle = startAngle + (endAngle - startAngle) / 2;
+// 2. Find the distance from the center (halfway between inner and outer edge)
+const midRadius = innerRadius + (outerRadius - innerRadius) / 2;
+// 3. Convert polar coordinates (angle/radius) to Cartesian (x/y) and fill the text
+ctx.fillText(`${data.labels[index]} : ${data.datasets[0].data[index]}`, x + Math.cos(midAngle) * midRadius, y + Math.sin(midAngle) * midRadius);});ctx.restore();}};
+
+const topLabelsPlugin = {id: 'topLabels',afterDatasetsDraw(chart) {const { ctx, data } = chart;ctx.save();ctx.textAlign = 'center';ctx.textBaseline = 'bottom';ctx.font = 'bold 12px sans-serif';ctx.fillStyle = '#000';chart.getDatasetMeta(0).data.forEach((bar, index) => {ctx.fillText(data.datasets[0].data[index], bar.x, bar.y - 5); });ctx.restore();}};
 
 const topLabelsPluginK = {
     id: 'topLabels',
@@ -70,7 +69,7 @@ dataIncome=verticalsObjectIncome
 Object.values(dataIncome).forEach(r=>r.value>max?max=r.value:max+=0)
 
 
-let chartIncome=  new Chart(
+ chartIncome=  new Chart(
     document.getElementById('chartIncomeHTML'),
     {
       type: 'bar',
@@ -93,8 +92,7 @@ let chartIncome=  new Chart(
                         const index = activePoints[0].index;
                         const label = chartIncome.data.labels[index];
                         const value = chartIncome.data.datasets[0].data[index];
-console.log(label)
-			zoomIntoChart(label,chartIncome)
+			ZoomIntoChart(label,chartIncome)
                        
                     }
                 }
@@ -114,6 +112,7 @@ console.log(label)
 
     }
   );
+
 
 
 
@@ -140,7 +139,7 @@ let chartIncomeMonthwise=  new Chart(
                         const index = activePoints[0].index;
                         const label = chartIncomeMonthwise.data.labels[index];
                         const value = chartIncomeMonthwise.data.datasets[0].data[index];
-			zoomIntoChart(label,chartIncomeMonthwise)
+			
                        
                     }
                 }
@@ -151,7 +150,7 @@ let chartIncomeMonthwise=  new Chart(
         labels:Object.keys(verticalsObjectIncomeMonthwise).map(r => r),
         datasets: [
           {
-            label: 'Acquisitions by year',
+            label: 'Income per month',
             data: Object.values(verticalsObjectIncomeMonthwise).map(row => row.value),
 		backgroundColor:'#FF0000'
           }
@@ -170,9 +169,8 @@ let chartExpense=  new Chart(
       type: 'pie',
       options: {
         animation: true,
-	//scales:{y: {max: 2**Math.ceil(Math.log2(max))}},
-        plugins: {
-		title:{display:true,text:"Monthly Income"},
+	plugins: {
+	  title:{display:true,text:"Vertical-wise Cumulative Expense"},
           legend: {
             display: false
           },
@@ -194,7 +192,7 @@ let chartExpense=  new Chart(
                 }*/
 
       },
-	plugins:[topLabelsPlugin],
+	plugins:[pieLabelsPlugin],
       data: {
         labels:Object.keys(dataIncome).map(r => r),
         datasets: [
