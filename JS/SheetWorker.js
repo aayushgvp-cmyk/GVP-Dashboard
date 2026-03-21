@@ -5,41 +5,34 @@ const url="https://opensheet.elk.sh/1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw
   if (!response.ok) throw new Error('Network response was not ok');
  const arrayOfObjects = await response.json();
 const headers = Object.keys(arrayOfObjects[0]);
-
- let rawData = arrayOfObjects.map(obj =>
-            headers.map(key => obj[key]))
-
-rawData=rawData.filter(r=>(r[3]))
-
-rawData.forEach(r=>{if(1){r[3]=r[3].replaceAll(",","")}})
-
-
-
-rawData.forEach(r=>r[3]=parseInt(r[3]))
-console.log(rawData)
-const verticalCol=1
-const seminarCol=2
-const amountCol=3
-
+ let rawData = arrayOfObjects.map(obj => headers.map(key => obj[key]));
+rawData=rawData.filter(r=>(r[3]));
+rawData.forEach(r=>{if(1){r[3]=r[3].replaceAll(",","")}});
+rawData.forEach(r=>r[3]=parseInt(r[3]));
+const verticalCol=1;
+const seminarCol=2;
+const amountCol=3;
 //Start of first nesting
 
 	rawData.forEach((row,rowNumber)=>
-	
 	{if(`${row[verticalCol]}` in verticalsObjectIncome){}
 	else if(rowNumber+1){verticalsObjectIncome[row[verticalCol]]={value:0}}
-	
 	if(rowNumber+1){
-	verticalsObjectIncome[row[verticalCol]]['value']+=row[amountCol]
+	verticalsObjectIncome[row[verticalCol]]['value']+=row[amountCol];
 	}
 	})
 //End of first nesting
 //Start of second nesting
 	rawData.forEach((row,rowNumber)=>
-	{if(rowNumber+1){
-	if(`${row[5]}` in verticalsObjectIncome[row[verticalCol]]){}
-	else {verticalsObjectIncome[row[verticalCol]][row[seminarCol]]={value:0}}
+	{
+	if(`${row[seminarCol]}` in verticalsObjectIncome[row[verticalCol]]){}
+	else {verticalsObjectIncome[row[verticalCol]][row[seminarCol]]={value:0};}
+
+
+
 	verticalsObjectIncome[row[verticalCol]][row[seminarCol]].value+=row[amountCol]
-	}})
+
+	})
 console.log(verticalsObjectIncome)
 //End of second nesting	
 handleChartAsync()
