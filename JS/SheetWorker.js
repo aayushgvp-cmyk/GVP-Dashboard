@@ -48,9 +48,10 @@ nestLevel+=1
 nestLevel===3?Show('chartIncomeDiv',0):{}
 console.log(dataIncome)
 nestLevel===1?dataIncome=verticalsObjectIncome[vertical]:{}
-
 delete dataIncome.value
 console.log(dataIncome)
+chartName.data.datasets[0].data=Object.values(dataIncome).map(row => row.value)
+chartName.data.labels=Object.keys(dataIncome).map(r => r)
 chartName.update()
 }
 
