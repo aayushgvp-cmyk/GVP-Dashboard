@@ -1,5 +1,10 @@
 h1{color:#000000}
+h2{font-size:20px}
+h3{color:#0000C0;font-size:12px}
+h3:hover{color:#FF0000}
 
 .hidden {display:none}
 
 .chartClass {position:relative; width:60%;left:20%}
+
+.verticalOptionClass{}

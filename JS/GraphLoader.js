@@ -1,3 +1,29 @@
+Show('chartIncomeMonthwiseDiv',0);
+Show('chartExpenseDiv',0);
+Show('chartVMIncomeDiv',0);
+Show('VChoiceDiv',0);
+Show('MChoiceDiv',0);
+Show('chartIncomeMVIDiv',0);
+
+function SwitchSection(n){
+Show('chartIncomeDiv',0);
+Show('chartIncomeBack',0)
+Show('chartIncomeMonthwiseDiv',0);
+Show('chartExpenseDiv',0);
+Show('chartVMIncomeDiv',0);
+Show('VChoiceDiv',0);
+Show('MChoiceDiv',0);
+Show('chartIncomeMVIDiv',0);
+switch(n){
+case 1: Show('chartIncomeDiv',1);ZoomOutOfChartIncome(chartIncome);break;
+case 2: Show('chartIncomeMonthwiseDiv',1); break;
+case 3: Show('chartIncomeDiv',1);ZoomIntoChart('BVP',chartIncome);Show('VChoiceDiv',1);break;
+case 4: Show('MChoiceDiv',1);Show('chartIncomeMVIDiv',1);break;
+case 5: Show('chartVMIncomeDiv',1);Show('VChoiceDiv',1); break;
+case -1:Show('chartExpenseDiv',1);break;
+default: break;
+}}
+
 const colourRainArray=["#03045E","#0077B6","#00B4D8","#90E0EF","#CAF0F8"]
 let max=0
 function replaceChartData(chartName,datasetIndex,newData){
@@ -21,10 +47,10 @@ function ZoomOutOfChartIncome(chartName){
 nestLevel-=1;
 nestLevel===0?(dataIncome=verticalsObjectIncome):{}
 replaceChartData(chartName,0,dataIncome)
-console.log(verticalsObjectIncome)
+Show('chartIncomeBack',0)
 }
 
-let chartIncome={}
+let chartIncome={},chartIncomeMonthwise={},chartExpense={},chartVerticalwiseMonthwiseIncome={},chartIncomeMV={}
 
 
 
@@ -41,144 +67,20 @@ dataExpense=CategoryObjectExpense
 Object.values(dataIncome).forEach(r=>r.value>max?max=r.value:max+=0)
 
 
- chartIncome=  new Chart(
-    document.getElementById('chartIncomeHTML'),
-    {
-      type: 'bar',
-      options: {
-        animation: true,
-	scales:{y: {max: 1.2*(max)}},
-        plugins: {
-		title:{display:true,text:"Vertical-wise Cumulative Income"},
-          legend: {
-            display: false
-          },
-          tooltip: {
-            enabled: false
-          }
-        },
-	responsive: true,
-                onClick: (e) => {
-                    const activePoints = chartIncome.getElementsAtEventForMode(e, 'nearest', {intersect: true}, false);
-                    if (activePoints.length > 0) {
-                        const index = activePoints[0].index;
-                        const label = chartIncome.data.labels[index];
-                        const value = chartIncome.data.datasets[0].data[index];
-			ZoomIntoChart(label,chartIncome)
-                       
-                    }
-                }
+LoadAVI()
 
-      },
-	plugins:[topLabelsPlugin],
-      data: {
-        labels:Object.keys(dataIncome).map(r => r),
-        datasets: [
-          {
-            label: 'Acquisitions by year',
-            data: Object.values(dataIncome).map(row => row.value),
-		backgroundColor:colourRainArray
-          }
-        ]
-      },
+LoadAMI()
 
-    }
-  );
+LoadVMI()
+
+VMIVerticalDD.addEventListener("change",(e)=>{SwitchVMIVertical(document.getElementById("VMIVerticalDD").value);SwitchAVSIVertical(document.getElementById("VMIVerticalDD").value)})
+
+LoadCE()
+
+LoadMVI()											//Place correct data.Currently using income data
+
+MVVerticalDD.addEventListener("change",(e)=>{SwitchMVIMonth(document.getElementById("MVVerticalDD").value)})
 
 
-
-
-let chartIncomeMonthwise=  new Chart(
-    document.getElementById('chartIncomeMonthwiseHTML'),
-    {
-      type: 'bar',
-      options: {
-        animation: true,
-	scales:{y: {max: 1.2*max}},
-        plugins: {
-		title:{display:true,text:"Month-wise Income"},
-          legend: {
-            display: false
-          },
-          tooltip: {
-            enabled: false
-          }
-        },
-	responsive: true,
-                onClick: (e) => {
-                    const activePoints = chartIncomeMonthwise.getElementsAtEventForMode(e, 'nearest', {intersect: true}, false);
-                    if (activePoints.length > 0) {
-                        const index = activePoints[0].index;
-                        const label = chartIncomeMonthwise.data.labels[index];
-                        const value = chartIncomeMonthwise.data.datasets[0].data[index];
-			
-                       
-                    }
-                }
-
-      },
-	plugins:[topLabelsPluginK],
-      data: {
-        labels:Object.keys(verticalsObjectIncomeMonthwise).map(r => r),
-        datasets: [
-          {
-            label: 'Income per month',
-            data: Object.values(verticalsObjectIncomeMonthwise).map(row => row.value),
-		backgroundColor:'#FF0000',
-		backgroundColor:colourRainArray
-          }
-        ]
-      },
-
-    }
-  );
-replaceChartData(chartIncomeMonthwise,0,verticalsObjectIncomeMonthwise)
-
-											//Place correct data.Currently using income data
-let chartExpense=  new Chart(
-    document.getElementById('chartExpenseHTML'),
-    {
-      type: 'pie',
-      options: {
-	radius: '60%',
-        animation: true,
-	plugins: {
-	  title:{display:true,text:"Category-wise Cumulative Expense"},
-          legend: {
-            display: false
-          },
-          tooltip: {
-            enabled: false
-          }
-	  
-        },
-	/*responsive: true,
-                onClick: (e) => {
-                    const activePoints =  chartExpense.getElementsAtEventForMode(e, 'nearest', {intersect: true}, false);
-                    if (activePoints.length > 0) {
-                        const index = activePoints[0].index;
-                        const label =  chartExpense.data.labels[index];
-                        const value =  chartExpense.data.datasets[0].data[index];
-			setCToColour( chartExpense,"#0000FF")
-			zoomIntoChart()
-                       
-                    }
-                }*/
-
-      },
-	plugins:[pieLabelsPlugin],
-      data: {
-        labels:Object.keys(dataExpense).map(r => r),
-        datasets: [
-          {
-            label: 'Acquisitions by year',
-            data: Object.values(dataExpense).map(row => row.value),
-		backgroundColor:colourRainArray
-          }
-        ]
-      },
-
-    }
-  );
 console.log("chart end")
 }

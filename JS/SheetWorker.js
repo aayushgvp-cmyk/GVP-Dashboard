@@ -1,29 +1,59 @@
-let verticalsObjectIncome={}, verticalsObjectIncomeMonthwise={}, CategoryObjectExpense={}, CumIncome={}, MonthIncomeFull={}, CumIncentive={}
+let verticalsObjectIncome={} /*AV,AVS*/, verticalsObjectIncomeMonthwise={} /*AM*/, CategoryObjectExpense={} /*CE*/, CumIncome={}, MonthIncomeFull={}, CumIncentive={}, MonthwiseForVerticalObject={} /*VM,VMS*/,verticalWiseForMonth={} /*MV*/
 let rawDataCumIncome, rawDataCumExpense
 let totalIncome, TotalExpense
+let VerticalArray=[]
 async function handleFileAsync() {
 let CumulativeIncome
 
+rawDataIncome=await ImportData("Master","Income")
 
-rawDataCumIncome=await ImportData("Master","Income")
-
-//DataToObject(rawDataCumIncome,verticalsObjectIncome,"VERTICAL")
-
+VerticalArray=[...new Set(rawDataIncome.map(r=>r[COLS.vertical]))].sort()
+const SELECT_TAG=document.querySelector('#VMIVerticalDD');
+const TEMPLATE=document.querySelector('#VMItemplate');
+VerticalArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+const OPTION=CLONE.querySelector('.verticalOptionClass');
+OPTION.textContent=v;
+OPTION.value=i;
+SELECT_TAG.appendChild(CLONE)
+})
 
 //Data for chartIncome
-DataToVerticals(rawDataCumIncome,verticalsObjectIncome)
-DataToSeminars(rawDataCumIncome,verticalsObjectIncome)
+DataToObject(rawDataIncome,verticalsObjectIncome,"VERTICAL")
+DataToSeminars(rawDataIncome,verticalsObjectIncome)
 
 //Data for chartIncomeMonthwise
-DataToMonths(rawDataCumIncome,verticalsObjectIncomeMonthwise)
+DataToMonths(rawDataIncome,verticalsObjectIncomeMonthwise)
 
 // Expenses
 rawDataCumExpense=await ImportData('Master',"Expense")
-DataToCategories(rawDataCumExpense,CategoryObjectExpense)
+DataToObject(rawDataCumExpense,CategoryObjectExpense,"CATEGORY")
 
 totalExpense=0
 Object.values(CategoryObjectExpense).forEach(r=>totalExpense+=r.value)
 
+
+
+//Monthwise for individual verticals
+DataToObject(rawDataIncome,MonthwiseForVerticalObject,"VERTICAL")
+Object.keys(MonthwiseForVerticalObject).forEach(r=>delete MonthwiseForVerticalObject[r].value)
+rawDataIncome.forEach(r=>{
+if(`${ymdToM(r[COLS.date])}` in MonthwiseForVerticalObject[r[COLS.vertical]]){}
+else { MonthwiseForVerticalObject[r[COLS.vertical]][ymdToM(r[COLS.date])]={value:0,monthIndex:ModFunction(ymdTom(r[COLS.date])-3,12)}}
+
+MonthwiseForVerticalObject[r[COLS.vertical]][ymdToM(r[COLS.date])].value+=r[COLS.amount]
+
+})
+
+//Vertical-Wise for month
+
+rawDataIncome.forEach(r=>{(`${ymdToM(r[dateCol])}` in verticalWiseForMonth)?{}:(verticalWiseForMonth[ymdToM(r[dateCol])]={})})
+rawDataIncome.forEach(r=>{(`${r[COLS.vertical]}` in verticalWiseForMonth[ymdToM(r[dateCol])])?{}:(verticalWiseForMonth[ymdToM(r[dateCol])][r[COLS.vertical]]={value:0});
+
+verticalWiseForMonth[ymdToM(r[dateCol])][r[COLS.vertical]].value+=r[COLS.amount]
+
+})
+
+log(verticalWiseForMonth)
 
 
 
@@ -35,7 +65,8 @@ CumIncome=structuredClone(MonthIncomeFull)
 Object.keys(CumIncome).forEach(r=>CumIncome[r].value=0)
 
 Object.keys(CumIncome).forEach(r=>{Object.keys(MonthIncomeFull).forEach(n=>{if(CumIncome[r].MonthIndex>=MonthIncomeFull[n].MonthIndex){CumIncome[r].value+=MonthIncomeFull[n].value}})})
-console.log(CumIncome)
+
+
 
 //Cumulative Income to Incentives
 function IncomeToIncentive(Income,MONTH){/*             PLACE FORMULA HERE           */}
@@ -50,10 +81,3 @@ return (IncomeToIncentive(CumIncome[mToM(CURRENTMONTH)].value,CURRENTMONTH)-Inco
 handleChartAsync()}
 handleFileAsync()
 
-
-
-function setCToColour(chartName,colour){
-chartName.data.datasets[0].backgroundColor=colour
-chartName.update()
-log(chartName.data.datasets[0].backgroundColor)
-}

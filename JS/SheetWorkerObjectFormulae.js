@@ -1,7 +1,6 @@
 Show('chartIncomeBack',0)
+const COLS={date:0,vertical:1, seminar:2, amount:3, category:4}
 const dateCol=0, verticalCol=1, seminarCol=2, amountCol=3, categoryCol=4
-
-function DataToVerticals(baseData,objectToEdit){baseData.forEach((row)=>{if(`${row[verticalCol]}` in objectToEdit){}else{objectToEdit[row[verticalCol]]={value:0}};{objectToEdit[row[verticalCol]]['value']+=row[amountCol];}})}
 
 function DataToSeminars(baseData,objectToEdit){baseData.forEach((row)=>{if(`${row[seminarCol]}` in objectToEdit[row[verticalCol]]){}else {objectToEdit[row[verticalCol]][row[seminarCol]]={value:0};};objectToEdit[row[verticalCol]][row[seminarCol]].value+=row[amountCol]})}
 
@@ -9,17 +8,9 @@ function DataToMonths(baseData,objectToEdit){baseData.forEach(r=>{(`${ymdToM(r[d
 
 function DataToCategories(baseData,objectToEdit){baseData.forEach((row)=>{if(`${row[categoryCol]}` in objectToEdit){}else {objectToEdit[row[categoryCol]]={value:0}};{objectToEdit[row[categoryCol]]['value']+=row[amountCol];}})}
 
-/*
-function DataToObject(baseData,objectToEdit,parameter){
-const PARAMETER=parameter.toLowerCase();
-const COLCHOICE=`${PARAMETER}Col`;
-baseData.forEach(r=>{
 
-if(`${r[COLCHOICE]}` in objectToEdit){}
-else{objectToEdit[r[COLCHOICE]]={value:0}};
+function DataToObject(baseData,objectToEdit,parameter){const PARAMETER=parameter.toLowerCase(),COLCHOICE=COLS[`${PARAMETER}`];baseData.forEach(r=>{if(`${r[COLCHOICE]}` in objectToEdit){}else{objectToEdit[r[COLCHOICE]]={value:0}};objectToEdit[r[COLCHOICE]]['value']+=r[amountCol]});}
 
-});console.log(objectToEdit)}
-*/
 
 
 async function ImportData(SHEET,TYPE){
@@ -36,6 +27,6 @@ const arrayOfObjects = await RESPONSE.json();
 RD=arrayOfObjects.map(obj => Object.keys(arrayOfObjects[0]).map(key => obj[key]));
 RD=RD.filter(r=>(r[3]));
 RD.forEach(r=>{r[3]=r[3].replaceAll(",","")});
-RD.forEach(r=>r[3]=parseInt(r[3]));
+RD.forEach(r=>r[3]=parseFloat(r[3]));
 return RD
 }
