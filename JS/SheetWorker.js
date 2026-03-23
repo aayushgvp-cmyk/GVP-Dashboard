@@ -4,17 +4,10 @@ let totalIncome, TotalExpense
 async function handleFileAsync() {
 let CumulativeIncome
 
-const urlCumIncome="https://opensheet.elk.sh/1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw/Income"
-  const responseCumIncome = await fetch(urlCumIncome);    
-  if (!responseCumIncome.ok) throw new Error('Network response was not ok');
- const arrayOfObjectsCumIncome = await responseCumIncome.json();
- rawDataCumIncome = arrayOfObjectsCumIncome.map(obj => Object.keys(arrayOfObjectsCumIncome[0]).map(key => obj[key]));
 
+rawDataCumIncome=await ImportData("Master","Income")
 
-rawDataCumIncome=rawDataCumIncome.filter(r=>(r[3]));
-rawDataCumIncome.forEach(r=>{r[3]=r[3].replaceAll(",","")});
-rawDataCumIncome.forEach(r=>r[3]=parseInt(r[3]));
-
+//DataToObject(rawDataCumIncome,verticalsObjectIncome,"VERTICAL")
 
 
 //Data for chartIncome
@@ -25,17 +18,7 @@ DataToSeminars(rawDataCumIncome,verticalsObjectIncome)
 DataToMonths(rawDataCumIncome,verticalsObjectIncomeMonthwise)
 
 // Expenses
-const urlCumExpense="https://opensheet.elk.sh/1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw/Expense"
-  const responseCumExpense = await fetch(urlCumExpense);    
-  if (!responseCumExpense.ok) throw new Error('Network response was not ok');
- const arrayOfObjectsCumExpense = await responseCumExpense.json();
- rawDataCumExpense = arrayOfObjectsCumExpense.map(obj => Object.keys(arrayOfObjectsCumExpense[0]).map(key => obj[key]));
-
-
-rawDataCumExpense=rawDataCumExpense.filter(r=>(r[3]));
-rawDataCumExpense.forEach(r=>{r[3]=r[3].replaceAll(",","")});
-rawDataCumExpense.forEach(r=>r[3]=parseInt(r[3]));
-
+rawDataCumExpense=await ImportData('Master',"Expense")
 DataToCategories(rawDataCumExpense,CategoryObjectExpense)
 
 totalExpense=0

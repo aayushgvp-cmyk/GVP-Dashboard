@@ -1,4 +1,4 @@
-const colourRainArray=["#FF5E5E","#FF9E00","#FFFF3F","#48FF7B","#00E5FF","#7B61FF","#CC8CFF"]
+const colourRainArray=["#03045E","#0077B6","#00B4D8","#90E0EF","#CAF0F8"]
 let max=0
 function replaceChartData(chartName,datasetIndex,newData){
 chartName.data.datasets[datasetIndex].data=Object.values(newData).map(row => row.value)
