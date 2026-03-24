@@ -1,7 +1,7 @@
 function SwitchMVIMonth(n){
 let month=mToM(ModFunction(Number(n)+3,12))
 chartIncomeMV.options.plugins.title.text=`Vertical-Based Income for ${month}`
-replaceChartData(chartIncomeMV,0,MVIncome[month])
+replaceChartData(chartIncomeMV,0,MVIncome[month],['value','monthIndex'])
 chartIncomeMV.update()
 }
 

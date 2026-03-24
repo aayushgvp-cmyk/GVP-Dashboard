@@ -18,7 +18,6 @@ SELECT_TAG.appendChild(CLONE)
 })
 
 SeminarArray=[...new Set(rawDataIncome.map(r=>`${r[COLS.vertical]} : ${r[COLS.seminar]}`))].sort()
-log(SeminarArray)
 const SELECT_TAG0=document.querySelector('#SeminarDD');
 const TEMPLATE0=document.querySelector('#SeminarTemplate');
 SeminarArray.forEach((v,i)=>{const CLONE0=TEMPLATE0.content.cloneNode(true);
@@ -30,29 +29,21 @@ SELECT_TAG0.appendChild(CLONE0)
 
 
 
-//Data for chartIncome
+//											  AVS
 DataToObject(rawDataIncome,AVSIncome,"VERTICAL")
 DataToSeminars(rawDataIncome,AVSIncome)
 
-{rawDataIncome.forEach((r)=>{if(`${ymdToM(r[COLS.date])}` in AVSIncome[r[verticalCol]][r[seminarCol]]){}else {AVSIncome[r[verticalCol]][r[seminarCol]][ymdToM(r[COLS.date])]={value:0}};AVSIncome[r[verticalCol]][r[seminarCol]][ymdToM(r[COLS.date])].value+=r[amountCol]})}
+{rawDataIncome.forEach((r)=>{if(`${ymdToM(r[COLS.date])}` in AVSIncome[r[COLS.vertical]][r[COLS.seminar]]){}else {AVSIncome[r[COLS.vertical]][r[COLS.seminar]][ymdToM(r[COLS.date])]={value:0}};AVSIncome[r[COLS.vertical]][r[COLS.seminar]][ymdToM(r[COLS.date])].value+=r[COLS.amount]})}
 
 
 
 
-
-
-console.log(AVSIncome)
-
-
-
-
-
-//Data for chartIncomeMonthwise
+//											  AM
 DataToMonths(rawDataIncome,AMIncome)
 
 
 
-// Expenses
+//                                                                                        CE
 rawDataCumExpense=await ImportData('Master',"Expense")
 DataToObject(rawDataCumExpense,CategoryObjectExpense,"CATEGORY")
 
@@ -61,7 +52,7 @@ Object.values(CategoryObjectExpense).forEach(r=>totalExpense+=r.value)
 
 
 
-//Monthwise for individual verticals
+//                                                                                       VMSI
 DataToObject(rawDataIncome,VMSIncome,"VERTICAL")
 Object.keys(VMSIncome).forEach(r=>delete VMSIncome[r].value)
 rawDataIncome.forEach(r=>{
@@ -72,12 +63,25 @@ VMSIncome[r[COLS.vertical]][ymdToM(r[COLS.date])].value+=r[COLS.amount]
 
 })
 
-//Vertical-Wise for month
+rawDataIncome.forEach(r=>{
+if(`${r[COLS.seminar]}` in VMSIncome[r[COLS.vertical]][ymdToM(r[COLS.date])]){}
+else { VMSIncome[r[COLS.vertical]][ymdToM(r[COLS.date])][r[COLS.seminar]]={value:0}}
+
+VMSIncome[r[COLS.vertical]][ymdToM(r[COLS.date])][r[COLS.seminar]].value+=r[COLS.amount]
+
+})
+
+console.log(VMSIncome)
+
+
+
+//                                                                                       MVI
 
 rawDataIncome.forEach(r=>{(`${ymdToM(r[dateCol])}` in MVIncome)?{}:(MVIncome[ymdToM(r[dateCol])]={})})
 rawDataIncome.forEach(r=>{(`${r[COLS.vertical]}` in MVIncome[ymdToM(r[dateCol])])?{}:(MVIncome[ymdToM(r[dateCol])][r[COLS.vertical]]={value:0});
 
 MVIncome[ymdToM(r[dateCol])][r[COLS.vertical]].value+=r[COLS.amount]
+
 
 })
 

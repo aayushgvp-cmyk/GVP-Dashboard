@@ -43,5 +43,5 @@ chartIncomeMonthwise=  new Chart(
 
     }
   );
-replaceChartData(chartIncomeMonthwise,0,AMIncome)
+replaceChartData(chartIncomeMonthwise,0,AMIncome,['value','monthIndex'])
 }

@@ -59,7 +59,7 @@ const pieLabelsPlugin = {id: 'pieLabels',afterDatasetsDraw(chart) {
 
 
 
-const topLabelsPlugin = {id: 'topLabels',afterDatasetsDraw(chart) {const { ctx, data } = chart;ctx.save();ctx.textAlign = 'center';ctx.textBaseline = 'bottom';ctx.font = 'bold 12px sans-serif';ctx.fillStyle = '#000';chart.getDatasetMeta(0).data.forEach((bar, index) => {ctx.fillText(Math.floor(data.datasets[0].data[index]/1000)+"K", bar.x, bar.y - 5); });ctx.restore();}};
+const topLabelsPlugin = {id: 'topLabels',afterDatasetsDraw(chart) {const { ctx, data } = chart;ctx.save();ctx.textAlign = 'center';ctx.textBaseline = 'bottom';ctx.font = 'bold 12px sans-serif';ctx.fillStyle = '#000';chart.getDatasetMeta(0).data.forEach((bar, index) => {ctx.fillText((data.datasets[0].data[index]>1000)?(Math.floor(data.datasets[0].data[index]/1000)+"K"):(Math.floor(data.datasets[0].data[index])), bar.x, bar.y - 5); });ctx.restore();}};
 
 
 
@@ -77,7 +77,7 @@ const topLabelsPluginK = {
         chart.getDatasetMeta(0).data.forEach((bar, index) => {
             const value = data.datasets[0].data[index];
             // bar.x and bar.y are the coordinates of the bar's top-center
-            ctx.fillText(Math.floor(value/1000)+"K", bar.x, bar.y - 5); 
+            ctx.fillText((value>1000)?(Math.floor(value/1000)+"K"):{value}, bar.x, bar.y - 5); 
         });
         ctx.restore();
     }

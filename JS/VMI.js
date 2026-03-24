@@ -1,7 +1,12 @@
 function SwitchVMIVertical(n){
 chartVerticalwiseMonthwiseIncome.options.plugins.title.text=`Monthly Income for ${VerticalArray[n]}`
-replaceChartData(chartVerticalwiseMonthwiseIncome,0,VMSIncome[VerticalArray[n]])
+replaceChartData(chartVerticalwiseMonthwiseIncome,0,VMSIncome[VerticalArray[n]],['value','monthIndex'])
 chartVerticalwiseMonthwiseIncome.update()
+}
+function OpenVMSI(VERTICAL,MONTH){
+chartVerticalwiseMonthwiseIncome.options.plugins.title.text=`Seminar-Wise Income for ${VERTICAL} in ${MONTH}`;
+console.log(VERTICAL,MONTH)
+replaceChartData(chartVerticalwiseMonthwiseIncome,0,VMSIncome[VERTICAL][MONTH],['value','monthIndex']);
 }
 
 function LoadVMI(){
@@ -23,13 +28,12 @@ function LoadVMI(){
         },
 	responsive: true,
                 onClick: (e) => {
-                    const activePoints = chartIncome.getElementsAtEventForMode(e, 'nearest', {intersect: true}, false);
+                    const activePoints = chartVerticalwiseMonthwiseIncome.getElementsAtEventForMode(e, 'nearest', {intersect: true}, false);
                     if (activePoints.length > 0) {
                         const index = activePoints[0].index;
-                        const label = chartIncome.data.labels[index];
-                        const value = chartIncome.data.datasets[0].data[index];
-			ZoomIntoChart(label,chartIncome)
-                       
+                        const label = chartVerticalwiseMonthwiseIncome.data.labels[index];
+                        const value = chartVerticalwiseMonthwiseIncome.data.datasets[0].data[index];
+			OpenVMSI(VerticalArray[document.getElementById('VMIVerticalDD').value],label)
                     }
                 }
 
@@ -47,5 +51,4 @@ function LoadVMI(){
 
     }
   );
-
 }
