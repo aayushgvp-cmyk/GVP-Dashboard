@@ -1,8 +1,12 @@
+
+let nestLevel=0
+
 Show('chartIncomeMonthwiseDiv',0);
 Show('chartExpenseDiv',0);
 Show('chartVMIncomeDiv',0);
 Show('VChoiceDiv',0);
 Show('MChoiceDiv',0);
+Show('SChoiceDiv',0);
 Show('chartIncomeMVIDiv',0);
 
 function SwitchSection(n){
@@ -13,6 +17,7 @@ Show('chartExpenseDiv',0);
 Show('chartVMIncomeDiv',0);
 Show('VChoiceDiv',0);
 Show('MChoiceDiv',0);
+Show('SChoiceDiv',0);
 Show('chartIncomeMVIDiv',0);
 switch(n){
 case 1: Show('chartIncomeDiv',1);ZoomOutOfChartIncome(chartIncome);log(1);chartIncome.options.plugins.title.text=`Vertical-Wise Cumulative Income`;chartIncome.update();break;
@@ -20,32 +25,52 @@ case 2: Show('chartIncomeMonthwiseDiv',1); break;
 case 3: Show('chartIncomeDiv',1);ZoomIntoChart(VerticalArray[document.getElementById("VMIVerticalDD").value],chartIncome);Show('VChoiceDiv',1);chartIncome.options.plugins.title.text=`Seminar-Based Income for ${VerticalArray[document.getElementById("VMIVerticalDD").value]}`;chartIncome.update();break;
 case 4: Show('MChoiceDiv',1);Show('chartIncomeMVIDiv',1);chartIncomeMV.options.plugins.title.text=`Vertical-Based Income for ${mToM(ModFunction(Number(document.getElementById("MVVerticalDD").value)+3,12))}`;break;
 case 5: Show('chartVMIncomeDiv',1);Show('VChoiceDiv',1); break;
+
+
+
+case 7: Show('chartIncomeDiv',1);
+nestLevel=1;
+ZoomIntoChart(SeminarArray[document.getElementById("SeminarDD").value],chartIncome);
+Show('SChoiceDiv',1);
+chartIncome.options.plugins.title.text=`Seminar-Based Income for ${VerticalArray[document.getElementById("MVVerticalDD").value]}`;
+chartIncome.update();
+break;
+
 case -1:Show('chartExpenseDiv',1);break;
 default: break;
 }}
 
 const colourRainArray=["#03045E","#0077B6","#00B4D8","#90E0EF","#CAF0F8"]
 let max=0
+
 function replaceChartData(chartName,datasetIndex,newData){
-chartName.data.datasets[datasetIndex].data=Object.values(newData).map(row => row.value)
-chartName.data.labels=Object.keys(newData).map(r => r)
+let REFINED_DATA={}
+Object.keys(newData).forEach(k=>{if(k!="value"){REFINED_DATA[k]=newData[k]}})
+chartName.data.datasets[datasetIndex].data=Object.values(REFINED_DATA).map(row => row.value)
+chartName.data.labels=Object.keys(REFINED_DATA).map(r => r)
 max=0
-Object.values(newData).forEach(r=>r.value>max?max=r.value:max+=0)
+Object.values(REFINED_DATA).forEach(r=>r.value>max?max=r.value:max+=0)
 chartName.options.scales.y={max: 1.2*max}
 chartName.update()
 }
 
-let nestLevel=0
-function ZoomIntoChart(vertical,chartName){
-nestLevel=1
+function FindVertical(Seminar){let R;Object.keys(AVSIncome).forEach(r=>{if(Seminar in AVSIncome[r]){R=r};});return R;}
+
+
+function ZoomIntoChart(LABEL,chartName){
+nestLevel+=1
+LABEL=LABEL.slice(LABEL.lastIndexOf(" ")+1)
 nestLevel===0?Show('chartIncomeBack',0):Show('chartIncomeBack',1)
-nestLevel===1?(dataIncome=structuredClone(AVSIncome[vertical])):{}
+nestLevel===1?(dataIncome=structuredClone(AVSIncome[LABEL])):{}
+nestLevel===2?(dataIncome=structuredClone(AVSIncome[FindVertical(LABEL)][LABEL])):{}
 delete dataIncome.value
 replaceChartData(chartName,0,dataIncome)
 }
+
+
 function ZoomOutOfChartIncome(chartName){
-nestLevel-=1;
-nestLevel===0?(dataIncome=AVSIncome):{}
+nestLevel=0;
+dataIncome=AVSIncome
 chartIncome.options.plugins.title.text=`Vertical-Wise Cumulative Income`;
 replaceChartData(chartName,0,dataIncome)
 Show('chartIncomeBack',0)
@@ -64,12 +89,14 @@ console.log("chart start")
 dataIncome=AVSIncome
 dataExpense=CategoryObjectExpense
 
-
+log(FindVertical('10X'))
 
 Object.values(dataIncome).forEach(r=>r.value>max?max=r.value:max+=0)
 
 
 LoadAVI()
+
+SeminarDD.addEventListener("change",(e)=>{const SELECTED_VERTICAL_SEMINAR=SeminarArray[document.getElementById('SeminarDD').value]; SELECTED_SEMINAR=SELECTED_VERTICAL_SEMINAR.slice(1+SELECTED_VERTICAL_SEMINAR.lastIndexOf(" ")); SELECTED_VERTICAL=SELECTED_VERTICAL_SEMINAR.slice(0,SELECTED_VERTICAL_SEMINAR.indexOf(" "));replaceChartData(chartIncome,0,AVSIncome[SELECTED_VERTICAL][SELECTED_SEMINAR])})
 
 LoadAMI()
 

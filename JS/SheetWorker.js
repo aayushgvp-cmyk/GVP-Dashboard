@@ -17,6 +17,19 @@ OPTION.value=i;
 SELECT_TAG.appendChild(CLONE)
 })
 
+SeminarArray=[...new Set(rawDataIncome.map(r=>`${r[COLS.vertical]} : ${r[COLS.seminar]}`))].sort()
+log(SeminarArray)
+const SELECT_TAG0=document.querySelector('#SeminarDD');
+const TEMPLATE0=document.querySelector('#SeminarTemplate');
+SeminarArray.forEach((v,i)=>{const CLONE0=TEMPLATE0.content.cloneNode(true);
+const OPTION0=CLONE0.querySelector('.seminarOptionClass');
+OPTION0.textContent=v;
+OPTION0.value=i;
+SELECT_TAG0.appendChild(CLONE0)
+})
+
+
+
 //Data for chartIncome
 DataToObject(rawDataIncome,AVSIncome,"VERTICAL")
 DataToSeminars(rawDataIncome,AVSIncome)

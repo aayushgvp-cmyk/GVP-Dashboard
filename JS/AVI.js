@@ -19,7 +19,7 @@ function LoadAVI(){
             display: false
           },
           tooltip: {
-            enabled: false
+            enabled: true
           }
         },
 	responsive: true,
