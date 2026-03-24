@@ -30,11 +30,11 @@ chartIncomeMonthwise=  new Chart(
       },
 	plugins:[topLabelsPluginK],
       data: {
-        labels:Object.keys(verticalsObjectIncomeMonthwise).map(r => r),
+        labels:Object.keys(AMIncome).map(r => r),
         datasets: [
           {
             label: 'Income per month',
-            data: Object.values(verticalsObjectIncomeMonthwise).map(row => row.value),
+            data: Object.values(AMIncome).map(row => row.value),
 		backgroundColor:'#FF0000',
 		backgroundColor:colourRainArray
           }
@@ -43,5 +43,5 @@ chartIncomeMonthwise=  new Chart(
 
     }
   );
-replaceChartData(chartIncomeMonthwise,0,verticalsObjectIncomeMonthwise)
+replaceChartData(chartIncomeMonthwise,0,AMIncome)
 }

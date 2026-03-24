@@ -7,18 +7,20 @@
 <body>
 <h1 id="pageTitle" style="position:relative;left:20%;width:80%">GVP Finance Dashboard</h1>
 <div style="position:absolute;top:0px;left:0px"><table style="background-color:#CAF0F8;width:150px;height:120vw">
-<tr style="position:absolute;top:20px;left:20px"><td><h2>Income</h2></td></tr>
-<tr style="position:absolute;top:50px;left:20px" onclick="SwitchSection(1)"><td><h3>Vertical-Wise Income</h3></td></tr>
-<tr style="position:absolute;top:70px;left:20px" onclick="SwitchSection(2)"><td><h3>Month-Wise Income</h3></td></tr>
-<tr style="position:absolute;top:90px;left:20px" onclick="SwitchSection(3)"><td><h3>Vertical-Wise Seminar-Wise Income</h3></td></tr>
-<tr style="position:absolute;top:120px;left:20px" onclick="SwitchSection(4)"><td><h3>Month-Wise Vertical-Wise Income</h3></td></tr>
-<tr style="position:absolute;top:150px;left:20px" onclick="SwitchSection(5)"><td><h3>Vertical-Wise Month-Wise Income</h3></td></tr>
-<tr style="position:absolute;top:200px;left:20px"><td><h2>Expenses</h2></td></tr>
+<tr style="position:absolute;top:2%;left:20px"><td><h2>Income</h2></td></tr>
+<tr style="position:absolute;top:6%;left:20px" onclick="SwitchSection(1)"><td><h3>Vertical-Wise Income</h3></td></tr>
+<tr style="position:absolute;top:10%;left:20px" onclick="SwitchSection(2)"><td><h3>Month-Wise Income</h3></td></tr>
+<tr style="position:absolute;top:14%;left:20px" onclick="SwitchSection(3)"><td><h3>Vertical-Wise Seminar-Wise Income</h3></td></tr>
+<tr style="position:absolute;top:18%;left:20px" onclick="SwitchSection(4)"><td><h3>Month-Wise Vertical-Wise Income</h3></td></tr>
+<tr style="position:absolute;top:22%;left:20px" onclick="SwitchSection(5)"><td><h3>Vertical-Wise Month-Wise Income</h3></td></tr>
+<tr style="position:absolute;top:26%;left:20px" onclick="SwitchSection(6)"><td><h3>Vertical-wise Month-wise Seminar-wise Income</h3></td></tr>
+<tr style="position:absolute;top:30%;left:20px" onclick="SwitchSection(7)"><td><h3>Seminar-wise Month-wise Income</h3></td></tr>
+<tr style="position:absolute;top:35%;left:20px"><td><h2>Expenses</h2></td></tr>
 
 </table></div>
 <div style="position:absolute;left:80%;top:80px" id="chartIncomeBack" onmousedown="ZoomOutOfChartIncome(chartIncome)"><h2>BACK</h2></div>
-<div id="VChoiceDiv" style="position:absolute;left:20%;top:60px"><label for="VMIVerticalDD">Select Vertical</label><select id="VMIVerticalDD"></select><template id="VMItemplate"><option class="verticalOptionClass"></option></template></div>
-<div id="MChoiceDiv" style="position:absolute;left:20%;top:60px"><label for="MVVerticalDD">Select Month</label><select id="MVVerticalDD"><option value=1>April</option><option value=2>May</option><option value=3>June</option><option value=4>July</option><option value=5>August</option><option value=6>September</option><option value=7>October</option><option value=8>November</option><option value=9>December</option><option value=10>January</option><option value=11>February</option><option value=12>March</option></select></div>
+<div id="VChoiceDiv" style="position:absolute;right:20%;top:60px"><label for="VMIVerticalDD">Select Vertical</label><select id="VMIVerticalDD"></select><template id="VMItemplate"><option class="verticalOptionClass"></option></template></div>
+<div id="MChoiceDiv" style="position:absolute;right:20%;top:60px"><label for="MVVerticalDD">Select Month</label><select id="MVVerticalDD"><option value=1>April</option><option value=2>May</option><option value=3>June</option><option value=4>July</option><option value=5>August</option><option value=6>September</option><option value=7>October</option><option value=8>November</option><option value=9>December</option><option value=10>January</option><option value=11>February</option><option value=12>March</option></select></div>
 <div class="chartClass" id="chartIncomeDiv"><canvas id="chartIncomeHTML"></canvas></div>
 <div class="chartClass" id="chartIncomeMonthwiseDiv"><canvas id="chartIncomeMonthwiseHTML"></canvas></div>
 <div class="chartClass" id="chartIncomeMVIDiv"><canvas id="chartIncomeMVIHTML"></canvas></div>
@@ -34,10 +36,10 @@
 <script src="JS/ChartJSPlugins.js"></script>
 <script src="JS/SheetWorkerObjectFormulae.js"></script>
 <script src="JS/SheetWorker.js"></script>
-<script src="JS/VerticalIncome.js"></script>
-<script src="JS/MonthWiseIncome.js"></script>
-<script src='JS/VerticalWiseMonthWise.js'></script>
-<script src="JS/MonthWiseVerticalWiseIncome.js"></script>
-<script src="JS/CategoryExpense.js"></script>
+<script src="JS/AVI.js"></script>
+<script src="JS/AMI.js"></script>
+<script src='JS/VMI.js'></script>
+<script src="JS/MVI.js"></script>
+<script src="JS/CE.js"></script>
 <script src="JS/GraphLoader.js"></script>
 </html>

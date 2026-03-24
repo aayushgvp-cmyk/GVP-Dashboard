@@ -15,10 +15,10 @@ Show('VChoiceDiv',0);
 Show('MChoiceDiv',0);
 Show('chartIncomeMVIDiv',0);
 switch(n){
-case 1: Show('chartIncomeDiv',1);ZoomOutOfChartIncome(chartIncome);break;
+case 1: Show('chartIncomeDiv',1);ZoomOutOfChartIncome(chartIncome);log(1);chartIncome.options.plugins.title.text=`Vertical-Wise Cumulative Income`;chartIncome.update();break;
 case 2: Show('chartIncomeMonthwiseDiv',1); break;
-case 3: Show('chartIncomeDiv',1);ZoomIntoChart('BVP',chartIncome);Show('VChoiceDiv',1);break;
-case 4: Show('MChoiceDiv',1);Show('chartIncomeMVIDiv',1);break;
+case 3: Show('chartIncomeDiv',1);ZoomIntoChart(VerticalArray[document.getElementById("VMIVerticalDD").value],chartIncome);Show('VChoiceDiv',1);chartIncome.options.plugins.title.text=`Seminar-Based Income for ${VerticalArray[document.getElementById("VMIVerticalDD").value]}`;chartIncome.update();break;
+case 4: Show('MChoiceDiv',1);Show('chartIncomeMVIDiv',1);chartIncomeMV.options.plugins.title.text=`Vertical-Based Income for ${mToM(ModFunction(Number(document.getElementById("MVVerticalDD").value)+3,12))}`;break;
 case 5: Show('chartVMIncomeDiv',1);Show('VChoiceDiv',1); break;
 case -1:Show('chartExpenseDiv',1);break;
 default: break;
@@ -39,15 +39,17 @@ let nestLevel=0
 function ZoomIntoChart(vertical,chartName){
 nestLevel=1
 nestLevel===0?Show('chartIncomeBack',0):Show('chartIncomeBack',1)
-nestLevel===1?(dataIncome=structuredClone(verticalsObjectIncome[vertical])):{}
+nestLevel===1?(dataIncome=structuredClone(AVSIncome[vertical])):{}
 delete dataIncome.value
 replaceChartData(chartName,0,dataIncome)
 }
 function ZoomOutOfChartIncome(chartName){
 nestLevel-=1;
-nestLevel===0?(dataIncome=verticalsObjectIncome):{}
+nestLevel===0?(dataIncome=AVSIncome):{}
+chartIncome.options.plugins.title.text=`Vertical-Wise Cumulative Income`;
 replaceChartData(chartName,0,dataIncome)
 Show('chartIncomeBack',0)
+Show('VChoiceDiv',0);
 }
 
 let chartIncome={},chartIncomeMonthwise={},chartExpense={},chartVerticalwiseMonthwiseIncome={},chartIncomeMV={}
@@ -59,7 +61,7 @@ async function handleChartAsync() {
 
 console.log("chart start")
 
-dataIncome=verticalsObjectIncome
+dataIncome=AVSIncome
 dataExpense=CategoryObjectExpense
 
 

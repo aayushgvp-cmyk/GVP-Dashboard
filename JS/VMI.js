@@ -1,6 +1,6 @@
 function SwitchVMIVertical(n){
 chartVerticalwiseMonthwiseIncome.options.plugins.title.text=`Monthly Income for ${VerticalArray[n]}`
-replaceChartData(chartVerticalwiseMonthwiseIncome,0,MonthwiseForVerticalObject[VerticalArray[n]])
+replaceChartData(chartVerticalwiseMonthwiseIncome,0,VMSIncome[VerticalArray[n]])
 chartVerticalwiseMonthwiseIncome.update()
 }
 
@@ -36,10 +36,10 @@ function LoadVMI(){
       },
 	plugins:[topLabelsPlugin],
       data: {
-        labels:Object.keys(MonthwiseForVerticalObject.BVP).map(r => r),
+        labels:Object.keys(VMSIncome.BVP).map(r => r),
         datasets: [
           {
-            data: Object.values(MonthwiseForVerticalObject.BVP).map(row => row.value),
+            data: Object.values(VMSIncome.BVP).map(row => row.value),
 		backgroundColor:colourRainArray
           }
         ]

@@ -1,4 +1,4 @@
-let verticalsObjectIncome={} /*AV,AVS*/, verticalsObjectIncomeMonthwise={} /*AM*/, CategoryObjectExpense={} /*CE*/, CumIncome={}, MonthIncomeFull={}, CumIncentive={}, MonthwiseForVerticalObject={} /*VM,VMS*/,verticalWiseForMonth={} /*MV*/
+let AVSIncome={} /*AV,AVS*/, AMIncome={} /*AM*/, CategoryObjectExpense={} /*CE*/, CumIncome={}, MonthIncomeFull={}, CumIncentive={}, VMSIncome={} /*VM,VMS*/,MVIncome={} /*MV*/
 let rawDataCumIncome, rawDataCumExpense
 let totalIncome, TotalExpense
 let VerticalArray=[]
@@ -18,11 +18,26 @@ SELECT_TAG.appendChild(CLONE)
 })
 
 //Data for chartIncome
-DataToObject(rawDataIncome,verticalsObjectIncome,"VERTICAL")
-DataToSeminars(rawDataIncome,verticalsObjectIncome)
+DataToObject(rawDataIncome,AVSIncome,"VERTICAL")
+DataToSeminars(rawDataIncome,AVSIncome)
+
+{rawDataIncome.forEach((r)=>{if(`${ymdToM(r[COLS.date])}` in AVSIncome[r[verticalCol]][r[seminarCol]]){}else {AVSIncome[r[verticalCol]][r[seminarCol]][ymdToM(r[COLS.date])]={value:0}};AVSIncome[r[verticalCol]][r[seminarCol]][ymdToM(r[COLS.date])].value+=r[amountCol]})}
+
+
+
+
+
+
+console.log(AVSIncome)
+
+
+
+
 
 //Data for chartIncomeMonthwise
-DataToMonths(rawDataIncome,verticalsObjectIncomeMonthwise)
+DataToMonths(rawDataIncome,AMIncome)
+
+
 
 // Expenses
 rawDataCumExpense=await ImportData('Master',"Expense")
@@ -34,32 +49,31 @@ Object.values(CategoryObjectExpense).forEach(r=>totalExpense+=r.value)
 
 
 //Monthwise for individual verticals
-DataToObject(rawDataIncome,MonthwiseForVerticalObject,"VERTICAL")
-Object.keys(MonthwiseForVerticalObject).forEach(r=>delete MonthwiseForVerticalObject[r].value)
+DataToObject(rawDataIncome,VMSIncome,"VERTICAL")
+Object.keys(VMSIncome).forEach(r=>delete VMSIncome[r].value)
 rawDataIncome.forEach(r=>{
-if(`${ymdToM(r[COLS.date])}` in MonthwiseForVerticalObject[r[COLS.vertical]]){}
-else { MonthwiseForVerticalObject[r[COLS.vertical]][ymdToM(r[COLS.date])]={value:0,monthIndex:ModFunction(ymdTom(r[COLS.date])-3,12)}}
+if(`${ymdToM(r[COLS.date])}` in VMSIncome[r[COLS.vertical]]){}
+else { VMSIncome[r[COLS.vertical]][ymdToM(r[COLS.date])]={value:0,monthIndex:ModFunction(ymdTom(r[COLS.date])-3,12)}}
 
-MonthwiseForVerticalObject[r[COLS.vertical]][ymdToM(r[COLS.date])].value+=r[COLS.amount]
+VMSIncome[r[COLS.vertical]][ymdToM(r[COLS.date])].value+=r[COLS.amount]
 
 })
 
 //Vertical-Wise for month
 
-rawDataIncome.forEach(r=>{(`${ymdToM(r[dateCol])}` in verticalWiseForMonth)?{}:(verticalWiseForMonth[ymdToM(r[dateCol])]={})})
-rawDataIncome.forEach(r=>{(`${r[COLS.vertical]}` in verticalWiseForMonth[ymdToM(r[dateCol])])?{}:(verticalWiseForMonth[ymdToM(r[dateCol])][r[COLS.vertical]]={value:0});
+rawDataIncome.forEach(r=>{(`${ymdToM(r[dateCol])}` in MVIncome)?{}:(MVIncome[ymdToM(r[dateCol])]={})})
+rawDataIncome.forEach(r=>{(`${r[COLS.vertical]}` in MVIncome[ymdToM(r[dateCol])])?{}:(MVIncome[ymdToM(r[dateCol])][r[COLS.vertical]]={value:0});
 
-verticalWiseForMonth[ymdToM(r[dateCol])][r[COLS.vertical]].value+=r[COLS.amount]
+MVIncome[ymdToM(r[dateCol])][r[COLS.vertical]].value+=r[COLS.amount]
 
 })
 
-log(verticalWiseForMonth)
 
 
 
 //Monthwise to cumulative
-MonthIncomeFull=structuredClone(verticalsObjectIncomeMonthwise)
-Object.keys(verticalsObjectIncomeMonthwise).forEach(r=>MonthIncomeFull[r].MonthIndex=ModFunction(MTom(r)-4,12)+1)
+MonthIncomeFull=structuredClone(AMIncome)
+Object.keys(AMIncome).forEach(r=>MonthIncomeFull[r].MonthIndex=ModFunction(MTom(r)-4,12)+1)
 
 CumIncome=structuredClone(MonthIncomeFull)
 Object.keys(CumIncome).forEach(r=>CumIncome[r].value=0)

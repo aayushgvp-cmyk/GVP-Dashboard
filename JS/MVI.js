@@ -1,9 +1,8 @@
 function SwitchMVIMonth(n){
 let month=mToM(ModFunction(Number(n)+3,12))
-chartIncome.options.plugins.title.text=`Month-Based Income for ${month}`
-alert(month)
-replaceChartData(chartIncomeMV,0,verticalWiseForMonth[month])
-chartIncome.update()
+chartIncomeMV.options.plugins.title.text=`Vertical-Based Income for ${month}`
+replaceChartData(chartIncomeMV,0,MVIncome[month])
+chartIncomeMV.update()
 }
 
 
@@ -39,10 +38,10 @@ function LoadMVI(){
       },
 	plugins:[topLabelsPlugin],
       data: {
-        labels:Object.keys(verticalWiseForMonth.Apr).map(r => r),
+        labels:Object.keys(MVIncome.Apr).map(r => r),
         datasets: [
           {
-            data: Object.values(verticalWiseForMonth.Apr).map(row => row.value),
+            data: Object.values(MVIncome.Apr).map(row => row.value),
 		backgroundColor:colourRainArray
           }
         ]
