@@ -1,4 +1,4 @@
-Show('LeftHandMenu',0);Show('VC',0);Show('MC',0);Show('SC',0);
+Show('LeftHandMenu',0);Show('VC',0);Show('MC',0);Show('SC',0);Show('chartIncomeBack',0);
 let AVSIncome={} /*AV,AVS*/, AMIncome={} /*AM*/, CategoryObjectExpense={} /*CE*/, CumIncome={}, MonthIncomeFull={}, CumIncentive={}, VMSIncome={} /*VM,VMS*/,MVIncome={} /*MV*/
 let rawDataCumIncome, rawDataCumExpense
 let totalIncome, TotalExpense

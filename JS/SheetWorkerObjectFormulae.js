@@ -1,4 +1,3 @@
-Show('chartIncomeBack',0)
 const COLS={date:0,vertical:1, seminar:2, amount:3, category:4}
 const dateCol=0, verticalCol=1, seminarCol=2, amountCol=3, categoryCol=4
 

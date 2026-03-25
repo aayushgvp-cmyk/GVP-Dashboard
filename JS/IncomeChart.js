@@ -19,7 +19,7 @@ SM:AVSIncome[VERTICAL][SEMINAR]
 
 
 
-let CHOICE=1
+let CHOICE=1, Memory
 
 function OnChartClick(INDEX,LABEL,VALUE){
 console.log(VerticalArray)
@@ -29,14 +29,15 @@ const SEMINAR=SVToS(SeminarArray[Or(document.getElementById('SDD').value,0)]);
 const SEMINARVERTICAL=SVToV(SeminarArray[Or(document.getElementById('SDD').value,0)]);
 HideDD();
 const Choice=CHOICE
-switch(Choice){case 1: CHOICE=3; break;
-case 2: CHOICE=4; break;
-case 3: CHOICE=7; break;
-case 4: CHOICE=6; break;
-case 5: CHOICE=6; break;
-case 6: CHOICE=8; break;
-case 7: CHOICE=8; break;}
-console.log(Choice,"->",CHOICE)
+switch(Choice){
+case 1: CHOICE=3; Show('chartIncomeBack',1); break;
+case 2: CHOICE=4; Show('chartIncomeBack',1); break;
+case 3: CHOICE=7; Show('chartIncomeBack',1); break;
+case 4: CHOICE=6; Show('chartIncomeBack',1); Memory=0; break;
+case 5: CHOICE=6; Show('chartIncomeBack',1); Memory=1; break;
+case 6: CHOICE=8; Show('chartIncomeBack',1); Memory=0; break;
+case 7: CHOICE=8; Show('chartIncomeBack',1); Memory=1; break;}
+console.log(Choice,"->",CHOICE," (Remembers ",Memory,")")
 switch(CHOICE){
 case 3:
 document.getElementById('VDD').value=VerticalArray.indexOf(LABEL)
@@ -133,7 +134,19 @@ UPDATE();}
 
 
 
-
+function OnBack(){
+Show('chartIncomeBack',0);
+const Choice=CHOICE
+switch(Choice){
+case 3: CHOICE=1; break;
+case 4: CHOICE=2; break;
+case 6: CHOICE=4+Memory; break;
+case 7: CHOICE=3; break;
+case 8: CHOICE=6+Memory; break;
+}
+OnMenuClick(CHOICE)
+if(Choice===6||Choice===7||Choice===8){Show('chartIncomeBack',1)}
+}
 
 
 
