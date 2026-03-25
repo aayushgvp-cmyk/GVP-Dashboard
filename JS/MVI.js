@@ -25,12 +25,14 @@ function LoadMVI(){
         },
 	responsive: true,
                 onClick: (e) => {
-                    const activePoints = chartIncome.getElementsAtEventForMode(e, 'nearest', {intersect: true}, false);
+                    const activePoints = chartIncomeMV.getElementsAtEventForMode(e, 'nearest', {intersect: true}, false);
                     if (activePoints.length > 0) {
                         const index = activePoints[0].index;
-                        const label = chartIncome.data.labels[index];
-                        const value = chartIncome.data.datasets[0].data[index];
-			ZoomIntoChart(label,chartIncome)
+                        const label = chartIncomeMV.data.labels[index];
+                        const value = chartIncomeMV.data.datasets[0].data[index];
+			SwitchSection(6);document.getElementById("VMIVerticalDD").value=VerticalArray.indexOf(label);
+			OpenVMSI(label,mToM(ModFunction(Number(document.getElementById("MVVerticalDD").value)+3,12)));Show('chartVMIncomeDiv',1);chartVerticalwiseMonthwiseIncome.update()
+			
                        
                     }
                 }

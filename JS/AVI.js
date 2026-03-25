@@ -37,10 +37,10 @@ function LoadAVI(){
       },
 	plugins:[topLabelsPlugin],
       data: {
-        labels:Object.keys(dataIncome).map(r => r),
+        labels:Object.keys(AVSIncome).map(r => r),
         datasets: [
           {
-            data: Object.values(dataIncome).map(row => row.value),
+            data: Object.values(AVSIncome).map(row => row.value),
 		backgroundColor:colourRainArray
           }
         ]

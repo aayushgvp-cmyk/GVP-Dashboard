@@ -20,10 +20,9 @@ chartIncomeMonthwise=  new Chart(
                     const activePoints = chartIncomeMonthwise.getElementsAtEventForMode(e, 'nearest', {intersect: true}, false);
                     if (activePoints.length > 0) {
                         const index = activePoints[0].index;
-                        const label = chartIncomeMonthwise.data.labels[index];
+                        const label = chartIncomeMonthwise.data.labels[index];console.log(label)
                         const value = chartIncomeMonthwise.data.datasets[0].data[index];
-			
-                       
+			SwitchSection(4);chartIncomeMV.options.plugins.title.text=`Vertical-Based Income for ${label}`;replaceChartData(chartIncomeMV,0,AMIncome[label],['value']);Show('chartIncomeMVIDiv',1);chartIncomeMV.update();document.getElementById("MVVerticalDD").value=index+1;
                     }
                 }
 

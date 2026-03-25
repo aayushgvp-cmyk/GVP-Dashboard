@@ -1,3 +1,4 @@
+Show('LeftHandMenu',0);Show('VChoiceDiv',0);Show('MChoiceDiv',0);Show('SChoiceDiv',0);
 let AVSIncome={} /*AV,AVS*/, AMIncome={} /*AM*/, CategoryObjectExpense={} /*CE*/, CumIncome={}, MonthIncomeFull={}, CumIncentive={}, VMSIncome={} /*VM,VMS*/,MVIncome={} /*MV*/
 let rawDataCumIncome, rawDataCumExpense
 let totalIncome, TotalExpense
@@ -41,7 +42,7 @@ DataToSeminars(rawDataIncome,AVSIncome)
 //											  AM
 DataToMonths(rawDataIncome,AMIncome)
 
-
+rawDataIncome.forEach((r)=>{if(`${r[COLS.vertical]}` in AMIncome[ymdToM(r[COLS.date])]){}else {AMIncome[ymdToM(r[COLS.date])][r[COLS.vertical]]={value:0}};AMIncome[ymdToM(r[COLS.date])][r[COLS.vertical]].value+=r[COLS.amount]})
 
 //                                                                                        CE
 rawDataCumExpense=await ImportData('Master',"Expense")
@@ -71,7 +72,6 @@ VMSIncome[r[COLS.vertical]][ymdToM(r[COLS.date])][r[COLS.seminar]].value+=r[COLS
 
 })
 
-console.log(VMSIncome)
 
 
 
@@ -109,6 +109,6 @@ return (IncomeToIncentive(CumIncome[mToM(CURRENTMONTH)].value,CURRENTMONTH)-Inco
 }}}
 /* My logic behind the above function: Incentive will only be payed if total incentive formula for the current month was greater than that of the last month. If the current month has higher incentive to be payed compared to the last month, the difference is payed out. The incentive is always the difference between the current month's incentive and the last payed cumulative incentive. We can hence skip all years that cumulative incentive decreased or stayed below the payed incentive.The code runs through all previous months till it reaches a month in which incentive was payed and checks the cumulative incentive payed till that month. It subtracts it from the current cumulative incentive to find the incentive to be payed*/
 
-handleChartAsync()}
+handleChartAsync();Show('LeftHandMenu',1);}
 handleFileAsync()
 

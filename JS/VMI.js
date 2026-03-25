@@ -4,8 +4,8 @@ replaceChartData(chartVerticalwiseMonthwiseIncome,0,VMSIncome[VerticalArray[n]],
 chartVerticalwiseMonthwiseIncome.update()
 }
 function OpenVMSI(VERTICAL,MONTH){
+console.log(VMSIncome[VERTICAL])
 chartVerticalwiseMonthwiseIncome.options.plugins.title.text=`Seminar-Wise Income for ${VERTICAL} in ${MONTH}`;
-console.log(VERTICAL,MONTH)
 replaceChartData(chartVerticalwiseMonthwiseIncome,0,VMSIncome[VERTICAL][MONTH],['value','monthIndex']);
 }
 
@@ -33,6 +33,7 @@ function LoadVMI(){
                         const index = activePoints[0].index;
                         const label = chartVerticalwiseMonthwiseIncome.data.labels[index];
                         const value = chartVerticalwiseMonthwiseIncome.data.datasets[0].data[index];
+			SwitchSection(6)
 			OpenVMSI(VerticalArray[document.getElementById('VMIVerticalDD').value],label)
                     }
                 }
