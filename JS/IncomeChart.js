@@ -22,7 +22,8 @@ SM:AVSIncome[VERTICAL][SEMINAR]
 let CHOICE=1, Memory
 
 function OnChartClick(INDEX,LABEL,VALUE){
-console.log(VerticalArray)
+document.getElementById('VC').style.top="60px";
+document.getElementById('SC').style.top="60px";
 const VERTICAL=VerticalArray[Or(document.getElementById('VDD').value,0)];
 const MONTH=mToM(ModFunction(3+Number(Or(document.getElementById('MDD').value,1)),12));
 const SEMINAR=SVToS(SeminarArray[Or(document.getElementById('SDD').value,0)]);
@@ -72,21 +73,31 @@ UPDATE();
 Show('SC',1)
 break;
 
-case 8: break;
+case 8:
+Show('VC',1);
+document.getElementById('VC').style.top="40px";
+Show('MC',1);
+Show('SC',1);
+document.getElementById('SC').style.top="80px";
+Show('DetailTable',1); 
+Show('IncomeChartDiv',0); 
+break;
 
 }
 
 }
 
-function OnMenuClick(Choice){CHOICE=Choice;
+function OnMenuClick(Choice){
+Show('DetailTable',0);
+Show('IncomeChartDiv',1); 
+CHOICE=Choice;
 const VERTICAL=VerticalArray[Or(document.getElementById('VDD').value,0)];
 const MONTH=mToM(ModFunction(3+Number(Or(document.getElementById('MDD').value,1)),12));
 const SEMINAR=SVToS(SeminarArray[Or(document.getElementById('SDD').value,0)]);
 const SEMINARVERTICAL=SVToV(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-
-console.log(MONTH,VERTICAL,SEMINAR,":",SEMINARVERTICAL);
 HideDD();
 document.getElementById('VC').style.top="60px";
+document.getElementById('SC').style.top="60px";
 switch(CHOICE){
 case 1: NewTitle(`Vertical-Wise Cumulative Income`); ReplaceData(AVSIncome); break;
 case 2: NewTitle(`Month-Wise Income`); ReplaceData(AMIncome); break;

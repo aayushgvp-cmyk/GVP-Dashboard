@@ -16,18 +16,24 @@
 <tr style="position:absolute;top:29%;left:20px" onclick="OnMenuClick(6)"><td><h3>Vertical-wise Month-wise Seminar-wise</h3></td></tr>
 <tr style="position:absolute;top:34%;left:20px" onclick="OnMenuClick(7)"><td><h3>Seminar-wise Month-wise</h3></td></tr>
 <tr style="position:absolute;top:40%;left:20px"><td><h2>Expenses</h2></td></tr>
-
 </table></div>
+
+<div id="DetailTable"><table style="margin-left:auto;margin-right:auto">
+<tr id="DTHeaderRow"><template id="DTTemplate"><td class="DTTemplateTD"></template></tr>
+</table></div>
+
 <div style="position:absolute;left:300px;top:40px;width:20%;z-index:0;" id="Loading"><img src="Assets/LoadingGif.gif"></div>
 <div style="position:absolute;left:80%;top:80px" id="chartIncomeBack" onmousedown="OnBack()"><h2>BACK</h2></div>
+
 
 <div id="VC" style="position:absolute;right:20%;top:60px;z-index:2"><label for="VDD">Select Vertical</label><select id="VDD"></select><template id="VTemplate"><option class="verticalOptionClass"></option></template></div>
 
 <div id="MC" style="position:absolute;right:20%;top:60px"><label for="MDD">Select Month</label><select id="MDD"><option value=1>April</option><option value=2>May</option><option value=3>June</option><option value=4>July</option><option value=5>August</option><option value=6>September</option><option value=7>October</option><option value=8>November</option><option value=9>December</option><option value=10>January</option><option value=11>February</option><option value=12>March</option></select></div>
 
-<div id="SC" style="position:absolute;right:20%;top:60px"><label for="SDD">Select Seminar</label><select id="SDD"><!-- XXXXXXXX --></select><template id="STemplate"><option class="seminarOptionClass"></option></template></div>
-<div class="chartClass" id="IncomeChartDiv"><canvas id="IncomeChartHTML"></canvas></div>
+<div id="SC" style="position:absolute;right:20%;top:60px"><label for="SDD">Select Seminar</label><select id="SDD"></select><template id="STemplate"><option class="seminarOptionClass"></option></template></div>
 
+
+<div class="chartClass" id="IncomeChartDiv"><canvas id="IncomeChartHTML"></canvas></div>
 
 </body>
 <script src="JS/chart.umd.min.js"></script>
