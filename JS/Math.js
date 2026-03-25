@@ -9,6 +9,8 @@ function NegZero(v){
 function ModFunction(a,b) {
  return (a-(b*Math.floor(a/b)));
 }
+//Returns b if a is falsy
+function Or(a,b){if(a){return a}else{return b}}
 //Date converters
 function ymdTom(ymdDate){
 return (ymdDate-(10000*Math.floor(ymdDate/10000))-ymdDate+(100*Math.floor(ymdDate/100)))/100

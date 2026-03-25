@@ -1,3 +1,26 @@
+const chartTotalPlugin = {
+  id: 'chartTotalPlugin',
+  // Runs after the chart is drawn
+  afterDraw: (chart) => {
+    const { ctx, data, chartArea: { top, left, width } } = chart;
+    
+    // Calculate total from all datasets
+    const total = data.datasets.reduce((acc, dataset) => {
+      return acc + dataset.data.reduce((a, b) => a + (Number(b) || 0), 0);
+    }, 0);
+
+    // Canvas drawing settings
+    ctx.save();
+    ctx.font = 'bold 16px Arial';
+    ctx.fillStyle = '#333';
+    ctx.textAlign = 'center';
+    
+    // Draw the text slightly above the chart area
+    ctx.fillText(`Total: ${total.toLocaleString()}`, left + width-90, top+15);
+    ctx.restore();
+  }
+};
+
 const pieLabelsPlugin = {id: 'pieLabels',afterDatasetsDraw(chart) {
     const { ctx, data } = chart;
     const meta = chart.getDatasetMeta(0);
