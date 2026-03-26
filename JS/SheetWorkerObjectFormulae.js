@@ -1,4 +1,8 @@
-let COLS={Date:0,Vertical:1, Seminar:2, Amount:3, Category:4}
+let COLS={}
+
+console.time("Password given in")
+const PASSWORD=prompt("Password?")
+console.timeEnd("Password given in")
 
 function DataToSeminars(baseData,objectToEdit){baseData.forEach((row)=>{if(`${row[COLS.Seminar]}` in objectToEdit[row[COLS.Vertical]]){}else {objectToEdit[row[COLS.Vertical]][row[COLS.Seminar]]={value:0};};objectToEdit[row[COLS.Vertical]][row[COLS.Seminar]].value+=row[COLS.Amount]})}
 
@@ -14,6 +18,7 @@ baseData.forEach(r=>{if(`${r[COLCHOICE]}` in objectToEdit){}else{objectToEdit[r[
 
 
 async function ImportData(SHEET,TYPE){
+console.time(`${SHEET} ${TYPE} data imported in`);
 let url;
 switch(SHEET){case 'BVP':url=0;break;
 case 'TTT':url=0;break;
@@ -30,5 +35,19 @@ RD=arrayOfObjects.map(obj => Object.keys(arrayOfObjects[0]).map(key => obj[key])
 RD=RD.filter(r=>(r[3]));
 RD.forEach(r=>{r[3]=r[3].replaceAll(",","")});
 RD.forEach(r=>r[3]=parseFloat(r[3]));
+console.timeEnd(`${SHEET} ${TYPE} data imported in`);
+console.time("Data filtered in")
+const ADMINRESPONSE=await fetch('https://opensheet.elk.sh/1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw/Access')
+if (!ADMINRESPONSE.ok) throw new Error('Admin network response was not ok');
+const adminArrayOfObjects = await ADMINRESPONSE.json();
+let adminHeaders=Object.keys(adminArrayOfObjects[0]);
+let AD=adminArrayOfObjects.map(obj => Object.keys(adminArrayOfObjects[0]).map(key => obj[key]));
+let AR;
+AD.forEach(r=>{if((`${r[0]}${r[8]}${r[4]}${r[2]}${r[6]}`)==PASSWORD){AR=r}})
+console.log(adminHeaders,AR,adminHeaders.indexOf(RD[0][COLS.Vertical]))
+RD.forEach(r=>console.log(AR))
+RD=RD.filter(r=>AR[adminHeaders.indexOf(String(r[COLS.Vertical]).slice(0,1))]==1)
+console.log(RD)
+console.timeEnd("Data filtered in")
 return RD
 }

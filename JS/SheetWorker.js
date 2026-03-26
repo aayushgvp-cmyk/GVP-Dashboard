@@ -1,12 +1,17 @@
 Show('LeftHandMenu',0);Show('VC',0);Show('MC',0);Show('SC',0);Show('chartIncomeBack',0);Show('DetailTable',0);
 let AVSIncome={} /*AV,AVS*/, AMIncome={} /*AM*/, CategoryObjectExpense={} /*CE*/, CumIncome={}, MonthIncomeFull={}, CumIncentive={}, VMSIncome={} /*VM,VMS*/,MVIncome={} /*MV*/
-let rawDataCumIncome, rawDataCumExpense
+let rawDataIncome, rawDataCumExpense
 let totalIncome, TotalExpense
 let VerticalArray=[]
 async function handleFileAsync() {
 let CumulativeIncome
 
+
 rawDataIncome=await ImportData("Master","Income")
+
+
+
+console.time("Data imported and processed in")
 
 VerticalArray=[...new Set(rawDataIncome.map(r=>r[COLS.Vertical]))].sort()
 {const SELECT_TAG=document.querySelector('#VDD');
@@ -18,6 +23,8 @@ OPTION.value=i;
 SELECT_TAG.appendChild(CLONE)
 })}
 
+console.log(VerticalArray)
+
 SeminarArray=[...new Set(rawDataIncome.map(r=>`${r[COLS.Vertical]} : ${r[COLS.Seminar]}`))].sort()
 {
 const SELECT_TAG0=document.querySelector('#SDD');
@@ -28,6 +35,7 @@ OPTION0.textContent=v;
 OPTION0.value=i;
 SELECT_TAG0.appendChild(CLONE0)
 })}
+
 
 OnlySeminarArray=[]
 SeminarArray.forEach((S,i)=>OnlySeminarArray[i]=SVToS(S))
@@ -47,11 +55,11 @@ DataToMonths(rawDataIncome,AMIncome)
 rawDataIncome.forEach((r)=>{if(`${r[COLS.Vertical]}` in AMIncome[ymdToM(r[COLS.Date])]){}else {AMIncome[ymdToM(r[COLS.Date])][r[COLS.Vertical]]={value:0}};AMIncome[ymdToM(r[COLS.Date])][r[COLS.Vertical]].value+=r[COLS.Amount]})
 
 //                                                                                        CE
-rawDataCumExpense=await ImportData('Master',"Expense")
-DataToObject(rawDataCumExpense,CategoryObjectExpense,"CATEGORY")
+//rawDataCumExpense=await ImportData('Master',"Expense")
+//DataToObject(rawDataCumExpense,CategoryObjectExpense,"CATEGORY")
 
 totalExpense=0
-Object.values(CategoryObjectExpense).forEach(r=>totalExpense+=r.value)
+//Object.values(CategoryObjectExpense).forEach(r=>totalExpense+=r.value)
 
 
 
@@ -90,14 +98,12 @@ MVIncome[ymdToM(r[COLS.Date])][r[COLS.Vertical]].value+=r[COLS.Amount]
 
 //Make detail table header
 HEADERS=Object.keys(COLS)
-{const TEMPLATE=document.querySelector('#DTTemplate');
-HEADERS.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
-const TD=CLONE.querySelector('.DTTemplateTD');
-TD.textContent=v;
-document.querySelector('#DTHeaderRow').appendChild(CLONE)
-})}
-
-
+//{const TEMPLATE=document.querySelector('#DTTemplate');
+//HEADERS.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+//const TD=CLONE.querySelector('.DTTemplateTD');
+//TD.textContent=v;
+//document.querySelector('#DTHeaderRow').appendChild(CLONE)
+//})}
 
 //Monthwise to cumulative
 MonthIncomeFull=structuredClone(AMIncome)
@@ -120,8 +126,13 @@ return (IncomeToIncentive(CumIncome[mToM(CURRENTMONTH)].value,CURRENTMONTH)-Inco
 }}}
 /* My logic behind the above function: Incentive will only be payed if total incentive formula for the current month was greater than that of the last month. If the current month has higher incentive to be payed compared to the last month, the difference is payed out. The incentive is always the difference between the current month's incentive and the last payed cumulative incentive. We can hence skip all years that cumulative incentive decreased or stayed below the payed incentive.The code runs through all previous months till it reaches a month in which incentive was payed and checks the cumulative incentive payed till that month. It subtracts it from the current cumulative incentive to find the incentive to be payed*/
 
+console.timeEnd("Data imported and processed in")
 
+console.time("Charts made in")
+handleChartAsync();Show('LeftHandMenu',1);
+console.timeEnd("Charts made in")
 
-handleChartAsync();Show('LeftHandMenu',1);}
+MakeDT()
+}
 handleFileAsync()
 

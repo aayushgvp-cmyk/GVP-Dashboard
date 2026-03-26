@@ -3,6 +3,7 @@
 <head>
 <title>Title</title>
 <link rel="stylesheet" href="CSS/Style.css">
+<link rel="stylesheet" href="CSS/Mermaid.css">
 </head>
 <body>
 <h1 id="pageTitle" style="position:relative;left:20%;width:80%;z-index:1;">GVP Finance Dashboard</h1>
@@ -17,12 +18,9 @@
 <tr style="position:absolute;top:34%;left:20px" onclick="OnMenuClick(7)"><td><h3>Seminar-wise Month-wise</h3></td></tr>
 <tr style="position:absolute;top:40%;left:20px"><td><h2>Expenses</h2></td></tr>
 </table></div>
+<div id="DetailTable" style="position:absolute;top:150px"></div>
 
-<div id="DetailTable"><table style="margin-left:auto;margin-right:auto">
-<tr id="DTHeaderRow"><template id="DTTemplate"><td class="DTTemplateTD"></template></tr>
-</table></div>
-
-<div style="position:absolute;left:300px;top:40px;width:20%;z-index:0;" id="Loading"><img src="Assets/LoadingGif.gif"></div>
+<div style="position:absolute;left:450px;top:160px;width:20%;z-index:0;" id="Loading"><img src="Assets/LoadingGif.gif" style="width:50%;"></div>
 <div style="position:absolute;left:80%;top:80px" id="chartIncomeBack" onmousedown="OnBack()"><h2>BACK</h2></div>
 
 
@@ -38,11 +36,13 @@
 </body>
 <script src="JS/chart.umd.min.js"></script>
 <script src="JS/xlsx.full.min.js"></script>
+<script src="JS/Grid.js"></script>
 <script src="JS/Math.js"></script>
 <script src="JS/Work.js"></script>
 <script src="JS/ChartJSPlugins.js"></script>
 <script src="JS/SheetWorkerObjectFormulae.js"></script>
 <script src="JS/SheetWorker.js"></script>
+<script src="JS/DetailTable.js"></script>
 <script src="JS/IncomeChart.js"></script>
 <script src="JS/CE.js"></script>
 <script src="JS/GraphLoader.js"></script>

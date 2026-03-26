@@ -81,6 +81,7 @@ Show('SC',1);
 document.getElementById('SC').style.top="80px";
 Show('DetailTable',1); 
 Show('IncomeChartDiv',0); 
+ReloadDetail()
 break;
 
 }
@@ -118,6 +119,7 @@ switch(CHOICE){
 case 3: NewTitle(`Seminar-Wise Income for ${VERTICAL}`); ReplaceData(AVSIncome[VERTICAL]); break;
 case 5: NewTitle(`Month-Wise Income for ${VERTICAL}`); ReplaceData(VMSIncome[VERTICAL]); break;
 case 6: NewTitle(`Seminar-Wise Income for ${VERTICAL} in ${MONTH}`); ReplaceData(VMSIncome[VERTICAL][MONTH]); break;
+case 8: ReloadDetail(); break;
 }
 UPDATE();}
 
@@ -129,18 +131,23 @@ const SEMINARVERTICAL=SVToV(SeminarArray[Or(document.getElementById('SDD').value
 switch(CHOICE){
 case 4: NewTitle(`Vertical-Wise Income for ${MONTH}`); ReplaceData(MVIncome[MONTH]); break;
 case 6: NewTitle(`Seminar-Wise Income for ${VERTICAL} in ${MONTH}`); ReplaceData(VMSIncome[VERTICAL][MONTH]); break;
+case 8: ReloadDetail(); break;
 }
 UPDATE();}
 
 function OnSSwitch(){
-const VERTICAL=VerticalArray[Or(document.getElementById('VDD').value,0)];
-const MONTH=mToM(ModFunction(3+Number(Or(document.getElementById('MDD').value,1)),12));
 const SEMINAR=SVToS(SeminarArray[Or(document.getElementById('SDD').value,0)]);
 const SEMINARVERTICAL=SVToV(SeminarArray[Or(document.getElementById('SDD').value,0)]);
+document.getElementById('VDD').value=VerticalArray.indexOf(SEMINARVERTICAL);
+const VERTICAL=VerticalArray[Or(document.getElementById('VDD').value,0)];
+const MONTH=mToM(ModFunction(3+Number(Or(document.getElementById('MDD').value,1)),12));
+
 switch(CHOICE){
 case 7: NewTitle(`Month-Wise Income for ${SEMINAR}`); ReplaceData(AVSIncome[SEMINARVERTICAL][SEMINAR]); break;
+case 8: ReloadDetail(); break;
 }
-UPDATE();}
+UPDATE();
+}
 
 
 
