@@ -11,7 +11,21 @@ rawDataIncome=await ImportData("Master","Income")
 
 
 
+
+
 console.time("Data imported and processed in")
+
+LocationArray=[...new Set(rawDataIncome.map(r=>r[COLS.Location]))].sort()
+{const SELECT_TAG=document.querySelector('#LDD');
+const TEMPLATE=document.querySelector('#LTemplate');
+LocationArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+const OPTION=CLONE.querySelector('.LocationOptionClass');
+OPTION.textContent=v;
+OPTION.value=i+1;
+SELECT_TAG.appendChild(CLONE)
+})}
+console.log(LocationArray)
+
 
 VerticalArray=[...new Set(rawDataIncome.map(r=>r[COLS.Vertical]))].sort()
 {const SELECT_TAG=document.querySelector('#VDD');
@@ -23,7 +37,7 @@ OPTION.value=i;
 SELECT_TAG.appendChild(CLONE)
 })}
 
-console.log(VerticalArray)
+
 
 SeminarArray=[...new Set(rawDataIncome.map(r=>`${r[COLS.Vertical]} : ${r[COLS.Seminar]}`))].sort()
 {
