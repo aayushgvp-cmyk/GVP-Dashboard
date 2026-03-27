@@ -34,7 +34,7 @@ DTData=[]
 let i=0
 rawDataIncome.forEach(r=>{
 
-if((r[COLS.Vertical]==VERTICAL)&&(ymdToM(r[COLS.Date])==MONTH)&&(r[COLS.Seminar]==SEMINAR)&&SeekLocation(LOCATION,r)){DTData[i]=r;i++;console.log(r)}
+if((r[COLS.Vertical]==VERTICAL)&&(ymdToM(r[COLS.Date])==MONTH)&&(r[COLS.Seminar]==SEMINAR)&&SeekLocation(LOCATION,r)){DTData[i]=r;i++}
 
 })
 

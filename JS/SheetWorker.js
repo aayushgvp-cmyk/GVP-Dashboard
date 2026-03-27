@@ -56,17 +56,6 @@ SeminarArray.forEach((S,i)=>OnlySeminarArray[i]=SVToS(S))
 
 //											  AVS
 DataToObject(rawDataIncome,AVSIncome,"VERTICAL")
-DataToSeminars(rawDataIncome,AVSIncome)
-
-{rawDataIncome.forEach((r)=>{if(`${ymdToM(r[COLS.Date])}` in AVSIncome[r[COLS.Vertical]][r[COLS.Seminar]]){}else {AVSIncome[r[COLS.Vertical]][r[COLS.Seminar]][ymdToM(r[COLS.Date])]={value:0}};AVSIncome[r[COLS.Vertical]][r[COLS.Seminar]][ymdToM(r[COLS.Date])].value+=r[COLS.Amount]})}
-
-
-
-
-//											  AM
-DataToMonths(rawDataIncome,AMIncome)
-
-rawDataIncome.forEach((r)=>{if(`${r[COLS.Vertical]}` in AMIncome[ymdToM(r[COLS.Date])]){}else {AMIncome[ymdToM(r[COLS.Date])][r[COLS.Vertical]]={value:0}};AMIncome[ymdToM(r[COLS.Date])][r[COLS.Vertical]].value+=r[COLS.Amount]})
 
 //                                                                                        CE
 //rawDataCumExpense=await ImportData('Master',"Expense")
@@ -77,37 +66,6 @@ totalExpense=0
 
 
 
-//                                                                                       VMSI
-DataToObject(rawDataIncome,VMSIncome,"VERTICAL")
-Object.keys(VMSIncome).forEach(r=>delete VMSIncome[r].value)
-rawDataIncome.forEach(r=>{
-if(`${ymdToM(r[COLS.Date])}` in VMSIncome[r[COLS.Vertical]]){}
-else { VMSIncome[r[COLS.Vertical]][ymdToM(r[COLS.Date])]={value:0,monthIndex:ModFunction(ymdTom(r[COLS.Date])-3,12)}}
-
-VMSIncome[r[COLS.Vertical]][ymdToM(r[COLS.Date])].value+=r[COLS.Amount]
-
-})
-
-rawDataIncome.forEach(r=>{
-if(`${r[COLS.Seminar]}` in VMSIncome[r[COLS.Vertical]][ymdToM(r[COLS.Date])]){}
-else { VMSIncome[r[COLS.Vertical]][ymdToM(r[COLS.Date])][r[COLS.Seminar]]={value:0}}
-
-VMSIncome[r[COLS.Vertical]][ymdToM(r[COLS.Date])][r[COLS.Seminar]].value+=r[COLS.Amount]
-
-})
-
-
-
-
-//                                                                                       MVI
-
-rawDataIncome.forEach(r=>{(`${ymdToM(r[COLS.Date])}` in MVIncome)?{}:(MVIncome[ymdToM(r[COLS.Date])]={})})
-rawDataIncome.forEach(r=>{(`${r[COLS.Vertical]}` in MVIncome[ymdToM(r[COLS.Date])])?{}:(MVIncome[ymdToM(r[COLS.Date])][r[COLS.Vertical]]={value:0});
-
-MVIncome[ymdToM(r[COLS.Date])][r[COLS.Vertical]].value+=r[COLS.Amount]
-
-
-})
 
 
 //Make detail table header

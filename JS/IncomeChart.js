@@ -56,7 +56,8 @@ switch(CHOICE){
 case 3:
 document.getElementById('VDD').value=VerticalArray.indexOf(LABEL)
 NewTitle(`Seminar-Wise Cumulative Income for ${LABEL}`);
-ReplaceData(AVSIncome[LABEL]);
+{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==LABEL&&SeekLocation(LOCATION,r)));
+FilterAndReload(NEWDATA,"Seminar")}
 UPDATE();
 Show('VC',1);
 break;
@@ -65,24 +66,37 @@ case 4:
 document.getElementById('MDD').value=INDEX+1
 Show('MC',1); 
 NewTitle(`Vertical-Wise Income for ${LABEL}`);  
-ReplaceData(MVIncome[LABEL]); 
+{const NEWDATA=rawDataIncome.filter(r=>(ymdToM(r[COLS.Date])==LABEL&&SeekLocation(LOCATION,r)));
+FilterAndReload(NEWDATA,"Vertical")}
 break;
 
 case 6:
 Show('VC',1); 
 Show('MC',1); 
 document.getElementById('VC').style.top="40px"; 
-switch(Choice){case 4: NewTitle(`Seminar-Wise Income for ${LABEL} in ${MONTH}`); ReplaceData(VMSIncome[LABEL][MONTH]); document.getElementById('VDD').value=VerticalArray.indexOf(LABEL); break;
-case 5: NewTitle(`Seminar-Wise Income for ${VERTICAL} in ${LABEL}`); ReplaceData(VMSIncome[VERTICAL][LABEL]); document.getElementById('MDD').value=INDEX+1; break;}
+switch(Choice){
+	case 4: 
+	NewTitle(`Seminar-Wise Income for ${LABEL} in ${MONTH}`); 
+	{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==LABEL&&SeekLocation(LOCATION,r)&&ymdToM(r[COLS.Date])==MONTH));
+	FilterAndReload(NEWDATA,"Seminar")} 	
+	document.getElementById('VDD').value=VerticalArray.indexOf(LABEL); 
+	break;
+
+	case 5: 
+	NewTitle(`Seminar-Wise Income for ${VERTICAL} in ${LABEL}`); 
+	{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)&&ymdToM(r[COLS.Date])==LABEL));
+	FilterAndReload(NEWDATA,"Seminar")}	
+	document.getElementById('MDD').value=INDEX+1; 
+	break;
+}
 document.getElementById('LC').style.top="20px";
 break;
 
 case 7:
 NewTitle(`Month-Wise Income for ${LABEL}`);
-let Vertical;
-Object.keys(AVSIncome).forEach(V=>{if(LABEL in AVSIncome[V]){Vertical=V}})
 document.getElementById('SDD').value=OnlySeminarArray.indexOf(LABEL);
-ReplaceData(AVSIncome[VERTICAL][LABEL]);
+{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Seminar]==LABEL&&SeekLocation(LOCATION,r)));
+FilterMonthAndReload(NEWDATA)}; 
 UPDATE();
 Show('SC',1)
 break;
@@ -91,6 +105,7 @@ case 8:
 Show('VC',1);
 document.getElementById('LC').style.top="20px";
 document.getElementById('VC').style.top="40px";
+Memory?document.getElementById('MDD').value=INDEX+1:document.getElementById('SDD').value=OnlySeminarArray.indexOf(LABEL)
 Show('MC',1);
 Show('SC',1);
 document.getElementById('SC').style.top="80px";
@@ -134,14 +149,50 @@ const LOCATION=(Number(Or(document.getElementById('LDD').value,0))===0?"All":Loc
 HideDD();
 RealignDD()
 switch(CHOICE){
-case 1: NewTitle(`Vertical-Wise Cumulative Income`); ReplaceData(AVSIncome); document.getElementById('LC').style.top="60px";
- break;
-case 2: NewTitle(`Month-Wise Income`); ReplaceData(AMIncome); document.getElementById('LC').style.top="60px"; break;
-case 3: Show('VC',1); NewTitle(`Seminar-Wise Cumulative Income for ${VERTICAL}`); ReplaceData(AVSIncome[VERTICAL]); break;
-case 4: Show('MC',1); NewTitle(`Vertical-Wise Income for ${MONTH}`); ReplaceData(MVIncome[MONTH]); break;
-case 5: Show('VC',1); NewTitle(`Month-Wise Income for ${VERTICAL}`); ReplaceData(VMSIncome[VERTICAL]); break;
-case 6: Show('VC',1); NewTitle(`Seminar-Wise Income for ${VERTICAL} in ${MONTH}`); ReplaceData(VMSIncome[VERTICAL][MONTH]); Show('MC',1); document.getElementById('VC').style.top="40px"; document.getElementById('LC').style.top="20px"; break;
-case 7: Show('SC',1); NewTitle(`Month-Wise Income for ${SEMINAR}`); ReplaceData(AVSIncome[SEMINARVERTICAL][SEMINAR]); break;
+case 1: 
+NewTitle(`Vertical-Wise Cumulative Income`); 
+{const NEWDATA=rawDataIncome.filter(r=>SeekLocation(LOCATION,r));
+FilterAndReload(NEWDATA,"Vertical")}
+document.getElementById('LC').style.top="60px";
+break;
+case 2: 
+NewTitle(`Month-Wise Income`); 
+{const NEWDATA=rawDataIncome.filter(r=>SeekLocation(LOCATION,r));
+FilterMonthAndReload(NEWDATA)}
+document.getElementById('LC').style.top="60px"; 
+break;
+case 3: 
+Show('VC',1); 
+NewTitle(`Seminar-Wise Cumulative Income for ${VERTICAL}`); 
+{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)));
+FilterAndReload(NEWDATA,"Seminar")}
+break;
+case 4: 
+Show('MC',1); 
+NewTitle(`Vertical-Wise Income for ${MONTH}`); 
+{const NEWDATA=rawDataIncome.filter(r=>(ymdToM(r[COLS.Date])==MONTH&&SeekLocation(LOCATION,r)));
+FilterAndReload(NEWDATA,"Vertical")}
+break;
+case 5: 
+Show('VC',1); 
+NewTitle(`Month-Wise Income for ${VERTICAL}`); 
+{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)));
+FilterMonthAndReload(NEWDATA)} break;
+case 6: 
+Show('VC',1); 
+NewTitle(`Seminar-Wise Income for ${VERTICAL} in ${MONTH}`); 
+{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)&&ymdToM(r[COLS.Date])==MONTH));
+FilterAndReload(NEWDATA,"Seminar")} 
+Show('MC',1); 
+document.getElementById('VC').style.top="40px"; 
+document.getElementById('LC').style.top="20px"; 
+break;
+case 7: 
+Show('SC',1); 
+NewTitle(`Month-Wise Income for ${SEMINAR}`); 
+{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Seminar]==SEMINAR&&SeekLocation(LOCATION,r)));
+FilterMonthAndReload(NEWDATA)}; 
+break;
 };
 UPDATE();}
 
@@ -185,7 +236,7 @@ const LOCATION=(Number(Or(document.getElementById('LDD').value,0))===0?"All":Loc
 switch(CHOICE){
 case 4: 
 NewTitle(`Vertical-Wise Income for ${MONTH}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(ymdToM(r[COLS.Date])==Month&&SeekLocation(LOCATION,r)));
+{const NEWDATA=rawDataIncome.filter(r=>(ymdToM(r[COLS.Date])==MONTH&&SeekLocation(LOCATION,r)));
 FilterAndReload(NEWDATA,"Vertical")}
 break;
 case 6: 
@@ -232,11 +283,13 @@ const LOCATION=(Number(Or(document.getElementById('LDD').value,0))===0?"All":Loc
 switch(CHOICE){
 case 1: 
 NewTitle(`Vertical-Wise Cumulative Income`); 
-FilterAndReload(Vertical) 
+{const NEWDATA=rawDataIncome.filter(r=>(SeekLocation(LOCATION,r)));
+FilterAndReload(NEWDATA,"Vertical")}
 break;
 case 2: 
 NewTitle(`Month-Wise Income`);
-FilterMonthAndReload(RawDataIncome)
+{const NEWDATA=rawDataIncome.filter(r=>(SeekLocation(LOCATION,r)));
+FilterMonthAndReload(NEWDATA)}
 break;
 case 3: 
 NewTitle(`Seminar-Wise Income for ${VERTICAL}`)
@@ -245,7 +298,7 @@ FilterAndReload(NEWDATA,"Seminar")}
 break;
 case 4: 
 NewTitle(`Vertical-Wise Income for ${MONTH}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(ymdToM(r[COLS.Date])==Month&&SeekLocation(LOCATION,r)));
+{const NEWDATA=rawDataIncome.filter(r=>(ymdToM(r[COLS.Date])==MONTH&&SeekLocation(LOCATION,r)));
 FilterAndReload(NEWDATA,"Vertical")}
 break;
 case 5: 
