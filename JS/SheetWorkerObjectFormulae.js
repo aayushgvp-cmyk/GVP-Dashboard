@@ -32,10 +32,12 @@ const arrayOfObjects = await RESPONSE.json();
 const headers=Object.keys(arrayOfObjects[0]);
 headers.forEach((H,i)=>COLS[H]=i)
 RD=arrayOfObjects.map(obj => Object.keys(arrayOfObjects[0]).map(key => obj[key]));
-RD=RD.filter(r=>(r[3]));
-RD.forEach(r=>{r[3]=r[3].replaceAll(",","")});
-RD.forEach(r=>r[3]=parseFloat(r[3]));
+RD=RD.filter(r=>(r[COLS.Amount]));
+RD.forEach(r=>{r[COLS.Amount]=r[COLS.Amount].replaceAll(",","")});
+RD.forEach(r=>r[COLS.Amount]=parseFloat(r[COLS.Amount]));
 console.timeEnd(`${SHEET} ${TYPE} data imported in`);
+
+
 console.time("Data filtered in")
 const ADMINRESPONSE=await fetch('https://opensheet.elk.sh/1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw/Access')
 if (!ADMINRESPONSE.ok) throw new Error('Admin network response was not ok');
@@ -44,10 +46,11 @@ let adminHeaders=Object.keys(adminArrayOfObjects[0]);
 let AD=adminArrayOfObjects.map(obj => Object.keys(adminArrayOfObjects[0]).map(key => obj[key]));
 let AR;
 AD.forEach(r=>{if((`${r[0]}${r[8]}${r[4]}${r[2]}${r[6]}`)==PASSWORD){AR=r}})
-console.log(adminHeaders,AR,adminHeaders.indexOf(RD[0][COLS.Vertical]))
-RD.forEach(r=>console.log(AR))
+
 RD=RD.filter(r=>AR[adminHeaders.indexOf(String(r[COLS.Vertical]).slice(0,1))]==1)
-console.log(RD)
+
 console.timeEnd("Data filtered in")
+
+
 return RD
 }
