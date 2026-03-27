@@ -12,7 +12,11 @@ plugins:[{
     component: LimitInput,
     position: gridjs.PluginPosition.Footer,
     order: 1 
-}],
+},{
+      id: 'summary',
+      component: SummaryPlugin,
+      position: gridjs.PluginPosition.Footer // Places it below the grid
+    }],
 sort: true,
 style:{td: {border: '2px solid #000'}},
 data:DTData
@@ -75,4 +79,35 @@ function LimitInput() {
             style: { width: '50px', marginLeft: '5px', padding: '2px' }
         })
     ]);
+}
+
+
+
+
+
+function SummaryPlugin() {
+    const config = gridjs.useConfig();
+    const data = gridjs.useSelector(state => state.data);
+
+    // FIX: If data hasn't loaded yet, return an empty placeholder
+    if (!data || !data.rows) {
+        return gridjs.h('div', { style: { padding: '12px' } }, 'Loading total...');
+    }
+
+    const columnIndex = 1; 
+    const total = data.rows.reduce((prev, row) => {
+        // row.cells[index].data contains the raw value
+        const val = parseFloat(row.cells[COLS.Amount].data) || 0;
+        return prev + val;
+    }, 0);
+
+    return gridjs.h('div', {
+        style: {
+            fontWeight: 'bold',
+            padding: '12px',
+            textAlign: 'right',
+            backgroundColor: '#f9fafb',
+            borderTop: '1px solid #e5e7eb'
+        }
+    }, `Total: ${total.toLocaleString()}`);
 }
