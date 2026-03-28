@@ -1,119 +1,86 @@
 let IncomeChart
 
-function ReplaceData(newData){let REFINED_DATA={};Object.keys(newData).forEach(k=>{if(!(['value','monthIndex','Location'].includes(k))){REFINED_DATA[k]=newData[k]}});IncomeChart.data.datasets[0].data=Object.values(REFINED_DATA).map(row => row.value);IncomeChart.data.labels=Object.keys(REFINED_DATA);max=0;Object.values(REFINED_DATA).forEach(r=>r.value>max?max=r.value:max+=0);IncomeChart.options.scales.y.max=1.2*max;UPDATE();
+let VERTICAL,SEMINAR,SEMINARVERTICAL,MONTH,LOCATION
+
+function RunFilters(r){
+const OUTPUT=SeekLocation(LOCATION,r)&&SeekVertical(VERTICAL,r)&&SeekSeminar(SEMINAR,r)&&SeekMonth(MONTH,r)&&SeekFY(FISCAL_YEAR,r)
+return OUTPUT
 }
 
-//function FindSum(Data){let Value=0;Data.forEach(r=>Value+=r[COLS.Amount]);return Value;}
+function UpdateChart(){
+NEWDATA=rawDataIncome.filter(r=>RunFilters(r));let Type; switch(CHOICE){case 1: Type='Vertical'; break;case 2: Type='Seminar'; break;case 3: FilterMonthAndReload(NEWDATA); return;case 4: Type='Location'; break;}FilterAndReload(NEWDATA,Type);}
+function ReplaceData(newData){let REFINED_DATA={};Object.keys(newData).forEach(k=>{if(!(['value','monthIndex','Location'].includes(k))){REFINED_DATA[k]=newData[k]}});IncomeChart.data.datasets[0].data=Object.values(REFINED_DATA).map(row => row.value);IncomeChart.data.labels=Object.keys(REFINED_DATA);max=0;Object.values(REFINED_DATA).forEach(r=>r.value>max?max=r.value:max+=0);IncomeChart.options.scales.y.max=1.2*max;UPDATE();}
 function NewTitle(A){IncomeChart.options.plugins.title.text=A}
 function UPDATE(){IncomeChart.resize();IncomeChart.update()}
-function HideDD(){Show('VC',0);Show('MC',0);Show('SC',0);}
+
+function ShowDD(){Show('VC',1);Show('MC',1);Show('SC',1);Show('LC',1)}
+function HideDD(){Show('VC',0);Show('MC',0);Show('SC',0);Show('LC',0)}
+function ResetDD(){document.getElementById('VDD').value=-1; document.getElementById('SDD').value=-1; document.getElementById('MDD').value=0; document.getElementById('LDD').value=0; document.getElementById('YDD').value=0;}
+function DealignDD(){document.getElementById('VC').style.top="120px";document.getElementById('SC').style.top="140px";document.getElementById('MC').style.top="160px";document.getElementById('LC').style.top="180px";document.getElementById('YC').style.top="200px";}
+DealignDD()
 function RealignDD(){document.getElementById('VC').style.top="60px";document.getElementById('SC').style.top="60px";document.getElementById('LC').style.top="40px";}
+
 function SVToS(b){return b.slice(b.lastIndexOf(" ")+1)}
 function SVToV(b){return String(b).slice(0,String(b).indexOf(" "))}
+
 function SeekLocation(L,R){if(L=="All"){return true}else if(R[COLS.Location]==L){return true}else{return false}}
+function SeekVertical(V,R){if(V=="All"){return true}else if(R[COLS.Vertical]==V){return true}else{return false}}
+function SeekSeminar(S,R){if(S=="All"){return true}else if(R[COLS.Seminar]==S){return true}else{return false}}
+function SeekMonth(M,R){if(M=="All"){return true}else if(ymdToM(R[COLS.Date])==M){return true}else{return false}}
+function SeekFY(Y,R){if(Y=="All"){return true}else if(R[COLS.FY]==Y){return true}else{return false}}
+
+function SetVariables(){
+VERTICAL=(Number(Or(document.getElementById('VDD').value,-1))===-1?"All":VerticalArray[Or(document.getElementById('VDD').value,0)]);
+MONTH=(Number(Or(document.getElementById('MDD').value,0))===0?"All":mToM(ModFunction(3+Number(Or(document.getElementById('MDD').value,1)),12)));
+SEMINAR=(Number(Or(document.getElementById('SDD').value,-1))===-1?"All":SVToS(SeminarArray[Or(document.getElementById('SDD').value,0)]));
+SEMINARVERTICAL=(Number(Or(document.getElementById('SDD').value,-1))===-1?"All":SVToV(SeminarArray[Or(document.getElementById('SDD').value,0)]));
+LOCATION=(Number(Or(document.getElementById('LDD').value,0))===0?"All":LocationArray[Number(document.getElementById('LDD').value)-1]);
+FISCAL_YEAR=(Number(Or(document.getElementById('YDD').value,0))===0?"All":FYArray[Number(document.getElementById('YDD').value)-1]);
+}
 function FilterAndReload(newdata,Variable){let NEWDATAOBJECT={};newdata.forEach(r=>{if(!(r[COLS[Variable]] in NEWDATAOBJECT)){NEWDATAOBJECT[r[COLS[Variable]]]={value:0}};NEWDATAOBJECT[r[COLS[Variable]]].value+=r[COLS.Amount]})
 ReplaceData(NEWDATAOBJECT);}
 function FilterMonthAndReload(newdata){let NEWDATAOBJECT={};newdata.forEach(r=>{if(!(ymdToM(r[COLS['Date']]) in NEWDATAOBJECT)){NEWDATAOBJECT[ymdToM(r[COLS['Date']])]={value:0}};NEWDATAOBJECT[ymdToM(r[COLS['Date']])].value+=r[COLS.Amount]})
 ReplaceData(NEWDATAOBJECT);}
 
-/*
-OBJECTS FOR EACH CHART TYPE:
-AV:AVSIncome
-AM:AMIncome
-AVS:AVSIncome[VERTICAL]
-MV:MVIncome
-VM:VMSIncome[VERTICAL]
-VMS:VMSIncome[VERTICAL][MONTH]
-SM:AVSIncome[VERTICAL][SEMINAR]
-*/
 
 
-
-let CHOICE=1, Memory
+let CHOICE=1,Memory
 
 //								ONCLICK
 
 function OnChartClick(INDEX,LABEL,VALUE){
-RealignDD()
-const VERTICAL=VerticalArray[Or(document.getElementById('VDD').value,0)];
-const MONTH=mToM(ModFunction(3+Number(Or(document.getElementById('MDD').value,1)),12));
-const SEMINAR=SVToS(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-const SEMINARVERTICAL=SVToV(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-const LOCATION=(Number(Or(document.getElementById('LDD').value,0))===0?"All":LocationArray[Number(document.getElementById('LDD').value)-1])
-
-HideDD();
+DealignDD()
+SetVariables()
+ShowDD();
 const Choice=CHOICE
 switch(Choice){
-case 1: CHOICE=3; Show('chartIncomeBack',1); break;
-case 2: CHOICE=4; Show('chartIncomeBack',1); break;
-case 3: CHOICE=7; Show('chartIncomeBack',1); break;
-case 4: CHOICE=6; Show('chartIncomeBack',1); Memory=0; break;
-case 5: CHOICE=6; Show('chartIncomeBack',1); Memory=1; break;
-case 6: CHOICE=8; Show('chartIncomeBack',1); Memory=0; break;
-case 7: CHOICE=8; Show('chartIncomeBack',1); Memory=1; break;}
-console.log(Choice,"->",CHOICE," (Remembers ",Memory,")")
-switch(CHOICE){
-case 3:
-document.getElementById('VDD').value=VerticalArray.indexOf(LABEL)
-NewTitle(`Seminar-Wise Cumulative Income for ${LABEL}`);
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==LABEL&&SeekLocation(LOCATION,r)));
-FilterAndReload(NEWDATA,"Seminar")}
-UPDATE();
-Show('VC',1);
-break;
-
-case 4: 
-document.getElementById('MDD').value=INDEX+1
-Show('MC',1); 
-NewTitle(`Vertical-Wise Income for ${LABEL}`);  
-{const NEWDATA=rawDataIncome.filter(r=>(ymdToM(r[COLS.Date])==LABEL&&SeekLocation(LOCATION,r)));
-FilterAndReload(NEWDATA,"Vertical")}
-break;
-
-case 6:
-Show('VC',1); 
-Show('MC',1); 
-document.getElementById('VC').style.top="40px"; 
-switch(Choice){
-	case 4: 
-	NewTitle(`Seminar-Wise Income for ${LABEL} in ${MONTH}`); 
-	{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==LABEL&&SeekLocation(LOCATION,r)&&ymdToM(r[COLS.Date])==MONTH));
-	FilterAndReload(NEWDATA,"Seminar")} 	
-	document.getElementById('VDD').value=VerticalArray.indexOf(LABEL); 
-	break;
-
-	case 5: 
-	NewTitle(`Seminar-Wise Income for ${VERTICAL} in ${LABEL}`); 
-	{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)&&ymdToM(r[COLS.Date])==LABEL));
-	FilterAndReload(NEWDATA,"Seminar")}	
-	document.getElementById('MDD').value=INDEX+1; 
-	break;
+case 1: CHOICE=2; Show('chartIncomeBack',1); document.getElementById('VDD').value=VerticalArray.indexOf(LABEL); document.getElementById('SDD').value=-1; break;
+case 2: CHOICE=3; Show('chartIncomeBack',1); document.getElementById('SDD').value=OnlySeminarArray.indexOf(LABEL); break;
+case 3: CHOICE=5; Show('chartIncomeBack',1); document.getElementById('MDD').value=INDEX+1; Memory=0; break;
+case 4: CHOICE=5; Show('chartIncomeBack',1); document.getElementById('LDD').value=LocationArray.indexOf(LABEL)+1; Memory=1; break;
 }
-document.getElementById('LC').style.top="20px";
-break;
-
-case 7:
-NewTitle(`Month-Wise Income for ${LABEL}`);
-document.getElementById('SDD').value=OnlySeminarArray.indexOf(LABEL);
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Seminar]==LABEL&&SeekLocation(LOCATION,r)));
-FilterMonthAndReload(NEWDATA)}; 
+console.log(Choice,"->",CHOICE)
+SetVariables()
+UpdateChart();
 UPDATE();
-Show('SC',1)
+switch(CHOICE){
+case 2:
+Show('SC',0);
 break;
 
-case 8:
-Show('VC',1);
-document.getElementById('LC').style.top="20px";
-document.getElementById('VC').style.top="40px";
-Memory?document.getElementById('MDD').value=INDEX+1:document.getElementById('SDD').value=OnlySeminarArray.indexOf(LABEL)
-Show('MC',1);
-Show('SC',1);
-document.getElementById('SC').style.top="80px";
-Show('DetailTable',1); 
-Show('IncomeChartDiv',0); 
-ReloadDetail()
+case 3:
+Show('MC',0);
 break;
 
+case 4:
+Show('LC',0);
+break;
+
+case 5:
+Show('IncomeChartDiv',0)
+Show('DetailTable',1);
+ReloadDetail();
+break;
 }
 
 }
@@ -137,190 +104,59 @@ break;
 
 
 function OnMenuClick(Choice){
+ResetDD()
+Show('chartIncomeBack',0)
 Show('DetailTable',0);
 Show('IncomeChartDiv',1); 
 CHOICE=Choice;
-const VERTICAL=VerticalArray[Or(document.getElementById('VDD').value,0)];
-const MONTH=mToM(ModFunction(3+Number(Or(document.getElementById('MDD').value,1)),12));
-const SEMINAR=SVToS(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-const SEMINARVERTICAL=SVToV(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-const LOCATION=(Number(Or(document.getElementById('LDD').value,0))===0?"All":LocationArray[Number(document.getElementById('LDD').value)-1])
+SetVariables()
 
-HideDD();
-RealignDD()
+
+
+
+ShowDD();
+DealignDD()
 switch(CHOICE){
 case 1: 
-NewTitle(`Vertical-Wise Cumulative Income`); 
-{const NEWDATA=rawDataIncome.filter(r=>SeekLocation(LOCATION,r));
-FilterAndReload(NEWDATA,"Vertical")}
-document.getElementById('LC').style.top="60px";
+Show('VC',0); 
+Show('SC',0); 
+NewTitle(`Vertical-Wise Income`); 
+document.getElementById('VDD').value=-1;
+document.getElementById('SDD').value=-1;
 break;
 case 2: 
-NewTitle(`Month-Wise Income`); 
-{const NEWDATA=rawDataIncome.filter(r=>SeekLocation(LOCATION,r));
-FilterMonthAndReload(NEWDATA)}
-document.getElementById('LC').style.top="60px"; 
+document.getElementById('VDD').value==-1?document.getElementById('VDD').value=0:{}
+document.getElementById('SDD').value=-1;
+Show('SC',0); 
+NewTitle(`Seminar-Wise Income`); 
 break;
 case 3: 
-Show('VC',1); 
-NewTitle(`Seminar-Wise Cumulative Income for ${VERTICAL}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)));
-FilterAndReload(NEWDATA,"Seminar")}
+Show('MC',0); 
+NewTitle(`Month-Wise Income`);
+document.getElementById('MDD').value=0;
 break;
 case 4: 
-Show('MC',1); 
-NewTitle(`Vertical-Wise Income for ${MONTH}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(ymdToM(r[COLS.Date])==MONTH&&SeekLocation(LOCATION,r)));
-FilterAndReload(NEWDATA,"Vertical")}
+Show('LC',0); 
+NewTitle(`Location-Wise Income`);
+document.getElementById('LDD').value=0; 
 break;
-case 5: 
-Show('VC',1); 
-NewTitle(`Month-Wise Income for ${VERTICAL}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)));
-FilterMonthAndReload(NEWDATA)} break;
-case 6: 
-Show('VC',1); 
-NewTitle(`Seminar-Wise Income for ${VERTICAL} in ${MONTH}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)&&ymdToM(r[COLS.Date])==MONTH));
-FilterAndReload(NEWDATA,"Seminar")} 
-Show('MC',1); 
-document.getElementById('VC').style.top="40px"; 
-document.getElementById('LC').style.top="20px"; 
-break;
-case 7: 
-Show('SC',1); 
-NewTitle(`Month-Wise Income for ${SEMINAR}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Seminar]==SEMINAR&&SeekLocation(LOCATION,r)));
-FilterMonthAndReload(NEWDATA)}; 
-break;
-};
-UPDATE();}
+}
+SetVariables(); UpdateChart(); UPDATE();}
 
 //								VERTICAL
-
-function OnVSwitch(){
-const VERTICAL=VerticalArray[Or(document.getElementById('VDD').value,0)];
-const MONTH=mToM(ModFunction(3+Number(Or(document.getElementById('MDD').value,1)),12));
-const SEMINAR=SVToS(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-const SEMINARVERTICAL=SVToV(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-const LOCATION=(Number(Or(document.getElementById('LDD').value,0))===0?"All":LocationArray[Number(document.getElementById('LDD').value)-1])
-switch(CHOICE){
-case 3: 
-NewTitle(`Seminar-Wise Income for ${VERTICAL}`)
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)));
-FilterAndReload(NEWDATA,"Seminar")}
-break;
-case 5: 
-NewTitle(`Month-Wise Income for ${VERTICAL}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)));
-FilterMonthAndReload(NEWDATA)} 
-break;
-case 6: 
-NewTitle(`Seminar-Wise Income for ${VERTICAL} in ${MONTH}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)&&ymdToM(r[COLS.Date])==MONTH));
-FilterAndReload(NEWDATA,"Seminar")} 
-break;
-case 8: ReloadDetail(); break;
-}
-UPDATE();}
-
 //								MONTH
-
-function OnMSwitch(){
-const VERTICAL=VerticalArray[Or(document.getElementById('VDD').value,0)];
-const MONTH=mToM(ModFunction(3+Number(Or(document.getElementById('MDD').value,1)),12));
-const SEMINAR=SVToS(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-const SEMINARVERTICAL=SVToV(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-const LOCATION=(Number(Or(document.getElementById('LDD').value,0))===0?"All":LocationArray[Number(document.getElementById('LDD').value)-1])
-
-switch(CHOICE){
-case 4: 
-NewTitle(`Vertical-Wise Income for ${MONTH}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(ymdToM(r[COLS.Date])==MONTH&&SeekLocation(LOCATION,r)));
-FilterAndReload(NEWDATA,"Vertical")}
-break;
-case 6: 
-NewTitle(`Seminar-Wise Income for ${VERTICAL} in ${MONTH}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)&&ymdToM(r[COLS.Date])==MONTH));
-FilterAndReload(NEWDATA,"Seminar")} 
-break;
-case 8: ReloadDetail(); break;
-}
+//								LOCATION
+function OnSwitch(){
+SetVariables()
+UpdateChart();
+ReloadDetail();
 UPDATE();}
 
 //								SEMINAR
 
 function OnSSwitch(){
-const SEMINAR=SVToS(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-const SEMINARVERTICAL=SVToV(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-document.getElementById('VDD').value=VerticalArray.indexOf(SEMINARVERTICAL);
-const VERTICAL=VerticalArray[Or(document.getElementById('VDD').value,0)];
-const MONTH=mToM(ModFunction(3+Number(Or(document.getElementById('MDD').value,1)),12));
-const LOCATION=(Number(Or(document.getElementById('LDD').value,0))===0?"All":LocationArray[Number(document.getElementById('LDD').value)-1])
-
-
-switch(CHOICE){
-case 7: 
-NewTitle(`Month-Wise Income for ${SEMINAR}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Seminar]==SEMINAR&&SeekLocation(LOCATION,r)));
-FilterMonthAndReload(NEWDATA)}; 
-break;
-case 8: 
-ReloadDetail(); 
-break;
-}
-UPDATE();
-}
-
-//								LOCATION
-
-function OnLSwitch(){
-const SEMINAR=SVToS(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-const SEMINARVERTICAL=SVToV(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-const VERTICAL=VerticalArray[Or(document.getElementById('VDD').value,0)];
-const MONTH=mToM(ModFunction(3+Number(Or(document.getElementById('MDD').value,1)),12));
-const LOCATION=(Number(Or(document.getElementById('LDD').value,0))===0?"All":LocationArray[Number(document.getElementById('LDD').value)-1])
-switch(CHOICE){
-case 1: 
-NewTitle(`Vertical-Wise Cumulative Income`); 
-{const NEWDATA=rawDataIncome.filter(r=>(SeekLocation(LOCATION,r)));
-FilterAndReload(NEWDATA,"Vertical")}
-break;
-case 2: 
-NewTitle(`Month-Wise Income`);
-{const NEWDATA=rawDataIncome.filter(r=>(SeekLocation(LOCATION,r)));
-FilterMonthAndReload(NEWDATA)}
-break;
-case 3: 
-NewTitle(`Seminar-Wise Income for ${VERTICAL}`)
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)));
-FilterAndReload(NEWDATA,"Seminar")}
-break;
-case 4: 
-NewTitle(`Vertical-Wise Income for ${MONTH}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(ymdToM(r[COLS.Date])==MONTH&&SeekLocation(LOCATION,r)));
-FilterAndReload(NEWDATA,"Vertical")}
-break;
-case 5: 
-NewTitle(`Month-Wise Income for ${VERTICAL}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)));
-FilterMonthAndReload(NEWDATA)} 
-break;
-case 6: 
-NewTitle(`Seminar-Wise Income for ${VERTICAL} in ${MONTH}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Vertical]==VERTICAL&&SeekLocation(LOCATION,r)&&ymdToM(r[COLS.Date])==MONTH));
-FilterAndReload(NEWDATA,"Seminar")} 
-break;
-case 7: 
-NewTitle(`Month-Wise Income for ${SEMINAR}`); 
-{const NEWDATA=rawDataIncome.filter(r=>(r[COLS.Seminar]==SEMINAR&&SeekLocation(LOCATION,r)));
-FilterMonthAndReload(NEWDATA)}; 
-break;
-case 8:
-ReloadDetail();
-break;
-};
-UPDATE();
+document.getElementById('VDD').value=VerticalArray.indexOf(SVToV(document.getElementById('SDD').value))
+OnSwitch()
 }
 
 
@@ -330,14 +166,12 @@ function OnBack(){
 Show('chartIncomeBack',0);
 const Choice=CHOICE
 switch(Choice){
-case 3: CHOICE=1; break;
-case 4: CHOICE=2; break;
-case 6: CHOICE=4+Memory; break;
-case 7: CHOICE=3; break;
-case 8: CHOICE=6+Memory; break;
+case 2: CHOICE=1; break;
+case 3: CHOICE=2; break;
+case 5: CHOICE=3+Memory; break;
 }
 OnMenuClick(CHOICE)
-if(Choice===6||Choice===7||Choice===8){Show('chartIncomeBack',1)}
+if(CHOICE===2||CHOICE===3){Show('chartIncomeBack',1)}
 }
 
 
@@ -377,7 +211,7 @@ function LoadIncome(){
                 }
 
       },
-	plugins:[topLabelsPlugin,chartTotalPlugin],
+	plugins:[topLabelsPluginK,chartTotalPlugin],
       data: {
         labels:Object.keys(AVSIncome).map(r => r),
         datasets: [

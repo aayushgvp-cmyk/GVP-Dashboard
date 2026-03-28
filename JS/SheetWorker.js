@@ -1,4 +1,4 @@
-Show('LeftHandMenu',0);Show('VC',0);Show('MC',0);Show('SC',0);Show('chartIncomeBack',0);Show('DetailTable',0);
+
 let AVSIncome={} /*AV,AVS*/, AMIncome={} /*AM*/, CategoryObjectExpense={} /*CE*/, CumIncome={}, MonthIncomeFull={}, CumIncentive={}, VMSIncome={} /*VM,VMS*/,MVIncome={} /*MV*/
 let rawDataIncome, rawDataCumExpense
 let totalIncome, TotalExpense
@@ -7,10 +7,10 @@ async function handleFileAsync() {
 let CumulativeIncome
 
 
-rawDataIncome=await ImportData("Master","Income")
+rawDataIncome=await ImportData("Income")
 
 
-
+console.log(rawDataIncome)
 
 
 console.time("Data imported and processed in")
@@ -24,8 +24,16 @@ OPTION.textContent=v;
 OPTION.value=i+1;
 SELECT_TAG.appendChild(CLONE)
 })}
-console.log(LocationArray)
 
+FYArray=[...new Set(rawDataIncome.map(r=>r[COLS.FY]))].sort()
+{const SELECT_TAG=document.querySelector('#YDD');
+const TEMPLATE=document.querySelector('#YTemplate');
+FYArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+const OPTION=CLONE.querySelector('.FYOptionClass');
+OPTION.textContent=v;
+OPTION.value=i+1;
+SELECT_TAG.appendChild(CLONE)
+})}
 
 VerticalArray=[...new Set(rawDataIncome.map(r=>r[COLS.Vertical]))].sort()
 {const SELECT_TAG=document.querySelector('#VDD');
@@ -101,7 +109,7 @@ return (IncomeToIncentive(CumIncome[mToM(CURRENTMONTH)].value,CURRENTMONTH)-Inco
 console.timeEnd("Data imported and processed in")
 
 console.time("Charts made in")
-handleChartAsync();Show('LeftHandMenu',1);
+handleChartAsync();Show('LeftHandMenu',1);Show('VC',0);Show('MC',1);Show('SC',0);Show('LC',1);Show('YC',1);Show('DS',1);Show('DD',1);
 console.timeEnd("Charts made in")
 
 MakeDT()

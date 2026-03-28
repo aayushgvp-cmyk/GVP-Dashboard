@@ -21,10 +21,12 @@ LoadIncome()
 
 Show('Loading',0)
 
-VDD.addEventListener("change",OnVSwitch)
-MDD.addEventListener("change",OnMSwitch)
+VDD.addEventListener("change",OnSwitch)
+MDD.addEventListener("change",OnSwitch)
 SDD.addEventListener("change",OnSSwitch)
-LDD.addEventListener("change",OnLSwitch)
-
+LDD.addEventListener("change",OnSwitch)
+YDD.addEventListener("change",OnSwitch)
+DS.addEventListener("click",DownloadExcelS)
+DD.addEventListener("click",DownloadExcelD)
 console.log("chart end")
 }

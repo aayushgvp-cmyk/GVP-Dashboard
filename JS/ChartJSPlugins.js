@@ -88,20 +88,32 @@ const topLabelsPlugin = {id: 'topLabels',afterDatasetsDraw(chart) {const { ctx, 
 
 
 const topLabelsPluginK = {
-    id: 'topLabels',
-    afterDatasetsDraw(chart) {
-        const { ctx, data } = chart;
-        ctx.save();
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.font = 'bold 12px sans-serif';
-        ctx.fillStyle = '#000'; // Change color as needed
+  id: 'topLabels',
+  afterDatasetsDraw(chart) {
+    const { ctx, data } = chart;
+    const dataset = data.datasets[0];
+    const total = dataset.data.reduce((acc, val) => acc + val, 0);
 
-        chart.getDatasetMeta(0).data.forEach((bar, index) => {
-            const value = data.datasets[0].data[index];
-            // bar.x and bar.y are the coordinates of the bar's top-center
-            ctx.fillText((value>1000)?(Math.floor(value/1000)+"K"):{value}, bar.x, bar.y - 5); 
-        });
-        ctx.restore();
-    }
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.font = 'bold 12px sans-serif';
+    ctx.fillStyle = '#000';
+
+    chart.getDatasetMeta(0).data.forEach((bar, index) => {
+      const value = dataset.data[index];
+      const percent = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+      const formattedValue = value >= 1000 ? `${Math.floor(value / 1000)}K` : value;
+
+      // Draw Value (Top line, moved higher)
+      ctx.font = 'bold 12px sans-serif';
+      ctx.fillText(formattedValue, bar.x, bar.y - 20); 
+      
+      // Draw Percentage (Bottom line, moved higher)
+      ctx.font = 'normal 11px sans-serif';
+      ctx.fillText(`(${percent}%)`, bar.x, bar.y - 5);
+    });
+
+    ctx.restore();
+  }
 };

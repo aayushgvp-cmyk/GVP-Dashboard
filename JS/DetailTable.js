@@ -24,17 +24,13 @@ data:DTData
 }
 
 function ReloadDetail(){
-const VERTICAL=VerticalArray[Or(document.getElementById('VDD').value,0)];
-const MONTH=mToM(ModFunction(3+Number(Or(document.getElementById('MDD').value,1)),12));
-const SEMINAR=SVToS(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-const SEMINARVERTICAL=SVToV(SeminarArray[Or(document.getElementById('SDD').value,0)]);
-const LOCATION=(Number(Or(document.getElementById('LDD').value,0))===0?"All":LocationArray[Number(document.getElementById('LDD').value)-1])
+SetVariables()
 
 DTData=[]
 let i=0
 rawDataIncome.forEach(r=>{
 
-if((r[COLS.Vertical]==VERTICAL)&&(ymdToM(r[COLS.Date])==MONTH)&&(r[COLS.Seminar]==SEMINAR)&&SeekLocation(LOCATION,r)){DTData[i]=r;i++}
+if(RunFilters(r)){DTData[i]=r;i++}
 
 })
 
