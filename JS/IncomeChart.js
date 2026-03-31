@@ -1,6 +1,6 @@
 let IncomeChart
 
-let VERTICAL,SEMINAR,SEMINARVERTICAL,MONTH,LOCATION
+let VERTICAL,SEMINAR,SEMINARVERTICAL,MONTH,LOCATION,FISCAL_YEAR
 
 function RunFilters(r){
 const OUTPUT=SeekLocation(LOCATION,r)&&SeekVertical(VERTICAL,r)&&SeekSeminar(SEMINAR,r)&&SeekMonth(MONTH,r)&&SeekFY(FISCAL_YEAR,r)
@@ -9,14 +9,14 @@ return OUTPUT
 
 function UpdateChart(){
 NEWDATA=rawDataIncome.filter(r=>RunFilters(r));let Type; switch(CHOICE){case 1: Type='Vertical'; break;case 2: Type='Seminar'; break;case 3: FilterMonthAndReload(NEWDATA); return;case 4: Type='Location'; break;}FilterAndReload(NEWDATA,Type);}
-function ReplaceData(newData){let REFINED_DATA={};Object.keys(newData).forEach(k=>{if(!(['value','monthIndex','Location'].includes(k))){REFINED_DATA[k]=newData[k]}});IncomeChart.data.datasets[0].data=Object.values(REFINED_DATA).map(row => row.value);IncomeChart.data.labels=Object.keys(REFINED_DATA);max=0;Object.values(REFINED_DATA).forEach(r=>r.value>max?max=r.value:max+=0);IncomeChart.options.scales.y.max=1.2*max;UPDATE();}
+function ReplaceData(newData){let REFINED_DATA={};Object.keys(newData).forEach(k=>{{REFINED_DATA[k]=newData[k]}});IncomeChart.data.datasets[0].data=Object.values(REFINED_DATA).map(row => row.value);IncomeChart.data.labels=Object.keys(REFINED_DATA);max=0;Object.values(REFINED_DATA).forEach(r=>r.value>max?max=r.value:max+=0);IncomeChart.options.scales.y.max=1.2*max;UPDATE();}
 function NewTitle(A){IncomeChart.options.plugins.title.text=A}
 function UPDATE(){IncomeChart.resize();IncomeChart.update()}
 
-function ShowDD(){Show('VC',1);Show('MC',1);Show('SC',1);Show('LC',1)}
-function HideDD(){Show('VC',0);Show('MC',0);Show('SC',0);Show('LC',0)}
+function ShowDD(){Show('VC',1);Show('MC',1);Show('SC',1);Show('LC',1);Show('YC',1);}
+function HideDD(){Show('VC',0);Show('MC',0);Show('SC',0);Show('LC',0);Show('YC',0);}
 function ResetDD(){document.getElementById('VDD').value=-1; document.getElementById('SDD').value=-1; document.getElementById('MDD').value=0; document.getElementById('LDD').value=0; document.getElementById('YDD').value=0;}
-function DealignDD(){document.getElementById('VC').style.top="120px";document.getElementById('SC').style.top="140px";document.getElementById('MC').style.top="160px";document.getElementById('LC').style.top="180px";document.getElementById('YC').style.top="200px";}
+function DealignDD(){document.getElementById('CC').style.top="80px";document.getElementById('SCC').style.top="100px";document.getElementById('VC').style.top="120px";document.getElementById('SC').style.top="140px";document.getElementById('MC').style.top="160px";document.getElementById('LC').style.top="180px";document.getElementById('YC').style.top="200px";}
 DealignDD()
 function RealignDD(){document.getElementById('VC').style.top="60px";document.getElementById('SC').style.top="60px";document.getElementById('LC').style.top="40px";}
 
@@ -104,12 +104,13 @@ break;
 
 
 function OnMenuClick(Choice){
-ResetDD()
-Show('chartIncomeBack',0)
-Show('DetailTable',0);
-Show('IncomeChartDiv',1); 
-CHOICE=Choice;
-SetVariables()
+	ResetDD()
+	Show('chartIncomeBack',0)
+	Show('DetailTable',0);
+	Show('ExpenseChartDiv',0)
+	Show('IncomeChartDiv',1); 
+	CHOICE=Choice;
+	SetVariables()
 
 
 

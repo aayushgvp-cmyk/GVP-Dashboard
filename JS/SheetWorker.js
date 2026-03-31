@@ -1,16 +1,15 @@
 
-let AVSIncome={} /*AV,AVS*/, AMIncome={} /*AM*/, CategoryObjectExpense={} /*CE*/, CumIncome={}, MonthIncomeFull={}, CumIncentive={}, VMSIncome={} /*VM,VMS*/,MVIncome={} /*MV*/
-let rawDataIncome, rawDataCumExpense
+let AVSIncome={} /*AV,AVS*/, AMIncome={} /*AM*/, ObjectExpense={} /*CE*/, CumIncome={}, MonthIncomeFull={}, CumIncentive={}, VMSIncome={} /*VM,VMS*/,MVIncome={} /*MV*/
+let rawDataIncome, rawDataExpense
 let totalIncome, TotalExpense
 let VerticalArray=[]
 async function handleFileAsync() {
 let CumulativeIncome
 
 
-rawDataIncome=await ImportData("Income")
+rawDataIncome=await ImportData("Income",COLS)
 
 
-console.log(rawDataIncome)
 
 
 console.time("Data imported and processed in")
@@ -45,8 +44,6 @@ OPTION.value=i;
 SELECT_TAG.appendChild(CLONE)
 })}
 
-
-
 SeminarArray=[...new Set(rawDataIncome.map(r=>`${r[COLS.Vertical]} : ${r[COLS.Seminar]}`))].sort()
 {
 const SELECT_TAG0=document.querySelector('#SDD');
@@ -58,32 +55,90 @@ OPTION0.value=i;
 SELECT_TAG0.appendChild(CLONE0)
 })}
 
-
 OnlySeminarArray=[]
 SeminarArray.forEach((S,i)=>OnlySeminarArray[i]=SVToS(S))
 
-//											  AVS
+//											  Income
 DataToObject(rawDataIncome,AVSIncome,"VERTICAL")
 
-//                                                                                        CE
-//rawDataCumExpense=await ImportData('Master',"Expense")
-//DataToObject(rawDataCumExpense,CategoryObjectExpense,"CATEGORY")
+//                                                                                        Expense
+rawDataExpense=await ImportData("Expense",COLE)
+{const PARAMETER='Vertical',COLCHOICE=COLE[`Vertical`];
+rawDataExpense.forEach(r=>{if(`${r[COLCHOICE]}` in ObjectExpense){}else{ObjectExpense[r[COLCHOICE]]={value:0}};ObjectExpense[r[COLCHOICE]]['value']+=r[COLE.Amount]});}
+
+console.log(ObjectExpense)
 
 totalExpense=0
-//Object.values(CategoryObjectExpense).forEach(r=>totalExpense+=r.value)
+Object.values(ObjectExpense).forEach(r=>totalExpense+=r.value)
+
+LocationArrayE=[...new Set(rawDataExpense.map(r=>r[COLE.Location]))].sort()
+{const SELECT_TAG=document.querySelector('#LEDD');
+const TEMPLATE=document.querySelector('#LETemplate');
+LocationArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+const OPTION=CLONE.querySelector('.LocationEOptionClass');
+OPTION.textContent=v;
+OPTION.value=i+1;
+SELECT_TAG.appendChild(CLONE)
+})}
+
+FYArrayE=[...new Set(rawDataExpense.map(r=>r[COLE.FY]))].sort()
+{const SELECT_TAG=document.querySelector('#YEDD');
+const TEMPLATE=document.querySelector('#YETemplate');
+FYArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+const OPTION=CLONE.querySelector('.FYEOptionClass');
+OPTION.textContent=v;
+OPTION.value=i+1;
+SELECT_TAG.appendChild(CLONE)
+})}
+
+VerticalArrayE=[...new Set(rawDataExpense.map(r=>r[COLE.Vertical]))].sort()
+{const SELECT_TAG=document.querySelector('#VEDD');
+const TEMPLATE=document.querySelector('#VETemplate');
+VerticalArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+const OPTION=CLONE.querySelector('.verticalEOptionClass');
+OPTION.textContent=v;
+OPTION.value=i+1;
+SELECT_TAG.appendChild(CLONE)
+})}
+
+SeminarArrayE=[...new Set(rawDataExpense.map(r=>`${r[COLE.Vertical]} : ${r[COLS.Seminar]}`))].sort()
+{
+const SELECT_TAG0=document.querySelector('#SEDD');
+const TEMPLATE0=document.querySelector('#SETemplate');
+SeminarArray.forEach((v,i)=>{const CLONE0=TEMPLATE0.content.cloneNode(true);
+const OPTION0=CLONE0.querySelector('.seminarEOptionClass');
+OPTION0.textContent=v;
+OPTION0.value=i+1;
+SELECT_TAG0.appendChild(CLONE0)
+})}
+
+OnlySeminarArrayE=[]
+SeminarArrayE.forEach((S,i)=>OnlySeminarArrayE[i]=SVToS(S))
+
+CategoryArray=[...new Set(rawDataExpense.map(r=>r[COLE.Category]))].sort()
+{const SELECT_TAG=document.querySelector('#CDD');
+const TEMPLATE=document.querySelector('#CTemplate');
+FYArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+const OPTION=CLONE.querySelector('.COptionClass');
+OPTION.textContent=v;
+OPTION.value=i+1;
+SELECT_TAG.appendChild(CLONE)
+})}
+
+SCArray=[...new Set(rawDataExpense.map(r=>r[COLE.Subcategory]))].sort()
+{const SELECT_TAG=document.querySelector('#SCDD');
+const TEMPLATE=document.querySelector('#SCTemplate');
+FYArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+const OPTION=CLONE.querySelector('.SCOptionClass');
+OPTION.textContent=v;
+OPTION.value=i+1;
+SELECT_TAG.appendChild(CLONE)
+})}
 
 
-
-
-
-//Make detail table header
+//Headers
 HEADERS=Object.keys(COLS)
-//{const TEMPLATE=document.querySelector('#DTTemplate');
-//HEADERS.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
-//const TD=CLONE.querySelector('.DTTemplateTD');
-//TD.textContent=v;
-//document.querySelector('#DTHeaderRow').appendChild(CLONE)
-//})}
+HEADERE=Object.keys(COLE)
 
 //Monthwise to cumulative
 MonthIncomeFull=structuredClone(AMIncome)

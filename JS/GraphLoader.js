@@ -1,23 +1,24 @@
 
-const colourRainArray=["#03045E","#0077B6","#00B4D8","#90E0EF","#CAF0F8"]
+const colourRainArray=["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", "#08306b"].reverse()
+
 let max=0
 
 
 
 function FindVertical(Seminar){let R;Object.keys(AVSIncome).forEach(r=>{if(Seminar in AVSIncome[r]){R=r};});return R;}
 
-let dataExpense
-
 async function handleChartAsync() {
 
 console.log("chart start")
 
 dataIncome=AVSIncome
-dataExpense=CategoryObjectExpense
+
 
 Object.values(dataIncome).forEach(r=>r.value>max?max=r.value:max+=0)
 
 LoadIncome()
+
+LoadExpense()
 
 Show('Loading',0)
 

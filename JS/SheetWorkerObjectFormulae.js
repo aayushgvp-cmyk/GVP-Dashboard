@@ -1,5 +1,7 @@
 let COLS={}
 
+let COLE={}
+
 let PASSWORD
 
 console.time("Password given in")
@@ -40,7 +42,7 @@ XLSX.utils.book_append_sheet(workbook,worksheet,"Income");
 XLSX.writeFile(workbook,'Export.xlsx');
 }
 
-async function ImportData(TYPE){
+async function ImportData(TYPE,HeaderArray){
 console.time(`${TYPE} data imported in`);
 let url;
 url="1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw";
@@ -48,14 +50,15 @@ const RESPONSE=await fetch(`https://opensheet.elk.sh/${url}/${TYPE}`);
 if (!RESPONSE.ok) throw new Error('Network response was not ok');
 const arrayOfObjects = await RESPONSE.json();
 const headers=Object.keys(arrayOfObjects[0]);
-headers.forEach((H,i)=>COLS[H]=i)
-COLS.Month=Object.keys(COLS).length;
+headers.forEach((H,i)=>HeaderArray[H]=i)
+HeaderArray.Month=Object.keys(HeaderArray).length;
 RD=arrayOfObjects.map(obj => Object.keys(arrayOfObjects[0]).map(key => obj[key]));
-RD=RD.filter(r=>(r[COLS.Amount]));
-RD.forEach(r=>{r[COLS.Amount]=r[COLS.Amount].replaceAll(",","")});
-RD.forEach(r=>r[COLS.Amount]=parseFloat(r[COLS.Amount]));
+RD=RD.filter(r=>(r[HeaderArray.Amount]));
+RD.forEach(r=>{r[HeaderArray.Amount]=r[HeaderArray.Amount].replaceAll(",","")});
+RD.forEach(r=>r[HeaderArray.Amount]=parseFloat(r[HeaderArray.Amount]));
 console.timeEnd(`${TYPE} data imported in`);
 
+console.log(RD)
 
 console.time("Data filtered in")
 const ADMINRESPONSE=await fetch('https://opensheet.elk.sh/1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw/Access')
@@ -70,6 +73,6 @@ RD=RD.filter(r=>AR[adminHeaders.indexOf(String(r[COLS.Vertical]).slice(0,1))]==1
 
 console.timeEnd("Data filtered in")
 
-RD.forEach(r=>r[COLS.Month]=ymdToM(r[COLS.Date]))
+RD.forEach(r=>r[HeaderArray.Month]=ymdToM(r[HeaderArray.Date]))
 return RD
 }
