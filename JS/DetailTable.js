@@ -26,21 +26,24 @@ data:DTData
 }
 
 function ReloadDetail(){
-SetVariables()
-
-DTData=[]
-let i=0
-rawDataIncome.forEach(r=>{
-
-if(RunFilters(r)){DTData[i]=r;i++}
-
-})
-
-DTGrid.updateConfig({data:DTData,language: {'noRecordsFound': 'No records found'}}).forceRender()
-
-
+    SetVariables()
+    DTData=[]
+    let i=0
+    rawDataIncome.forEach(r=>{
+        if(RunFilters(r)){DTData[i]=r;i++}
+    })
+    DTGrid.updateConfig({data:DTData,language: {'noRecordsFound': 'No records found'}}).forceRender()
 }
 
+function ReloadDetailE(){
+    SetVariablesE()
+    DTData=[]
+    let i=0
+    rawDataExpense.forEach(r=>{
+        if(RunFiltersE(r)){DTData[i]=r;i++}
+    })
+    DTGrid.updateConfig({data:DTData,language: {'noRecordsFound': 'No records found'}}).forceRender()
+}
 
 
 

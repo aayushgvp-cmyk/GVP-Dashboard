@@ -17,9 +17,13 @@ dataIncome=AVSIncome
 Object.values(dataIncome).forEach(r=>r.value>max?max=r.value:max+=0)
 
 LoadIncome()
+HideDDE();
+ShowDD();
+DealignDD();
 
 LoadExpense()
-
+Show('VEC',0);
+Show('SEC',0);
 Show('Loading',0)
 
 VDD.addEventListener("change",OnSwitch)
@@ -29,5 +33,13 @@ LDD.addEventListener("change",OnSwitch)
 YDD.addEventListener("change",OnSwitch)
 DS.addEventListener("click",DownloadExcelS)
 DD.addEventListener("click",DownloadExcelD)
+
+VEDD.addEventListener("change",OnSwitchE)
+MEDD.addEventListener("change",OnSwitchE)
+SEDD.addEventListener("change",OnSESwitchE)
+LEDD.addEventListener("change",OnSwitchE)
+YEDD.addEventListener("change",OnSwitchE)
+CDD.addEventListener("change",OnSwitchE)
+SCDD.addEventListener("change",OnSCSwitchE)
 console.log("chart end")
 }

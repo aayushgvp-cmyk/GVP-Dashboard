@@ -3,6 +3,10 @@ let AVSIncome={} /*AV,AVS*/, AMIncome={} /*AM*/, ObjectExpense={} /*CE*/, CumInc
 let rawDataIncome, rawDataExpense
 let totalIncome, TotalExpense
 let VerticalArray=[]
+
+
+
+
 async function handleFileAsync() {
 let CumulativeIncome
 
@@ -44,7 +48,7 @@ OPTION.value=i;
 SELECT_TAG.appendChild(CLONE)
 })}
 
-SeminarArray=[...new Set(rawDataIncome.map(r=>`${r[COLS.Vertical]} : ${r[COLS.Seminar]}`))].sort()
+SeminarArray=[...new Set(rawDataIncome.map(r=>`${r[COLS.Vertical]}:${r[COLS.Seminar]}`))].sort()
 {
 const SELECT_TAG0=document.querySelector('#SDD');
 const TEMPLATE0=document.querySelector('#STemplate');
@@ -74,7 +78,7 @@ Object.values(ObjectExpense).forEach(r=>totalExpense+=r.value)
 LocationArrayE=[...new Set(rawDataExpense.map(r=>r[COLE.Location]))].sort()
 {const SELECT_TAG=document.querySelector('#LEDD');
 const TEMPLATE=document.querySelector('#LETemplate');
-LocationArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+LocationArrayE.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
 const OPTION=CLONE.querySelector('.LocationEOptionClass');
 OPTION.textContent=v;
 OPTION.value=i+1;
@@ -84,7 +88,7 @@ SELECT_TAG.appendChild(CLONE)
 FYArrayE=[...new Set(rawDataExpense.map(r=>r[COLE.FY]))].sort()
 {const SELECT_TAG=document.querySelector('#YEDD');
 const TEMPLATE=document.querySelector('#YETemplate');
-FYArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+FYArrayE.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
 const OPTION=CLONE.querySelector('.FYEOptionClass');
 OPTION.textContent=v;
 OPTION.value=i+1;
@@ -94,18 +98,18 @@ SELECT_TAG.appendChild(CLONE)
 VerticalArrayE=[...new Set(rawDataExpense.map(r=>r[COLE.Vertical]))].sort()
 {const SELECT_TAG=document.querySelector('#VEDD');
 const TEMPLATE=document.querySelector('#VETemplate');
-VerticalArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+VerticalArrayE.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
 const OPTION=CLONE.querySelector('.verticalEOptionClass');
 OPTION.textContent=v;
 OPTION.value=i+1;
 SELECT_TAG.appendChild(CLONE)
 })}
 
-SeminarArrayE=[...new Set(rawDataExpense.map(r=>`${r[COLE.Vertical]} : ${r[COLS.Seminar]}`))].sort()
+SeminarArrayE=[...new Set(rawDataExpense.map(r=>`${r[COLE.Vertical]}:${r[COLS.Seminar]}`))].sort()
 {
 const SELECT_TAG0=document.querySelector('#SEDD');
 const TEMPLATE0=document.querySelector('#SETemplate');
-SeminarArray.forEach((v,i)=>{const CLONE0=TEMPLATE0.content.cloneNode(true);
+SeminarArrayE.forEach((v,i)=>{const CLONE0=TEMPLATE0.content.cloneNode(true);
 const OPTION0=CLONE0.querySelector('.seminarEOptionClass');
 OPTION0.textContent=v;
 OPTION0.value=i+1;
@@ -115,25 +119,30 @@ SELECT_TAG0.appendChild(CLONE0)
 OnlySeminarArrayE=[]
 SeminarArrayE.forEach((S,i)=>OnlySeminarArrayE[i]=SVToS(S))
 
+console.log(VerticalArrayE,SeminarArrayE,OnlySeminarArrayE)
+
 CategoryArray=[...new Set(rawDataExpense.map(r=>r[COLE.Category]))].sort()
 {const SELECT_TAG=document.querySelector('#CDD');
 const TEMPLATE=document.querySelector('#CTemplate');
-FYArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+CategoryArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
 const OPTION=CLONE.querySelector('.COptionClass');
 OPTION.textContent=v;
 OPTION.value=i+1;
 SELECT_TAG.appendChild(CLONE)
 })}
 
-SCArray=[...new Set(rawDataExpense.map(r=>r[COLE.Subcategory]))].sort()
+SCArray=[...new Set(rawDataExpense.map(r=>`${r[COLE.Category]}:${r[COLE.Subcategory]}`))].sort()
 {const SELECT_TAG=document.querySelector('#SCDD');
 const TEMPLATE=document.querySelector('#SCTemplate');
-FYArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+SCArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
 const OPTION=CLONE.querySelector('.SCOptionClass');
 OPTION.textContent=v;
 OPTION.value=i+1;
 SELECT_TAG.appendChild(CLONE)
 })}
+
+OnlySCArray=[]
+SCArray.forEach((S,i)=>OnlySCArray[i]=SVToS(S))
 
 
 //Headers
@@ -164,7 +173,7 @@ return (IncomeToIncentive(CumIncome[mToM(CURRENTMONTH)].value,CURRENTMONTH)-Inco
 console.timeEnd("Data imported and processed in")
 
 console.time("Charts made in")
-handleChartAsync();Show('LeftHandMenu',1);Show('VC',0);Show('MC',1);Show('SC',0);Show('LC',1);Show('YC',1);Show('DS',1);Show('DD',1);
+handleChartAsync();Show('LeftHandMenu',1);Show('DS',1);Show('DD',1);
 console.timeEnd("Charts made in")
 
 MakeDT()
