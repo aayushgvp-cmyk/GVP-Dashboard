@@ -6,6 +6,8 @@ DTGrid=new gridjs.Grid({
 columns:HEADERS,
 search: true,
 fixedHeader: true,
+resizable:true,
+height:"85vh",
 pagination: {limit:20,buttonsCount:7,resetPageOnUpdate:true,summary: true},
 plugins:[{
     id: 'limitInput',
