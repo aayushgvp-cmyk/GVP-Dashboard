@@ -19,6 +19,8 @@ Object.values(dataIncome).forEach(r=>r.value>max?max=r.value:max+=0)
 LoadIncome()
 HideDDE();
 ShowDD();
+Show('VC',0);
+Show('SC',0);
 DealignDD();
 
 LoadExpense()
@@ -41,5 +43,6 @@ LEDD.addEventListener("change",OnSwitchE)
 YEDD.addEventListener("change",OnSwitchE)
 CDD.addEventListener("change",OnSwitchE)
 SCDD.addEventListener("change",OnSCSwitchE)
+TDD.addEventListener("change",OnSwitchE)
 console.log("chart end")
 }

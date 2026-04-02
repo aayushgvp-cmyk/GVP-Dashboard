@@ -27,13 +27,9 @@ function UpdateChart(){
 	FilterAndReload(NEWDATA,Type);
 }
 function ReplaceData(newData){
-	let REFINED_DATA={};
-	Object.keys(newData).forEach(k=>{
-		{REFINED_DATA[k]=newData[k]}
-	});
-	IncomeChart.data.datasets[0].data=Object.values(REFINED_DATA);
-	IncomeChart.data.labels=Object.keys(REFINED_DATA);max=0;
-	Object.values(REFINED_DATA).forEach(r=>r.value>max?max=r.value:max+=0);
+	IncomeChart.data.datasets[0].data=Object.values(newData);
+	IncomeChart.data.labels=Object.keys(newData);max=0;
+	max=Math.max(...Object.values(newData));
 	IncomeChart.options.scales.y.max=1.2*max;
 	UPDATE();
 }

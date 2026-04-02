@@ -57,9 +57,6 @@ RD=RD.filter(r=>(r[HeaderArray.Amount]));
 RD.forEach(r=>{r[HeaderArray.Amount]=r[HeaderArray.Amount].replaceAll(",","")});
 RD.forEach(r=>r[HeaderArray.Amount]=parseFloat(r[HeaderArray.Amount]));
 console.timeEnd(`${TYPE} data imported in`);
-
-console.log(RD)
-
 console.time("Data filtered in")
 const ADMINRESPONSE=await fetch('https://opensheet.elk.sh/1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw/Access')
 if (!ADMINRESPONSE.ok) throw new Error('Admin network response was not ok');

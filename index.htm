@@ -89,292 +89,304 @@
 				</td>
 			</tr>
 		</table>
-		/div>
-		<div id="DetailTable" style="position:absolute;top:250px">
-		</div>
+	</div>
+	<div id="DetailTable" style="position:absolute;top:250px"></div>
 
-		<div style="position:absolute;left:450px;top:160px;width:20%;z-index:0;" id="Loading">
-			<img src="Assets/LoadingGif.gif" style="width:50%;">
-		</div>
-		<div style="position:absolute;left:80%;top:80px" id="chartIncomeBack" onmousedown="OnBack()">
-			<h2>
-				BACK
-			</h2>
-		</div>
-
-		<div id="CC" style="position:absolute;right:5%;top:60px;z-index:2">
-			<label for="CDD">Category: 
-			</label>
-			<select id="CDD">
-				<option value=0>
-					All
-				</option>
-			</select>
-			<template id="CTemplate">
-				<option class="COptionClass">
-				</option>
-			</template>
-		</div>
-
-		<div id="SCC" style="position:absolute;right:5%;top:60px;z-index:2">
-			<label for="SCDD">Sub-Category: 
-			</label>
-			<select id="SCDD">
-				<option value=0>
-					All
-				</option>
-			</select>
-			<template id="SCTemplate">
-				<option class="SCOptionClass">
-				</option>
-			</template>
-		</div>
-
-		<div id="VEC" style="position:absolute;right:5%;top:60px;z-index:2">
-			<label for="VEDD">
-				Vertical: 
-			</label>
-			<select id="VEDD">
-				<option value=0>
-					All
-				</option>
-			</select>
-			<template id="VETemplate">
-				<option class="verticalEOptionClass">
-				</option>
-			</template>
-		</div>
-
-		<div id="MEC" style="position:absolute;right:5%;top:60px;z-index:2">
-			<label for="MEDD">
-				Month: 
-			</label>
-			<select id="MEDD">
-				<option value=0>
-					All
-				</option>
-				<option value=1>
-					April
-				</option>
-				<option value=2>
-					May
-				</option>
-				<option value=3>
-					June
-				</option>
-				<option value=4>
-					July
-				</option>
-				<option value=5>
-					August
-				</option>
-				<option value=6>
-					September
-				</option>
-				<option value=7>
-					October
-				</option>
-				<option value=8>
-					November
-				</option>
-				<option value=9>
-					December
-				</option>
-				<option value=10>
-					January
-				</option>
-				<option value=11>
-					February
-				</option>
-				<option value=12>
-					March
-				</option>
-			</select>
-		</div>
-
-		<div id="SEC" style="position:absolute;right:5%;top:60px;z-index:2">
-			<label for="SEDD">
-				Seminar: 
-			</label>
-			<select id="SEDD">
-				<option value=0>
-					All
-				</option>
-			</select>
-			<template id="SETemplate">
-				<option class="seminarEOptionClass">
-				</option>
-			</template>
-		</div>
-
-		<div id="LEC" style="position:absolute;right:5%;top:60px;z-index:2">
-			<label for="LEDD">Location: 
-			</label>
-			<select id="LEDD">
-				<option value=0>
-					All
-				</option>
-			</select>
-			<template id="LETemplate">
-				<option class="LocationEOptionClass">
-				</option>
-			</template>
-		</div>
-
-		<div id="YEC" style="position:absolute;right:5%;top:60px;z-index:2">
-			<label for="YEDD">
-				Fiscal Year: 
-			</label>
-			<select id="YEDD">
-				<option value=0>
-					All
-				</option>
-			</select>
-			<template id="YETemplate">
-				<option class="FYEOptionClass">
-				</option>
-			</template>
-		</div>
+	<div style="position:absolute;left:450px;top:160px;width:20%;z-index:0;" id="Loading">
+		<img src="Assets/LoadingGif.gif" style="width:50%;">
+	</div>
+	<div style="position:absolute;left:80%;top:80px" id="chartIncomeBack" onmousedown="OnBack()">
+		<h2>
+			BACK
+		</h2>
+	</div>
 
 
-		<div id="VC" style="position:absolute;right:5%;top:60px;z-index:2">
-			<label for="VDD">
-				Vertical: 
-			</label>
-			<select id="VDD">
-				<option value=-1>
-					All
-				</option>
-			</select>
-			<template id="VTemplate">
-				<option class="verticalOptionClass">
-				</option>
-			</template>
-		</div>
+	<div id="TC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="TDD">Type: 
+		</label>
+		<select id="TDD">
+			<option value=0>
+				All
+			</option>
+		</select>
+		<template id="TTemplate">
+			<option class="TOptionClass">
+			</option>
+		</template>
+	</div>
 
-		<div id="MC" style="position:absolute;right:5%;top:60px;z-index:2">
-			<label for="MDD">
-				Month: 
-			</label>
-			<select id="MDD">
-				<option value=0>
-					All
-				</option>
-				<option value=1>
-					April
-				</option>
-				<option value=2>
-					May
-				</option>
-				<option value=3>
-					June
-				</option>
-				<option value=4>
-					July
-				</option>
-				<option value=5>
-					August
-				</option>
-				<option value=6>
-					September
-				</option>
-				<option value=7>
-					October
-				</option>
-				<option value=8>
-					November
-				</option>
-				<option value=9>
-					December
-				</option>
-				<option value=10>
-					January
-				</option>
-				<option value=11>
-					February
-				</option>
-				<option value=12>
-					March
-				</option>
-			</select>
-		</div>
+	<div id="CC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="CDD">Category: 
+		</label>
+		<select id="CDD">
+			<option value=0>
+				All
+			</option>
+		</select>
+		<template id="CTemplate">
+			<option class="COptionClass">
+			</option>
+		</template>
+	</div>
 
-		<div id="SC" style="position:absolute;right:5%;top:60px;z-index:2">
-			<label for="SDD">
-				Seminar: 
-			</label>
-			<select id="SDD">
-				<option value=-1>
-					All
-				</option>
-			</select>
-			<template id="STemplate">
-				<option class="seminarOptionClass">
-				</option>
-			</template>
-		</div>
+	<div id="SCC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="SCDD">Sub-Category: 
+		</label>
+		<select id="SCDD">
+			<option value=0>
+				All
+			</option>
+		</select>
+		<template id="SCTemplate">
+			<option class="SCOptionClass">
+			</option>
+		</template>
+	</div>
 
-		<div id="LC" style="position:absolute;right:5%;top:60px;z-index:2">
-			<label for="LDD">
-				Location: 
-			</label>
-			<select id="LDD">
-				<option value=0>
-					All
-				</option>
-			</select>
-			<template id="LTemplate">
-				<option class="LocationOptionClass">
-				</option>
-			</template>
-		</div>
+	<div id="VEC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="VEDD">
+			Vertical: 
+		</label>
+		<select id="VEDD">
+			<option value=0>
+				All
+			</option>
+		</select>
+		<template id="VETemplate">
+			<option class="verticalEOptionClass">
+			</option>
+		</template>
+	</div>
 
-		<div id="YC" style="position:absolute;right:5%;top:60px;z-index:2">
-			<label for="YDD">
-				Fiscal Year: 
-			</label>
-			<select id="YDD">
-				<option value=0>
-					All
-				</option>
-			</select>
-			<template id="YTemplate">
-				<option class="FYOptionClass">
-				</option>
-			</template>
-		</div>
+	<div id="MEC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="MEDD">
+			Month: 
+		</label>
+		<select id="MEDD">
+			<option value=0>
+				All
+			</option>
+			<option value=1>
+				April
+			</option>
+			<option value=2>
+				May
+			</option>
+			<option value=3>
+				June
+			</option>
+			<option value=4>
+				July
+			</option>
+			<option value=5>
+				August
+			</option>
+			<option value=6>
+				September
+			</option>
+			<option value=7>
+				October
+			</option>
+			<option value=8>
+				November
+			</option>
+			<option value=9>
+				December
+			</option>
+			<option value=10>
+				January
+			</option>
+			<option value=11>
+				February
+			</option>
+			<option value=12>
+				March
+			</option>
+		</select>
+	</div>
 
-		<div style="position:absolute;right:5%;top:220px;z-index:2" id="DS">
-			<h3>
-				Download (Summarized)
-			</h3>
-		</div>
-		<div style="position:absolute;right:5%;top:240px;z-index:2" id="DD">
-			<h3>
-				Download (Detailed)
-			</h3>
-		</div>
+	<div id="SEC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="SEDD">
+			Seminar: 
+		</label>
+		<select id="SEDD">
+			<option value=0>
+				All
+			</option>
+		</select>
+		<template id="SETemplate">
+			<option class="seminarEOptionClass">
+			</option>
+		</template>
+	</div>
 
-		<div class="chartClass" id="IncomeChartDiv">
-			<canvas id="IncomeChartHTML"></canvas>
-		</div>
-		<div class="chartClass" id="ExpenseChartDiv">
-			<canvas id="ExpenseChartHTML"></canvas>
-		</div>
+	<div id="LEC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="LEDD">Location: 
+		</label>
+		<select id="LEDD">
+			<option value=0>
+				All
+			</option>
+		</select>
+		<template id="LETemplate">
+			<option class="LocationEOptionClass">
+			</option>
+		</template>
+	</div>
 
-	</body>
-	<script src="JS/Math.js"></script>
-	<script src="JS/Work.js"></script>
-	<script>Show('DetailTable',0);Show('chartIncomeBack',0);Show('CC',0);Show('SCC',0);Show('VEC',0);Show('MEC',0);Show('SEC',0);Show('LEC',0);Show('YEC',0);Show('VC',0);Show('MC',0);Show('SC',0);Show('LC',0);Show('YC',0);Show('LeftHandMenu',0);Show('DS',0);Show('DD',0);Show('ExpenseChartDiv',0);</script>
-	<script src="JS/chart.umd.min.js"></script>
-	<script src="JS/xlsx.full.min.js"></script>
-	<script src="JS/Grid.js"></script>
-	<script src="JS/ChartJSPlugins.js"></script>
-	<script src="PS.js"></script>
-	<script src="JS/SheetWorkerObjectFormulae.js"></script>
-	<script src="JS/SheetWorker.js"></script>
-	<script src="JS/DetailTable.js"></script>
-	<script src="JS/IncomeChart.js"></script>
-	<script src="JS/ExpenseChart.js"></script>
-	<script src="JS/GraphLoader.js"></script>
+	<div id="YEC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="YEDD">
+			Fiscal Year: 
+		</label>
+		<select id="YEDD">
+			<option value=0>
+				All
+			</option>
+		</select>
+		<template id="YETemplate">
+			<option class="FYEOptionClass">
+			</option>
+		</template>
+	</div>
+
+
+	<div id="VC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="VDD">
+			Vertical: 
+		</label>
+		<select id="VDD">
+			<option value=-1>
+				All
+			</option>
+		</select>
+		<template id="VTemplate">
+			<option class="verticalOptionClass">
+			</option>
+		</template>
+	</div>
+
+	<div id="MC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="MDD">
+			Month: 
+		</label>
+		<select id="MDD">
+			<option value=0>
+				All
+			</option>
+			<option value=1>
+				April
+			</option>
+			<option value=2>
+				May
+			</option>
+			<option value=3>
+				June
+			</option>
+			<option value=4>
+				July
+			</option>
+			<option value=5>
+				August
+			</option>
+			<option value=6>
+				September
+			</option>
+			<option value=7>
+				October
+			</option>
+			<option value=8>
+				November
+			</option>
+			<option value=9>
+				December
+			</option>
+			<option value=10>
+				January
+			</option>
+			<option value=11>
+				February
+			</option>
+			<option value=12>
+				March
+			</option>
+		</select>
+	</div>
+
+	<div id="SC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="SDD">
+			Seminar: 
+		</label>
+		<select id="SDD">
+			<option value=-1>
+				All
+			</option>
+		</select>
+		<template id="STemplate">
+			<option class="seminarOptionClass">
+			</option>
+		</template>
+	</div>
+
+	<div id="LC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="LDD">
+			Location: 
+		</label>
+		<select id="LDD">
+			<option value=0>
+				All
+			</option>
+		</select>
+		<template id="LTemplate">
+			<option class="LocationOptionClass">
+			</option>
+		</template>
+	</div>
+
+	<div id="YC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="YDD">
+			Fiscal Year: 
+		</label>
+		<select id="YDD">
+			<option value=0>
+				All
+			</option>
+		</select>
+		<template id="YTemplate">
+			<option class="FYOptionClass">
+			</option>
+		</template>
+	</div>
+
+	<div style="position:absolute;right:5%;top:220px;z-index:2" id="DS">
+		<h3>
+			Download (Summarized)
+		</h3>
+	</div>
+	<div style="position:absolute;right:5%;top:240px;z-index:2" id="DD">
+		<h3>
+			Download (Detailed)
+		</h3>
+	</div>
+
+	<div class="chartClass" id="IncomeChartDiv"><canvas id="IncomeChartHTML"></canvas></div>
+	<div class="chartClass" id="ExpenseChartDiv">
+		<canvas id="ExpenseChartHTML"></canvas>
+	</div>
+
+</body>
+<script src="JS/Math.js"></script>
+<script src="JS/Work.js"></script>
+<script>Show('DetailTable',0);Show('chartIncomeBack',0);Show('CC',0);Show('TC',0);Show('SCC',0);Show('VEC',0);Show('MEC',0);Show('SEC',0);Show('LEC',0);Show('YEC',0);Show('VC',0);Show('MC',0);Show('SC',0);Show('LC',0);Show('YC',0);Show('LeftHandMenu',0);Show('DS',0);Show('DD',0);Show('ExpenseChartDiv',0);</script>
+<script src="JS/chart.umd.min.js"></script>
+<script src="JS/xlsx.full.min.js"></script>
+<script src="JS/Grid.js"></script>
+<script src="JS/ChartJSPlugins.js"></script>
+<script src="PS.js"></script>
+<script src="JS/SheetWorkerObjectFormulae.js"></script>
+<script src="JS/SheetWorker.js"></script>
+<script src="JS/DetailTable.js"></script>
+<script src="JS/IncomeChart.js"></script>
+<script src="JS/ExpenseChart.js"></script>
+<script src="JS/GraphLoader.js"></script>
 </html>

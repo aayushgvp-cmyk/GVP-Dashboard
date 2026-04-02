@@ -1,5 +1,5 @@
 
-let AVSIncome={} /*AV,AVS*/, AMIncome={} /*AM*/, ObjectExpense={} /*CE*/, CumIncome={}, MonthIncomeFull={}, CumIncentive={}, VMSIncome={} /*VM,VMS*/,MVIncome={} /*MV*/
+let AVSIncome={}, AMIncome={}, ObjectExpense={}, CumIncome={}, MonthIncomeFull={}, CumIncentive={}
 let rawDataIncome, rawDataExpense
 let totalIncome, TotalExpense
 let VerticalArray=[]
@@ -11,12 +11,14 @@ async function handleFileAsync() {
 let CumulativeIncome
 
 
-rawDataIncome=await ImportData("Income",COLS)
+
 
 
 
 
 console.time("Data imported and processed in")
+
+rawDataIncome=await ImportData("Income",COLS)
 
 LocationArray=[...new Set(rawDataIncome.map(r=>r[COLS.Location]))].sort()
 {const SELECT_TAG=document.querySelector('#LDD');
@@ -70,8 +72,6 @@ rawDataExpense=await ImportData("Expense",COLE)
 {const PARAMETER='Vertical',COLCHOICE=COLE[`Vertical`];
 rawDataExpense.forEach(r=>{if(`${r[COLCHOICE]}` in ObjectExpense){}else{ObjectExpense[r[COLCHOICE]]={value:0}};ObjectExpense[r[COLCHOICE]]['value']+=r[COLE.Amount]});}
 
-console.log(ObjectExpense)
-
 totalExpense=0
 Object.values(ObjectExpense).forEach(r=>totalExpense+=r.value)
 
@@ -119,8 +119,6 @@ SELECT_TAG0.appendChild(CLONE0)
 OnlySeminarArrayE=[]
 SeminarArrayE.forEach((S,i)=>OnlySeminarArrayE[i]=SVToS(S))
 
-console.log(VerticalArrayE,SeminarArrayE,OnlySeminarArrayE)
-
 CategoryArray=[...new Set(rawDataExpense.map(r=>r[COLE.Category]))].sort()
 {const SELECT_TAG=document.querySelector('#CDD');
 const TEMPLATE=document.querySelector('#CTemplate');
@@ -144,6 +142,20 @@ SELECT_TAG.appendChild(CLONE)
 OnlySCArray=[]
 SCArray.forEach((S,i)=>OnlySCArray[i]=SVToS(S))
 
+try{
+TypeArray=[...new Set(rawDataExpense.map(r=>r[COLE.Type]))].sort()
+{const SELECT_TAG=document.querySelector('#TDD');
+const TEMPLATE=document.querySelector('#TTemplate');
+TypeArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+const OPTION=CLONE.querySelector('.TOptionClass');
+OPTION.textContent=v;
+OPTION.value=i+1;
+SELECT_TAG.appendChild(CLONE)
+})}
+
+console.log(TypeArray)
+}
+catch(err){console.log('Type template failed due to:',err)}
 
 //Headers
 HEADERS=Object.keys(COLS)
