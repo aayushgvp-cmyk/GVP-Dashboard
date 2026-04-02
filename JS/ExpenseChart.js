@@ -157,42 +157,44 @@ function OnMenuEClick(Choice){
 	ResetDDE();
 	Show('IncomeChartDiv',0)
 	Show('ExpenseChartDiv',1)
+	Show('PLChartDiv',0)
 	Show('chartIncomeBack',0)
 	Show('DetailTable',0);
 	SetVariablesE();
 	ShowDDE();
 	HideDD();
+	HideDDP();
 	DealignDDE();
 	switch(Choice){
 	case -1:
 		Show('VEC',0);
 		Show('SEC',0);
-		NewTitleE(`Vertical-Wise Income`)
+		NewTitleE(`Vertical-Wise Expenses`)
 		document.getElementById('VEDD').value=0;
 		document.getElementById('SEDD').value=0;
 		break;
 	case -2:
 		Show('SEC',0);
-		NewTitleE(`Seminar-Wise Income`)
+		NewTitleE(`Seminar-Wise Expenses`)
 		document.getElementById('VEDD').value=1;
 		document.getElementById('SEDD').value=0;
 		break;
 	case -3:
 		Show('CC',0);
 		Show('SCC',0);
-		NewTitleE(`Category-Wise Income`)
+		NewTitleE(`Category-Wise Expenses`)
 		document.getElementById('CDD').value=0;
 		document.getElementById('SCDD').value=0;
 		break;
 	case -4:
 		Show('SCC',0);
-		NewTitleE(`Subcategory-Wise Income`)
+		NewTitleE(`Subcategory-Wise Expenses`)
 		document.getElementById('CDD').value=1;
 		document.getElementById('SCDD').value=0;
 		break;
 	case -5:
 		Show('MC',0);
-		NewTitleE('Month-Wise Income');
+		NewTitleE('Month-Wise Expenses');
 		document.getElementById.value=0
 		break;
 	}

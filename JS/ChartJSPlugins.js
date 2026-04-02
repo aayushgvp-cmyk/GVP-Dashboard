@@ -103,15 +103,15 @@ const topLabelsPluginK = {
     chart.getDatasetMeta(0).data.forEach((bar, index) => {
       const value = dataset.data[index];
       const percent = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
-      const formattedValue = value >= 1000 ? `${Math.floor(value / 1000)}K` : value;
+      const formattedValue = TakeMod(value) >= 1000 ? `${Math.floor(value / 1000)}K` : value;
 
       // Draw Value (Top line, moved higher)
       ctx.font = 'bold 12px sans-serif';
-      ctx.fillText(formattedValue, bar.x, bar.y - 20); 
+      ctx.fillText(formattedValue, bar.x, (value>0?bar.y:chart.scales.y.getPixelForValue(0))-20); 
       
       // Draw Percentage (Bottom line, moved higher)
       ctx.font = 'normal 11px sans-serif';
-      ctx.fillText(`(${percent}%)`, bar.x, bar.y - 5);
+      ctx.fillText(`(${percent}%)`, bar.x, (value>0?bar.y:chart.scales.y.getPixelForValue(0))-5);
     });
 
     ctx.restore();

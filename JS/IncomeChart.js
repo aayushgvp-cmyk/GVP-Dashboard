@@ -161,10 +161,12 @@ function OnMenuClick(Choice){
 	Show('DetailTable',0);
 	Show('ExpenseChartDiv',0)
 	Show('IncomeChartDiv',1); 
+	Show('PLChartDiv',0);
 	CHOICE=Choice;
 	SetVariables()
 	ShowDD();
 	HideDDE();
+	HideDDP();
 	DealignDD()
 	switch(CHOICE){
 	case 1: 
@@ -227,6 +229,15 @@ function OnBack(){
 	case 5:
 		CHOICE=3+Memory;
 		break;
+	case 12:
+		CHOICE=11;
+		break;
+	case 13:
+		CHOICE=12;
+		break;
+	case 15:
+		CHOICE=13+Memory;
+		break;
 	case -1:
 		CHOICE=-5;
 		break;
@@ -240,8 +251,16 @@ function OnBack(){
 		CHOICE=-4;
 		break;
 	}
-	CHOICE>0?OnMenuClick(CHOICE):OnMenuEClick(CHOICE)
-	if([2,3,-3,-4].includes(CHOICE)){
+	if(CHOICE<0){
+		OnMenuEClick(CHOICE)
+	}
+	else if(CHOICE<10){
+		OnMenuClick(CHOICE)
+	}
+	else{
+		OnMenuPClick(CHOICE-10);
+	}
+	if([2,3,12,13,-3,-4].includes(CHOICE)){
 		Show('chartIncomeBack',1)
 	}
 }

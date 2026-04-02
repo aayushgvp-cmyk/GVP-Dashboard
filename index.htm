@@ -56,14 +56,14 @@
 			</tr>
 			<tr style="position:absolute;top:28%;left:20px" onclick="OnMenuEClick(-1)">
 				<td>
-					<h3>Vertical-Wise Income
+					<h3>Vertical-Wise
 					</h3>
 				</td>
 			</tr>
 			<tr style="position:absolute;top:32%;left:20px" onclick="OnMenuEClick(-2)">
 				<td>
 					<h3>
-						Seminar-Wise Income
+						Seminar-Wise
 					</h3>
 				</td>
 			</tr>
@@ -85,6 +85,40 @@
 				<td>
 					<h3>
 						Month-Wise
+					</h3>
+				</td>
+			</tr>
+			<tr style="position:absolute;top:50%;left:20px">
+				<td>
+					<h2>
+						Profit/Loss
+					</h2>
+				</td>
+			</tr>
+			<tr style="position:absolute;top:54%;left:20px" onclick="OnMenuPClick(1)">
+				<td>
+					<h3>Vertical-Wise
+					</h3>
+				</td>
+			</tr>
+			<tr style="position:absolute;top:58%;left:20px" onclick="OnMenuPClick(2)">
+				<td>
+					<h3>
+						Seminar-Wise
+					</h3>
+				</td>
+			</tr>
+			<tr style="position:absolute;top:62%;left:20px" onclick="OnMenuPClick(3)">
+				<td>
+					<h3>
+						Month-Wise
+					</h3>
+				</td>
+			</tr>
+			<tr style="position:absolute;top:64%;left:20px" onclick="OnMenuPClick(4)">
+				<td>
+					<h3>
+						Location-Wise
 					</h3>
 				</td>
 			</tr>
@@ -358,6 +392,115 @@
 		</template>
 	</div>
 
+	<!--  -->
+		<div id="VPC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="VPDD">
+			Vertical: 
+		</label>
+		<select id="VPDD">
+			<option value=0>
+				All
+			</option>
+		</select>
+		<template id="VPTemplate">
+			<option class="VPOptionClass">
+			</option>
+		</template>
+	</div>
+
+	<div id="MPC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="MPDD">
+			Month: 
+		</label>
+		<select id="MPDD">
+			<option value=0>
+				All
+			</option>
+			<option value=1>
+				April
+			</option>
+			<option value=2>
+				May
+			</option>
+			<option value=3>
+				June
+			</option>
+			<option value=4>
+				July
+			</option>
+			<option value=5>
+				August
+			</option>
+			<option value=6>
+				September
+			</option>
+			<option value=7>
+				October
+			</option>
+			<option value=8>
+				November
+			</option>
+			<option value=9>
+				December
+			</option>
+			<option value=10>
+				January
+			</option>
+			<option value=11>
+				February
+			</option>
+			<option value=12>
+				March
+			</option>
+		</select>
+	</div>
+
+	<div id="SPC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="SPDD">
+			Seminar: 
+		</label>
+		<select id="SPDD">
+			<option value=0>
+				All
+			</option>
+		</select>
+		<template id="SPTemplate">
+			<option class="SPOptionClass">
+			</option>
+		</template>
+	</div>
+
+	<div id="LPC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="LPDD">
+			Location: 
+		</label>
+		<select id="LPDD">
+			<option value=0>
+				All
+			</option>
+		</select>
+		<template id="LPTemplate">
+			<option class="LPOptionClass">
+			</option>
+		</template>
+	</div>
+
+	<div id="YPC" style="position:absolute;right:5%;top:60px;z-index:2">
+		<label for="YPDD">
+			Fiscal Year: 
+		</label>
+		<select id="YPDD">
+			<option value=0>
+				All
+			</option>
+		</select>
+		<template id="YPTemplate">
+			<option class="FYPOptionClass">
+			</option>
+		</template>
+	</div>
+	<!--  -->
+
 	<div style="position:absolute;right:5%;top:220px;z-index:2" id="DS">
 		<h3>
 			Download (Summarized)
@@ -369,15 +512,19 @@
 		</h3>
 	</div>
 
-	<div class="chartClass" id="IncomeChartDiv"><canvas id="IncomeChartHTML"></canvas></div>
+	<div class="chartClass" id="IncomeChartDiv">
+		<canvas id="IncomeChartHTML"></canvas>
+	</div>
 	<div class="chartClass" id="ExpenseChartDiv">
 		<canvas id="ExpenseChartHTML"></canvas>
 	</div>
-
+	<div class="chartClass" id="PLChartDiv">
+		<canvas id="PLChartHTML"></canvas>
+	</div>
 </body>
 <script src="JS/Math.js"></script>
 <script src="JS/Work.js"></script>
-<script>Show('DetailTable',0);Show('chartIncomeBack',0);Show('CC',0);Show('TC',0);Show('SCC',0);Show('VEC',0);Show('MEC',0);Show('SEC',0);Show('LEC',0);Show('YEC',0);Show('VC',0);Show('MC',0);Show('SC',0);Show('LC',0);Show('YC',0);Show('LeftHandMenu',0);Show('DS',0);Show('DD',0);Show('ExpenseChartDiv',0);</script>
+<script>Show('DetailTable',0);Show('chartIncomeBack',0);Show('CC',0);Show('TC',0);Show('SCC',0);Show('VEC',0);Show('MEC',0);Show('SEC',0);Show('LEC',0);Show('YEC',0);Show('VC',0);Show('MC',0);Show('SC',0);Show('LC',0);Show('YC',0);Show('VPC',0);Show('MPC',0);Show('SPC',0);Show('LPC',0);Show('YPC',0);Show('LeftHandMenu',0);Show('DS',0);Show('DD',0);Show('ExpenseChartDiv',0);Show('PLChartDiv',0);</script>
 <script src="JS/chart.umd.min.js"></script>
 <script src="JS/xlsx.full.min.js"></script>
 <script src="JS/Grid.js"></script>
@@ -388,5 +535,6 @@
 <script src="JS/DetailTable.js"></script>
 <script src="JS/IncomeChart.js"></script>
 <script src="JS/ExpenseChart.js"></script>
+<script src="JS/PLChart.js"></script>
 <script src="JS/GraphLoader.js"></script>
 </html>

@@ -28,6 +28,8 @@ Show('VEC',0);
 Show('SEC',0);
 Show('Loading',0)
 
+LoadPL()
+
 VDD.addEventListener("change",OnSwitch)
 MDD.addEventListener("change",OnSwitch)
 SDD.addEventListener("change",OnSSwitch)
@@ -44,5 +46,12 @@ YEDD.addEventListener("change",OnSwitchE)
 CDD.addEventListener("change",OnSwitchE)
 SCDD.addEventListener("change",OnSCSwitchE)
 TDD.addEventListener("change",OnSwitchE)
+
+
+VPDD.addEventListener("change",OnSwitchP)
+MPDD.addEventListener("change",OnSwitchP)
+SPDD.addEventListener("change",OnSSwitchP)
+LPDD.addEventListener("change",OnSwitchP)
+YPDD.addEventListener("change",OnSwitchP)
 console.log("chart end")
 }

@@ -152,10 +152,70 @@ OPTION.textContent=v;
 OPTION.value=i+1;
 SELECT_TAG.appendChild(CLONE)
 })}
-
-console.log(TypeArray)
 }
 catch(err){console.log('Type template failed due to:',err)}
+
+
+
+
+
+
+LocationSet=[...new Set([...LocationArray,...LocationArrayE])].sort()
+{const SELECT_TAG=document.querySelector('#LPDD');
+const TEMPLATE=document.querySelector('#LPTemplate');
+LocationSet.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+const OPTION=CLONE.querySelector('.LPOptionClass');
+OPTION.textContent=v;
+OPTION.value=i+1;
+SELECT_TAG.appendChild(CLONE)
+})}
+
+FYSet=[...new Set([...FYArray,...FYArrayE])].sort()
+{const SELECT_TAG=document.querySelector('#YPDD');
+const TEMPLATE=document.querySelector('#YPTemplate');
+FYSet.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+const OPTION=CLONE.querySelector('.FYPOptionClass');
+OPTION.textContent=v;
+OPTION.value=i+1;
+SELECT_TAG.appendChild(CLONE)
+})}
+
+VerticalSet=[...new Set([...VerticalArray,...VerticalArrayE])].sort()
+{const SELECT_TAG=document.querySelector('#VPDD');
+const TEMPLATE=document.querySelector('#VPTemplate');
+VerticalSet.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+const OPTION=CLONE.querySelector('.VPOptionClass');
+OPTION.textContent=v;
+OPTION.value=i+1;
+SELECT_TAG.appendChild(CLONE)
+})}
+
+SeminarSet=[...new Set([...SeminarArray,...SeminarArrayE])].sort()
+{
+const SELECT_TAG0=document.querySelector('#SPDD');
+const TEMPLATE0=document.querySelector('#SPTemplate');
+SeminarSet.forEach((v,i)=>{const CLONE0=TEMPLATE0.content.cloneNode(true);
+const OPTION0=CLONE0.querySelector('.SPOptionClass');
+OPTION0.textContent=v;
+OPTION0.value=i+1;
+SELECT_TAG0.appendChild(CLONE0)
+})}
+
+OnlySeminarSet=[]
+SeminarSet.forEach((S,i)=>OnlySeminarSet[i]=SVToS(S))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Headers
 HEADERS=Object.keys(COLS)

@@ -3,7 +3,7 @@ let DTGrid;
 
 function MakeDT(){
 DTGrid=new gridjs.Grid({
-columns:HEADERS,
+columns:HEADERS.map(H=>{return {name:H,width:'200px'}}),
 search: true,
 fixedHeader: true,
 resizable:true,
@@ -42,6 +42,22 @@ function ReloadDetailE(){
     rawDataExpense.forEach(r=>{
         if(RunFiltersE(r)){DTData[i]=r;i++}
     })
+    DTGrid.updateConfig({data:DTData,language: {'noRecordsFound': 'No records found'}}).forceRender()
+}
+
+function ReloadDetailP(){
+    SetVariablesP()
+    let DTDataI=[]
+    let i=0
+    rawDataIncome.forEach(r=>{
+        if(RunFiltersP(r)){DTDataI[i]=r;i++}
+    })
+    let DTDataE=[]
+    let i2=0
+    rawDataExpense.forEach(r=>{
+        if(RunFiltersP2(r)){DTDataE[i2]=r;DTDataE[i2][COLE.Amount]*=-1;i2++}
+    })
+    DTData=[...DTDataI,...DTDataE]
     DTGrid.updateConfig({data:DTData,language: {'noRecordsFound': 'No records found'}}).forceRender()
 }
 
