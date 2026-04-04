@@ -69,6 +69,21 @@ DataToObject(rawDataIncome,AVSIncome,"VERTICAL")
 
 //                                                                                        Expense
 rawDataExpense=await ImportData("Expense",COLE)
+
+
+
+
+// 1. Freeze every inner row (this stops the sign flip on r[5])
+rawDataExpense.forEach(row => Object.freeze(row));
+
+// 2. Freeze the main array (this stops the list from being changed)
+Object.freeze(rawDataExpense);
+
+rawDataExpense[1]=5
+
+console.log(rawDataExpense)
+
+
 {const PARAMETER='Vertical',COLCHOICE=COLE[`Vertical`];
 rawDataExpense.forEach(r=>{if(`${r[COLCHOICE]}` in ObjectExpense){}else{ObjectExpense[r[COLCHOICE]]={value:0}};ObjectExpense[r[COLCHOICE]]['value']+=r[COLE.Amount]});}
 

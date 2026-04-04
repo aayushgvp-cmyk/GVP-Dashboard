@@ -2,19 +2,22 @@ let PLChart
 
 let VERTICALP,SEMINARP,SEMINARVERTICALP,MONTHP,LOCATIONP,FISCAL_YEARP
 
+function StateVariablesP(){console.log(VERTICALP,SEMINARP,SEMINARVERTICALP,MONTHP,LOCATIONP,FISCAL_YEARP)}
+
 function RunFiltersP(r){
 const OUTPUT=SeekLocationP(LOCATIONP,r)&&SeekVerticalP(VERTICALP,r)&&SeekSeminarP(SEMINARP,r)&&SeekMonthP(MONTHP,r)&&SeekFYP(FISCAL_YEARP,r)
 return OUTPUT
 }
 
 function RunFiltersP2(r){
-const OUTPUT=SeekLocationP2(LOCATIONP,r)&&SeekVerticalP2(VERTICALP,r)&&SeekSeminarP2(SEMINARP,r)&&SeekMonthP2(MONTHP,r)&&SeekFYP2(FISCAL_YEARP,r)
+const OUTPUT=SeekLocationP2(LOCATIONP,r)&&SeekVerticalP2(VERTICALP,r)&&SeekSeminarP2(SEMINARP,r)&&SeekMonthP2(MONTHP,r)&&SeekFYP2(FISCAL_YEARP,r)&&r[COLE.Type]==="Actual"
 return OUTPUT
 }
 
 function UpdateChartP(){
-	NEWDATA=[...rawDataIncome.filter(r=>RunFiltersP(r))]
-	NEWDATA2=[...rawDataExpense.filter(r=>RunFiltersP2(r))]
+		
+	const NEWDATA=rawDataIncome.filter(r=>RunFiltersP(r))
+	const NEWDATA2=rawDataExpense.filter(r=>RunFiltersP2(r))
 	let Type;
 	switch(CHOICE){
 	case 11:
@@ -32,13 +35,14 @@ function UpdateChartP(){
 	}
 	Object1=FilterAndReloadP(NEWDATA,Type);
 	Object2=FilterAndReloadP2(NEWDATA2,Type);
+	console.log(Object1,Object2)
 	let NEWDATAOBJECT=structuredClone(Object1);
 	Object.keys(Object2).forEach(k=>{
 		if(!(k in NEWDATAOBJECT)){
 			NEWDATAOBJECT[k]=0
 		}
-		NEWDATAOBJECT[k]+=Object2[k]
-	})
+		NEWDATAOBJECT[k]-=Object2[k]
+	});	
 	ReplaceDataP(NEWDATAOBJECT)
 }
 function ReplaceDataP(newData){
@@ -89,13 +93,15 @@ function FilterAndReloadP(newdata,Variable){
 	})
 	return NEWDATAOBJECT
 }
+
 function FilterAndReloadP2(newdata,Variable){
 	let NEWDATAOBJECT={};
 	newdata.forEach(r=>{
 		if(!(r[COLE[Variable]] in NEWDATAOBJECT)){
 			NEWDATAOBJECT[r[COLE[Variable]]]=0
 		};
-		NEWDATAOBJECT[r[COLE[Variable]]]-=r[COLE.Amount]
+		console.log(r[COLE[Variable]],":",NEWDATAOBJECT[r[COLE[Variable]]],"+",r[COLE.Amount])
+		NEWDATAOBJECT[r[COLE[Variable]]]+=r[COLE.Amount]
 	})
 	return NEWDATAOBJECT
 }
@@ -193,7 +199,7 @@ function OnMenuPClick(Choice){
 	case 11: 
 		Show('VPC',0); 
 		Show('SPC',0); 
-		NewTitle(`Vertical-Wise Profit/Loss`); 
+		NewTitleP(`Vertical-Wise Profit/Loss`); 
 		document.getElementById('VPDD').value=0;
 		document.getElementById('SPDD').value=0;
 		break;
@@ -202,21 +208,20 @@ function OnMenuPClick(Choice){
 		document.getElementById('VPDD').value==0?document.getElementById('VPDD').value=1:{}
 		document.getElementById('SPDD').value=0;
 		Show('SPC',0); 
-		NewTitle(`Seminar-Wise Profit/Loss`); 
+		NewTitleP(`Seminar-Wise Profit/Loss`); 
 		break;
 	case 13: 
 		Show('MPC',0); 
-		NewTitle(`Month-Wise Profit/Loss`);
+		NewTitleP(`Month-Wise Profit/Loss`);
 		document.getElementById('MPDD').value=0;
 		break;
 	case 14: 
 		Show('LPC',0); 
-		NewTitle(`Location-Wise Profit/Loss`);
+		NewTitleP(`Location-Wise Profit/Loss`);
 		document.getElementById('LPDD').value=0; 
 		break;
 	}
 	SetVariablesP();
-	console.log(VERTICALP,SEMINARP,SEMINARVERTICALP,MONTHP,LOCATIONP,FISCAL_YEARP)
 	UpdateChartP();
 	UPDATEP();
 }
@@ -226,6 +231,7 @@ function OnMenuPClick(Choice){
 //								LOCATION
 function OnSwitchP(){
 	SetVariablesP()
+	StateVariablesP()
 	UpdateChartP();
 	ReloadDetailP();
 	UPDATEP();
@@ -237,7 +243,6 @@ function OnSSwitchP(){
 	document.getElementById('VPDD').value=VerticalSet.indexOf(SVToV(document.getElementById('SPDD').value))+1;
 	OnSwitchP();
 }
-
 
 
 
