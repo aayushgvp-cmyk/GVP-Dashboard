@@ -52,6 +52,7 @@ const arrayOfObjects = await RESPONSE.json();
 const headers=Object.keys(arrayOfObjects[0]);
 headers.forEach((H,i)=>HeaderArray[H]=i)
 HeaderArray.Month=Object.keys(HeaderArray).length;
+HeaderArray["PnL Month"]=Object.keys(HeaderArray).length;
 RD=arrayOfObjects.map(obj => Object.keys(arrayOfObjects[0]).map(key => obj[key]));
 RD=RD.filter(r=>(r[HeaderArray.Amount]));
 RD.forEach(r=>{r[HeaderArray.Amount]=r[HeaderArray.Amount].replaceAll(",","")});
@@ -71,5 +72,7 @@ RD=RD.filter(r=>AR[adminHeaders.indexOf(String(r[COLS.Vertical]).slice(0,1))]==1
 console.timeEnd("Data filtered in")
 
 RD.forEach(r=>r[HeaderArray.Month]=ymdToM(r[HeaderArray.Date]))
+RD.forEach(r=>r[HeaderArray["PnL Month"]]=ymdToM(r[HeaderArray["PnL Date"]]))
+
 return RD
 }

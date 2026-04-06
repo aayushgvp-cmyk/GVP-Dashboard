@@ -27,7 +27,7 @@ function UpdateChartP(){
 		Type='Seminar';
 		break;
 	case 13:
-		Type='Month';
+		Type=MONTH_TYPE_ARRAY[DATE_TYPE_CHOICE];
 		break;
 	case 14:
 		Type='Location';
@@ -35,7 +35,7 @@ function UpdateChartP(){
 	}
 	Object1=FilterAndReloadP(NEWDATA,Type);
 	Object2=FilterAndReloadP2(NEWDATA2,Type);
-	console.log(Object1,Object2)
+	// console.log(Object1,Object2)
 	let NEWDATAOBJECT=structuredClone(Object1);
 	Object.keys(Object2).forEach(k=>{
 		if(!(k in NEWDATAOBJECT)){
@@ -65,14 +65,14 @@ function RealignDDP(){document.getElementById('VPC').style.top="60px";document.g
 function SeekLocationP(L,R){if(L=="All"){return true}else if(R[COLS.Location]==L){return true}else{return false}}
 function SeekVerticalP(V,R){if(V=="All"){return true}else if(R[COLS.Vertical]==V){return true}else{return false}}
 function SeekSeminarP(S,R){if(S=="All"){return true}else if(R[COLS.Seminar]==S){return true}else{return false}}
-function SeekMonthP(M,R){if(M=="All"){return true}else if(R[COLS.Month]==M){return true}else{return false}}
+function SeekMonthP(M,R){if(M=="All"){return true}else if(R[COLS[MONTH_TYPE_ARRAY[DATE_TYPE_CHOICE]]]==M){return true}else{return false}}
 function SeekFYP(Y,R){if(Y=="All"){return true}else if(R[COLS.FY]==Y){return true}else{return false}}
 
 
 function SeekLocationP2(L,R){if(L=="All"){return true}else if(R[COLE.Location]==L){return true}else{return false}}
 function SeekVerticalP2(V,R){if(V=="All"){return true}else if(R[COLE.Vertical]==V){return true}else{return false}}
 function SeekSeminarP2(S,R){if(S=="All"){return true}else if(R[COLE.Seminar]==S){return true}else{return false}}
-function SeekMonthP2(M,R){if(M=="All"){return true}else if(R[COLE.Month]==M){return true}else{return false}}
+function SeekMonthP2(M,R){if(M=="All"){return true}else if(R[COLE[MONTH_TYPE_ARRAY[DATE_TYPE_CHOICE]]]==M){return true}else{return false}}
 function SeekFYP2(Y,R){if(Y=="All"){return true}else if(R[COLE.FY]==Y){return true}else{return false}}
 
 function SetVariablesP(){
@@ -100,7 +100,7 @@ function FilterAndReloadP2(newdata,Variable){
 		if(!(r[COLE[Variable]] in NEWDATAOBJECT)){
 			NEWDATAOBJECT[r[COLE[Variable]]]=0
 		};
-		console.log(r[COLE[Variable]],":",NEWDATAOBJECT[r[COLE[Variable]]],"+",r[COLE.Amount])
+		// console.log(r[COLE[Variable]],":",NEWDATAOBJECT[r[COLE[Variable]]],"+",r[COLE.Amount])
 		NEWDATAOBJECT[r[COLE[Variable]]]+=r[COLE.Amount]
 	})
 	return NEWDATAOBJECT
@@ -185,6 +185,7 @@ function OnMenuPClick(Choice){
 	document.getElementById('chartIncomeBack').style.top='80px'
 	Show('chartIncomeBack',0)
 	Show('DetailTable',0);
+	Show('IncentiveTable',0);
 	Show('ExpenseChartDiv',0)
 	Show('IncomeChartDiv',0);
 	Show('PLChartDiv',1) 
@@ -231,7 +232,7 @@ function OnMenuPClick(Choice){
 //								LOCATION
 function OnSwitchP(){
 	SetVariablesP()
-	StateVariablesP()
+	// StateVariablesP()
 	UpdateChartP();
 	ReloadDetailP();
 	UPDATEP();

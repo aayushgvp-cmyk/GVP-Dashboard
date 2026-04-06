@@ -53,5 +53,15 @@ MPDD.addEventListener("change",OnSwitchP)
 SPDD.addEventListener("change",OnSSwitchP)
 LPDD.addEventListener("change",OnSwitchP)
 YPDD.addEventListener("change",OnSwitchP)
+
+VPDD.addEventListener("change",OnIncentiveChange)
+MPDD.addEventListener("change",OnIncentiveChange)
+YPDD.addEventListener("change",OnIncentiveChange)
+
+DateDD.addEventListener("change",SwapType)
+DateDD.addEventListener("change",OnSwitch)
+DateDD.addEventListener("change",OnSwitchE)
+DateDD.addEventListener("change",OnSwitchP)
+DateDD.addEventListener("change",OnIncentiveChange)
 console.log("chart end")
 }

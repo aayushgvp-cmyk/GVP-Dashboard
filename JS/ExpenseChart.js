@@ -7,7 +7,7 @@ let VERTICALE,SEMINARE,SEMINARVERTICALE,MONTHE,LOCATIONE,FISCAL_YEARE,CATEGORY,S
 function SeekLocationE(L,R){if(L=="All"){return true}else if(R[COLE.Location]==L){return true}else{return false}}
 function SeekVerticalE(V,R){if(V=="All"){return true}else if(R[COLE.Vertical]==V){return true}else{return false}}
 function SeekSeminarE(S,R){if(S=="All"){return true}else if(R[COLE.Seminar]==S){return true}else{return false}}
-function SeekMonthE(M,R){if(M=="All"){return true}else if(R[COLE.Month]==M){return true}else{return false}}
+function SeekMonthE(M,R){if(M=="All"){return true}else if(R[COLE[MONTH_TYPE_ARRAY[DATE_TYPE_CHOICE]]]==M){return true}else{return false}}
 function SeekFYE(Y,R){if(Y=="All"){return true}else if(R[COLE.FY]==Y){return true}else{return false}}
 function SeekCategory(C,R){if(C=="All"){return true}else if(R[COLE.Category]==C){return true}else{return false}}
 function SeekSubcategory(SC,R){if(SC=="All"){return true}else if(R[COLE.Subcategory]==SC){return true}else{return false}}
@@ -37,7 +37,7 @@ function UpdateChartE(){
 		Type='Subcategory'; 
 		break; 
 	case -5: 
-		Type='Month'; 
+		Type=MONTH_TYPE_ARRAY[DATE_TYPE_CHOICE]; 
 		break;
 	}
 	FilterAndReloadE(NEWDATA,Type);
@@ -160,6 +160,7 @@ function OnMenuEClick(Choice){
 	Show('PLChartDiv',0)
 	Show('chartIncomeBack',0)
 	Show('DetailTable',0);
+	Show('IncentiveTable',0);
 	SetVariablesE();
 	ShowDDE();
 	HideDD();

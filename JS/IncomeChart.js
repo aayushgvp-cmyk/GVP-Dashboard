@@ -38,6 +38,7 @@ function UPDATE(){IncomeChart.resize();IncomeChart.update()}
 
 function ShowDD(){Show('VC',1);Show('MC',1);Show('SC',1);Show('LC',1);Show('YC',1);}
 function HideDD(){Show('VC',0);Show('MC',0);Show('SC',0);Show('LC',0);Show('YC',0);}
+function HideDownload(){Show('DS',0);Show('DD',0);}
 function ResetDD(){document.getElementById('VDD').value=-1; document.getElementById('SDD').value=-1; document.getElementById('MDD').value=0; document.getElementById('LDD').value=0; document.getElementById('YDD').value=0;}
 function DealignDD(){document.getElementById('CC').style.top="80px";document.getElementById('SCC').style.top="100px";document.getElementById('VC').style.top="120px";document.getElementById('SC').style.top="140px";document.getElementById('MC').style.top="160px";document.getElementById('LC').style.top="180px";document.getElementById('YC').style.top="200px";}
 DealignDD()
@@ -49,7 +50,7 @@ function SVToV(b){return String(b).slice(0,String(b).indexOf(":"))}
 function SeekLocation(L,R){if(L=="All"){return true}else if(R[COLS.Location]==L){return true}else{return false}}
 function SeekVertical(V,R){if(V=="All"){return true}else if(R[COLS.Vertical]==V){return true}else{return false}}
 function SeekSeminar(S,R){if(S=="All"){return true}else if(R[COLS.Seminar]==S){return true}else{return false}}
-function SeekMonth(M,R){if(M=="All"){return true}else if(ymdToM(R[COLS.Date])==M){return true}else{return false}}
+function SeekMonth(M,R){if(M=="All"){return true}else if(R[COLS[MONTH_TYPE_ARRAY[DATE_TYPE_CHOICE]]]==M){return true}else{return false}}
 function SeekFY(Y,R){if(Y=="All"){return true}else if(R[COLS.FY]==Y){return true}else{return false}}
 
 function SetVariables(){
@@ -73,10 +74,10 @@ function FilterAndReload(newdata,Variable){
 function FilterMonthAndReload(newdata){
 	let NEWDATAOBJECT={};
 	newdata.forEach(r=>{
-		if(!(ymdToM(r[COLS['Date']]) in NEWDATAOBJECT)){
-			NEWDATAOBJECT[ymdToM(r[COLS['Date']])]=0
+		if(!(r[COLS[MONTH_TYPE_ARRAY[DATE_TYPE_CHOICE]]] in NEWDATAOBJECT)){
+			NEWDATAOBJECT[r[COLS[MONTH_TYPE_ARRAY[DATE_TYPE_CHOICE]]]]=0
 		};
-		NEWDATAOBJECT[ymdToM(r[COLS['Date']])]+=r[COLS.Amount]
+		NEWDATAOBJECT[r[COLS[MONTH_TYPE_ARRAY[DATE_TYPE_CHOICE]]]]+=r[COLS.Amount]
 	})
 	ReplaceData(NEWDATAOBJECT);
 }
@@ -159,6 +160,7 @@ function OnMenuClick(Choice){
 	document.getElementById('chartIncomeBack').style.top='80px'
 	Show('chartIncomeBack',0)
 	Show('DetailTable',0);
+	Show('IncentiveTable',0);
 	Show('ExpenseChartDiv',0)
 	Show('IncomeChartDiv',1); 
 	Show('PLChartDiv',0);

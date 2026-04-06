@@ -3,9 +3,15 @@ let AVSIncome={}, AMIncome={}, ObjectExpense={}, CumIncome={}, MonthIncomeFull={
 let rawDataIncome, rawDataExpense
 let totalIncome, TotalExpense
 let VerticalArray=[]
+const DATE_TYPE_ARRAY=["Date","PnL Date"]
+const MONTH_TYPE_ARRAY=["Month","PnL Month"]
+let DATE_TYPE_CHOICE=0
 
+function SwapType(){
+	DATE_TYPE_CHOICE=Number(document.getElementById("DateDD").value)
+}
 
-
+// COLS[MONTH_TYPE_ARRAY[DATE_TYPE_CHOICE]]
 
 async function handleFileAsync() {
 let CumulativeIncome
@@ -263,7 +269,7 @@ console.time("Charts made in")
 handleChartAsync();Show('LeftHandMenu',1);Show('DS',1);Show('DD',1);
 console.timeEnd("Charts made in")
 
-MakeDT()
+MakeDT();MakeIT()
 }
 handleFileAsync()
 
