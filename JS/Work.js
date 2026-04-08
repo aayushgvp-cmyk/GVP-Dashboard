@@ -31,3 +31,4 @@ return parseInt(document.getElementById(a).value);
 function log(a){
  console.log(a)
 }
+

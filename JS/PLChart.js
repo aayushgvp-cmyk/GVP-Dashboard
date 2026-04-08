@@ -57,7 +57,7 @@ function UPDATEP(){PLChart.resize();PLChart.update()}
 
 function ShowDDP(){Show('VPC',1);Show('MPC',1);Show('SPC',1);Show('LPC',1);Show('YPC',1);}
 function HideDDP(){Show('VPC',0);Show('MPC',0);Show('SPC',0);Show('LPC',0);Show('YPC',0);}
-function ResetDDP(){document.getElementById('VPDD').value=0; document.getElementById('SPDD').value=0; document.getElementById('MPDD').value=0; document.getElementById('LPDD').value=0; document.getElementById('YPDD').value=0;}
+function ResetDDP(){document.getElementById('VPDD').value=0;document.getElementById('VPDD2').value=0; document.getElementById('SPDD').value=0; document.getElementById('MPDD').value=0; document.getElementById('LPDD').value=0; document.getElementById('YPDD').value=0;}
 function DealignDDP(){document.getElementById('VPC').style.top="120px";document.getElementById('SPC').style.top="140px";document.getElementById('MPC').style.top="160px";document.getElementById('LPC').style.top="180px";document.getElementById('YPC').style.top="200px";}
 DealignDDP()
 function RealignDDP(){document.getElementById('VPC').style.top="60px";document.getElementById('SPC').style.top="60px";document.getElementById('LPC').style.top="40px";}

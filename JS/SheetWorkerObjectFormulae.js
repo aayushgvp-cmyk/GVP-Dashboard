@@ -1,6 +1,6 @@
 let COLS={}
 
-let COLE={}
+let COLE={}, COL0={}
 
 let PASSWORD
 
@@ -73,6 +73,21 @@ console.timeEnd("Data filtered in")
 
 RD.forEach(r=>r[HeaderArray.Month]=ymdToM(r[HeaderArray.Date]))
 RD.forEach(r=>r[HeaderArray["PnL Month"]]=ymdToM(r[HeaderArray["PnL Date"]]))
+
+return RD
+}
+
+async function ImportDataVLookup(){
+console.time(`Vlookup data imported in`);
+let url;
+url="1itzoaXD8WNcb3U7R5anh7jHasr5S9iZcCJ0wmJNeySw";
+const RESPONSE=await fetch(`https://opensheet.elk.sh/${url}/Vlookup`);    
+if (!RESPONSE.ok) throw new Error('Network response was not ok');
+const arrayOfObjects = await RESPONSE.json();
+const headers=Object.keys(arrayOfObjects[0]);
+headers.forEach((H,i)=>COL0[H]=i)
+RD=arrayOfObjects.map(obj => Object.keys(arrayOfObjects[0]).map(key => obj[key]));
+console.timeEnd(`Vlookup data imported in`);
 
 return RD
 }

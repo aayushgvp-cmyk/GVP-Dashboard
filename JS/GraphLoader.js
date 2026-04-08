@@ -54,7 +54,7 @@ SPDD.addEventListener("change",OnSSwitchP)
 LPDD.addEventListener("change",OnSwitchP)
 YPDD.addEventListener("change",OnSwitchP)
 
-VPDD.addEventListener("change",OnIncentiveChange)
+VPDD2.addEventListener("change",OnIncentiveChange)
 MPDD.addEventListener("change",OnIncentiveChange)
 YPDD.addEventListener("change",OnIncentiveChange)
 

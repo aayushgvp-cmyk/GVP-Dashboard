@@ -23,30 +23,55 @@ function MTom(M){switch(M){case "January": return 1;case "February": return 2;ca
 
 //																		Currency
 
-function numberToIndianIncomeString(n){
-	const LENGTH=`${n}`.length
+function numberToIndianIncomeString(n) {
+  let s = Math.abs(n).toString();
+  let lastThree = s.slice(-3);
+  let otherNumbers = s.slice(0, -3);
+
+  // If the number is less than 1000, just return it
+  if (otherNumbers === "") return (n < 0 ? "-" : "") + lastThree;
+
+  // Group the remaining digits by twos from right to left
+  let result = "";
+  while (otherNumbers.length > 0) {
+    if (otherNumbers.length > 1) {
+      // Grab the last two digits
+      result = "," + otherNumbers.slice(-2) + result;
+      otherNumbers = otherNumbers.slice(0, -2);
+    } else {
+      // Grab the single remaining leading digit
+      result = "," + otherNumbers + result;
+      otherNumbers = "";
+    }
+  }
+
+  return (n < 0 ? "-" : "") + result.substring(1) + "," + lastThree;
+}
+
+function numberToWesternIncomeString(n){
+	const LENGTH=`${n}`.length+m
 	if(LENGTH<4){return `${n}`}
-		else if(LENGTH<6){return `${Math.floor(n/1000)},${ModFunction(n,1000)}`}
+		else if(LENGTH<7){return `${Math.floor(n/1000)},${ModFunction(n,1000)}`}
 			else{
 				let OUTPUT=`${ModFunction(n,1000)}`
-				for(i=1;i<=Math.ceil((LENGTH-3)/2);i++){
-					OUTPUT=`${(`${n}`[LENGTH-2*i-3])?`${n}`[LENGTH-2*i-3]:""}`+`${n}`[LENGTH-2*i-2]+","+OUTPUT
+				for(let i=1;i<=Math.ceil((LENGTH-3)/3);i++){
+					OUTPUT=`${(`${n}`[LENGTH-3*i-3])?`${n}`[LENGTH-3*i-3]:""}`+`${(`${n}`[LENGTH-3*i-2])?`${n}`[LENGTH-3*i-2]:""}`+`${n}`[LENGTH-3*i-1]+","+OUTPUT
 				}
 				return OUTPUT
 			}
 }
 
-console.log(numberToIndianIncomeString(123))
 
-function numberToWesternIncomeString(n){
-	const LENGTH=`${n}`.length
-	if(LENGTH<4){return `${n}`}
-		else if(LENGTH<7){return `${Math.floor(n/1000)},${ModFunction(n,1000)}`}
-			else{
-				let OUTPUT=`${ModFunction(n,1000)}`
-				for(i=1;i<=Math.ceil((LENGTH-3)/3);i++){
-					OUTPUT=`${(`${n}`[LENGTH-3*i-3])?`${n}`[LENGTH-3*i-3]:""}`+`${(`${n}`[LENGTH-3*i-2])?`${n}`[LENGTH-3*i-2]:""}`+`${n}`[LENGTH-3*i-1]+","+OUTPUT
-				}
-				return OUTPUT
-			}
+//Flip rows and columns of an AoA
+function TransposeMatrix(Matrix){
+	const a=Matrix[0].length
+	const b=Matrix.length
+	let Result=[]
+	for(let i=0;i<a;i++){
+		Result[i]=[]
+		for(let j=0;j<b;j++){
+			Result[i][j]=Matrix[j][i]
+		}
+	}
+	return Result
 }

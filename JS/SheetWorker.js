@@ -1,5 +1,5 @@
 
-let AVSIncome={}, AMIncome={}, ObjectExpense={}, CumIncome={}, MonthIncomeFull={}, CumIncentive={}
+let AVSIncome={}, AMIncome={}, ObjectExpense={}, CumIncome={}, MonthIncomeFull={}, CumIncentive={}, MinimumIncomeObject={},EstimatedExpenseObject={}
 let rawDataIncome, rawDataExpense
 let totalIncome, TotalExpense
 let VerticalArray=[]
@@ -84,10 +84,6 @@ rawDataExpense.forEach(row => Object.freeze(row));
 
 // 2. Freeze the main array (this stops the list from being changed)
 Object.freeze(rawDataExpense);
-
-rawDataExpense[1]=5
-
-console.log(rawDataExpense)
 
 
 {const PARAMETER='Vertical',COLCHOICE=COLE[`Vertical`];
@@ -211,6 +207,15 @@ OPTION.value=i+1;
 SELECT_TAG.appendChild(CLONE)
 })}
 
+{const SELECT_TAG=document.querySelector('#VPDD2');
+const TEMPLATE=document.querySelector('#VP2Template');
+VerticalArray.forEach((v,i)=>{const CLONE=TEMPLATE.content.cloneNode(true);
+const OPTION=CLONE.querySelector('.VP2OptionClass');
+OPTION.textContent=v;
+OPTION.value=i+1;
+SELECT_TAG.appendChild(CLONE)
+})}
+
 SeminarSet=[...new Set([...SeminarArray,...SeminarArrayE])].sort()
 {
 const SELECT_TAG0=document.querySelector('#SPDD');
@@ -231,10 +236,14 @@ SeminarSet.forEach((S,i)=>OnlySeminarSet[i]=SVToS(S))
 
 
 
+rawDataSeminars=await ImportDataVLookup()
+rawDataSeminars.forEach(row => Object.freeze(row));
+Object.freeze(rawDataSeminars);
 
 
 
-
+rawDataSeminars.forEach(r=>MinimumIncomeObject[r[COL0['Seminar']]]=+r[COL0['Minimum Profit %']]/100)
+rawDataSeminars.forEach(r=>EstimatedExpenseObject[r[COL0['Seminar']]]=+r[COL0['Estimated Expense %']]/100)
 
 
 

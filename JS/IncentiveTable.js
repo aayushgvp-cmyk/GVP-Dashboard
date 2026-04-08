@@ -1,37 +1,37 @@
 let ITData=[]
 let ITGrid;
-const FixedIncentivePercentage=0.05,IncentivePercentage=0.25
+const FixedIncentivePercentage=0.05,IncentivePercentage=0.25, GVPCutPercentage=0.34
 let INCENTIVE_VERTICAL,INCENTIVE_MONTH,INCENTIVE_FISCAL_YEAR
 
 function MakeIT(){
-ITGrid=new gridjs.Grid({
-columns:["Fixed - Faculty","Fixed - PL","Faculty","PL"],
-search: false,
-fixedHeader: false,
-resizable:true,
-// height:"85vh",
-// pagination: {limit:20,buttonsCount:7,resetPageOnUpdate:true,summary: true},
-/*plugins:[{
-    id: 'limitInput',
-    component: LimitInput,
-    position: gridjs.PluginPosition.Footer,
-    order: 1 
-},{
-      id: 'summary',
-      component: SummaryPlugin,
-      position: gridjs.PluginPosition.Footer // Places it below the grid
-    }],*/
-sort: true,
-style:{td: {border: '2px solid #000'}},
-data:DTData
-}).render(document.getElementById('IncentiveTable'));
+    ITGrid=new gridjs.Grid({
+        columns:["Fixed - Faculty","Fixed - PL","Variable - Faculty","Variable - PL"],
+        search: false,
+        fixedHeader: false,
+        resizable:true,
+        sort: true,
+        style:{
+            table:
+            {
+                'border-collapse': 'collapse'
+            },
+            th: 
+            {
+                'background-color': '#ffffff',
+                'color': '#000000',
+                'border': '1px solid #ccc',
+                'font-weight': 'normal'
+            }
+        },
+        data:DTData
+    }).render(document.getElementById('IncentiveTable'));
 }
 
-function ShowIncentiveDD(){Show('VPC',1);Show('MPC',1);Show('YPC',1);}
+function ShowIncentiveDD(){Show('VPC2',1);Show('MPC',1);Show('YPC',1);}
 
 
 function SetIncentiveVariables(){
-    INCENTIVE_VERTICAL=(Number(Or(document.getElementById('VPDD').value,0))===0?"All":VerticalSet[Or(document.getElementById('VPDD').value,0)-1]);
+    INCENTIVE_VERTICAL=(Number(Or(document.getElementById('VPDD2').value,0))===0?"All":VerticalArray[Or(document.getElementById('VPDD2').value,0)-1]);
     INCENTIVE_MONTH=(Number(Or(document.getElementById('MPDD').value,0))===0?"All":mToM(ModFunction(3+Number(Or(document.getElementById('MPDD').value,1)),12)));
     INCENTIVE_FISCAL_YEAR=(Number(Or(document.getElementById('YPDD').value,0))===0?"All":FYSet[Number(document.getElementById('YPDD').value)-1]);
 
@@ -47,8 +47,11 @@ function SeekIncentiveMonth2(R){if(INCENTIVE_MONTH=="All"){return true}else if(R
 function SeekIncentiveFY2(R){if(INCENTIVE_FISCAL_YEAR=="All"){return true}else if(R[COLE.FY]==INCENTIVE_FISCAL_YEAR){return true}else{return false}}
 
 
-function RunIncentiveFilters1(R){return SeekIncentiveVertical(R)&&SeekIncentiveMonth(R)&&SeekIncentiveFY(R)}
-function RunIncentiveFilters2(R){return SeekIncentiveVertical2(R)&&SeekIncentiveMonth2(R)&&SeekIncentiveFY2(R)&&R[COLE.Type]=="Actual"}
+function RunIncentiveFilters1(R){return SeekIncentiveVertical(R)&&SeekIncentiveMonth(R)&&SeekIncentiveFY(R)}// Reg income
+function RunIncentiveFilters2(R){return SeekIncentiveVertical2(R)&&SeekIncentiveMonth2(R)&&SeekIncentiveFY2(R)&&R[COLE.Type]=="Actual"}// Reg Exp
+function RunIncentiveFilters3(R){return R[COLE.Vertical]=='GVP'&&SeekIncentiveMonth2(R)&&SeekIncentiveFY2(R)&&R[COLE.Type]=="Actual"}// GVP Actual
+function RunIncentiveFilters4(R){return SeekIncentiveVertical2(R)&&R[COLE.Vertical]!=='GVP'&&SeekIncentiveMonth2(R)&&SeekIncentiveFY2(R)&&R[COLE.Type]=="Actual"}// Reg Exp
+
 
 function OnIncentiveChange(){
         ReloadIncentive()
@@ -73,21 +76,43 @@ function OpenIncentive(){
 
 function ReloadIncentive(){
     SetIncentiveVariables()
-    let sumIncome=0,sumExpense=0
+
+    let sumIncome=0,sumExpense=0,GVPActualExpense=0,MinIncome=0,PROJECTEXPENSE=0,PROJECTEXPENSE2=0
+
     rawDataIncome.forEach(r=>{
-        if(RunIncentiveFilters1(r)){sumIncome+=r[COLS.Amount]}
+        if(RunIncentiveFilters1(r)){sumIncome+=r[COLS.Amount];MinIncome+=(r[COLS.Amount]*MinimumIncomeObject[r[COLS.Seminar]]);PROJECTEXPENSE2+=(r[COLS.Amount]*EstimatedExpenseObject[r[COLS.Seminar]])}
     })
     rawDataExpense.forEach(r=>{
         if(RunIncentiveFilters2(r)){sumExpense+=r[COLE.Amount]}
+        if(RunIncentiveFilters3(r)){GVPActualExpense+=r[COLE.Amount]}
+        if(RunIncentiveFilters4(r)){PROJECTEXPENSE+=r[COLE.Amount]}
     })
     let sumProfit=sumIncome-sumExpense
     if(sumProfit<0){sumProfit=0}
-    sumIncome*=FixedIncentivePercentage
+    let FinalIncome=sumIncome*FixedIncentivePercentage
+    let GVPIncome=sumIncome*GVPCutPercentage
     sumProfit*=IncentivePercentage
-    sumIncome=numberToIndianIncomeString(parseInt(sumIncome))
-    sumProfit=numberToIndianIncomeString(parseInt(sumProfit))
-    ITData=[[`₹${sumIncome}`,`₹${sumIncome}`,`₹${sumProfit}`,`₹${sumProfit}`]]
-    ITGrid.updateConfig({data:ITData,language: {'noRecordsFound': 'No records found'}}).forceRender()
+
+    const Income=`₹${numberToIndianIncomeString(parseInt(sumIncome))}`
+    const ProjectExpense=`₹${numberToIndianIncomeString(parseInt(PROJECTEXPENSE))}`
+    const ProjectExpense2=`₹${numberToIndianIncomeString(parseInt(PROJECTEXPENSE2))}`
+    const ProjectExpense3=`₹${numberToIndianIncomeString(parseInt(PROJECTEXPENSE2-PROJECTEXPENSE))}`
+    const FFixed=`₹${numberToIndianIncomeString(parseInt(FinalIncome))}`
+    const PLFixed=`₹${numberToIndianIncomeString(parseInt(FinalIncome))}`
+    const GVPFixed=`₹${numberToIndianIncomeString(parseInt(GVPIncome))}`
+    const GVPActual=`₹${numberToIndianIncomeString(parseInt(GVPActualExpense))}`
+    const GVPDiff=`₹${numberToIndianIncomeString(parseInt(sumIncome*GVPCutPercentage-GVPActualExpense))}`
+    const minIncome=`₹${numberToIndianIncomeString(parseInt(MinIncome))}`
+    const BALANCE=`₹${numberToIndianIncomeString(parseInt(sumIncome-(PROJECTEXPENSE+2*FinalIncome+GVPIncome+MinIncome)))}`
+    const FVar=`₹${numberToIndianIncomeString(parseInt(sumProfit))}`
+    const PLVar=`₹${numberToIndianIncomeString(parseInt(sumProfit/FixedIncentivePercentage*0.5))}`
+    const GVPProfit=`₹${numberToIndianIncomeString(parseInt(FinalIncome))}`
+    const TOTALF=`₹${numberToIndianIncomeString(parseInt(FinalIncome+sumIncome))}`
+    const TOTALPL=`₹${numberToIndianIncomeString(parseInt(FinalIncome+sumIncome))}`
+    ITData=[["Net Income","Project Estimated Expense","Project Actual Expense","Project Reserved Expense","Fixed - Faculty","Fixed - PL","GVP (34%)","GVP Actual","GVP Difference","Minimum Profit %","Balance","Variable - Faculty","Variable - PL","GVP (50%)","Total Faculty","Total PL"],
+        [Income,ProjectExpense2,ProjectExpense,ProjectExpense3,FFixed,PLFixed,GVPFixed,GVPActual,GVPDiff,minIncome,BALANCE,FVar,PLVar,"---",TOTALF,TOTALPL]]
+    ITData=TransposeMatrix(ITData)
+    ITGrid.updateConfig({columns:ITData[0],data:ITData.slice(1),language: {'noRecordsFound': 'No records found'}}).forceRender()
 }
 
 /*
