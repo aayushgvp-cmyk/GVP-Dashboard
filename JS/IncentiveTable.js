@@ -8,8 +8,7 @@ function MakeIT(){
         columns:["Fixed - Faculty","Fixed - PL","Variable - Faculty","Variable - PL"],
         search: false,
         fixedHeader: false,
-        resizable:true,
-        sort: true,
+        // resizable:true,
         style:{
             table:
             {
@@ -103,14 +102,15 @@ function ReloadIncentive(){
     const GVPActual=`₹${numberToIndianIncomeString(parseInt(GVPActualExpense))}`
     const GVPDiff=`₹${numberToIndianIncomeString(parseInt(sumIncome*GVPCutPercentage-GVPActualExpense))}`
     const minIncome=`₹${numberToIndianIncomeString(parseInt(MinIncome))}`
-    const BALANCE=`₹${numberToIndianIncomeString(parseInt(sumIncome-(PROJECTEXPENSE+2*FinalIncome+GVPIncome+MinIncome)))}`
-    const FVar=`₹${numberToIndianIncomeString(parseInt(sumProfit))}`
-    const PLVar=`₹${numberToIndianIncomeString(parseInt(sumProfit/FixedIncentivePercentage*0.5))}`
-    const GVPProfit=`₹${numberToIndianIncomeString(parseInt(FinalIncome))}`
-    const TOTALF=`₹${numberToIndianIncomeString(parseInt(FinalIncome+sumIncome))}`
-    const TOTALPL=`₹${numberToIndianIncomeString(parseInt(FinalIncome+sumIncome))}`
+    const BalanceValue=sumIncome-(PROJECTEXPENSE+2*FinalIncome+GVPIncome+MinIncome)
+    const BALANCE=`₹${numberToIndianIncomeString(parseInt(BalanceValue))}`
+    const FVar=`₹${numberToIndianIncomeString(parseInt(NegZero(BalanceValue*IncentivePercentage)))}`
+    const PLVar=`₹${numberToIndianIncomeString(parseInt(NegZero(BalanceValue*IncentivePercentage)))}`
+    const GVPProfit=`₹${numberToIndianIncomeString(parseInt(NegZero(BalanceValue*0.5)))}`
+    const TOTALF=`₹${numberToIndianIncomeString(parseInt(FinalIncome+NegZero(BalanceValue*IncentivePercentage)))}`
+    const TOTALPL=`₹${numberToIndianIncomeString(parseInt(FinalIncome+NegZero(BalanceValue*IncentivePercentage)))}`
     ITData=[["Net Income","Project Estimated Expense","Project Actual Expense","Project Reserved Expense","Fixed - Faculty","Fixed - PL","GVP (34%)","GVP Actual","GVP Difference","Minimum Profit %","Balance","Variable - Faculty","Variable - PL","GVP (50%)","Total Faculty","Total PL"],
-        [Income,ProjectExpense2,ProjectExpense,ProjectExpense3,FFixed,PLFixed,GVPFixed,GVPActual,GVPDiff,minIncome,BALANCE,FVar,PLVar,"---",TOTALF,TOTALPL]]
+        [Income,ProjectExpense2,ProjectExpense,ProjectExpense3,FFixed,PLFixed,GVPFixed,GVPActual,GVPDiff,minIncome,BALANCE,FVar,PLVar,GVPProfit,TOTALF,TOTALPL]]
     ITData=TransposeMatrix(ITData)
     ITGrid.updateConfig({columns:ITData[0],data:ITData.slice(1),language: {'noRecordsFound': 'No records found'}}).forceRender()
 }
